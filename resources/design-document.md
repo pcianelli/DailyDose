@@ -14,19 +14,46 @@ _DailyDose - your personalized medication management solution, bringing ease, or
 
 _List the most important questions you have about your design, or things that you are still debating internally that you might like help working through._
 
-1.
-2.
-3.
+1. How many tables will I need?
+2. How will I incorporate the notification feature with a timer?
+3. Will I need to use a GSI for my table?
 
 ## 3. Use Cases
 
-_This is where we work backwards from the customer and define what our customers would like to do (and why). You may also include use cases for yourselves (as developers), or for the organization providing the product to customers._
 
-U1. _As a [product] customer, I want to `<result>` when I `<action>`_
 
-U2. _As a [product] customer, I want to view my grocery list when I log into the grocery list page_
+U1. _As a user, I would like to be able to create an account._
 
-U3. ...
+U2. _As a user, I would like to be able to login to my account._
+
+U3. _As a user, a banner will display and notify me if I am supposed to take a medication, it will include dosage and other info, should only be posted for duration of 15 minutes before and after the alarm._
+
+U4. _As a user, I would like to be able to view my health chart with my medications._
+
+U5. _As a user, I would like to be able to add a medication to my chart._
+
+U6. _As a user, I would like to be able to remove a medication from my health chart._
+
+U7. _As a user, I would like to be able to add information about my medication (ex. if I need to take with food, dosage or how many pills to take at once, or other needed info)._
+
+U8. _As a user, I would like to be able to set an alarm for when I need to take my medication._
+
+U9. _As a user, I would like to be able to update my medication information section_
+
+U10. _As a user, I would like to be able to change the alarm time._
+
+U11. _As a user, I would like to remove the alarm/ have no alarm._
+
+
+
+### Stretch Use Cases:
+U12. _The alarm set should send a push notification, text, and email._
+
+U13. _The app should keep track of how many pills are left and notify the User one week out to refill the prescription._
+
+U14. _The user can click on a medication in their health chart, and it will bring them to a medication page with information about the medication (ex. Risks, allergies, etc.)_
+
+U15. _As a user, I would like to view my medication history health chart._
 
 ## 4. Project Scope
 
@@ -34,25 +61,44 @@ _Clarify which parts of the problem you intend to solve. It helps reviewers know
 
 ### 4.1. In Scope
 
-_Which parts of the problem defined in Sections 1 and 2 will you solve with this design? This should include the base functionality of your product. What pieces are required for your product to work?_
-
-_The functionality described above should be what your design is focused on. You do not need to include the design for any out of scope features or expansions._
+_- View your health chart, create/login to account_
+_- Add and remove medications from your health chart_
+_- Set an alarm of when to take your medication_
+_- Update the medication information and alarms set_
 
 ### 4.2. Out of Scope
 
-_Based on your problem description in Sections 1 and 2, are there any aspects you are not planning to solve? Do potential expansions or related problems occur to you that you want to explicitly say you are not worrying about now? Feel free to put anything here that you think your team can't accomplish in the unit, but would love to do with more time._
-
-_The functionality here does not need to be accounted for in your design._
+_Providing information about how to get a medication refill, or doctor information_
 
 # 5. Proposed Architecture Overview
 
-_Describe broadly how you are proposing to solve for the requirements you described in Section 2. This may include class diagram(s) showing what components you are planning to build. You should argue why this architecture (organization of components) is reasonable. That is, why it represents a good data flow and a good separation of concerns. Where applicable, argue why this architecture satisfies the stated requirements._
+_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, UpdateNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+requirements._
+
+_I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
 
 # 6. API
 
 ## 6.1. Public Models
 
-_Define the data models your service will expose in its responses via your *`-Model`* package. These will be equivalent to the *`PlaylistModel`* and *`SongModel`* from the Unit 3 project._
+```
+// MedicationModel
+
+String medId;
+String customerId;
+String medName;
+String medInfo;
+String notificationId;
+```
+
+```
+// NotificationModel
+
+String notificationId;
+String customerId;
+String time;
+String medId;
+```
 
 ## 6.2. _First Endpoint_
 

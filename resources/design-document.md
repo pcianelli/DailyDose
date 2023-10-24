@@ -72,7 +72,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, UpdateNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, UpdateNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -84,31 +84,88 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 ```
 // MedicationModel
 
-String medId;
 String customerId;
 String medName;
 String medInfo;
-String notificationId;
+Set<String> notificationId;
 ```
 
 ```
 // NotificationModel
 
-String notificationId;
 String customerId;
 String time;
-String medId;
+String notificationId;
+String medName;
+String medInfo;
 ```
 
-## 6.2. _First Endpoint_
+## 6.2. _Get All Medications Endpoint_
 
-_Describe the behavior of the first endpoint you will build into your service API. This should include what data it requires, what data it returns, and how it will handle any known failure cases. You should also include a sequence diagram showing how a user interaction goes from user to website to service to database, and back. This first endpoint can serve as a template for subsequent endpoints. (If there is a significant difference on a subsequent endpoint, review that with your team before building it!)_
+* Accepts `GET` requests to `/medications/:customerId`
+* Scans medication table based on customerId and returns all MedicationModels for a customerId.
+    * If there are no medications on the table, return an empty Set.
+  
+![GetAllMedicationsPlantUMl.png](..%2F..%2F..%2FDesktop%2FGetAllMedicationsPlantUMl.png)
 
-_(You should have a separate section for each of the endpoints you are expecting to build...)_
+## 6.3 _Add Medication Endpoint_
 
-## 6.3 _Second Endpoint_
+* Accepts `POST` requests to `/medications/:customerId`
+* Accepts a customer ID and a medName to be added.
+    * For security concerns, we will validate the provided med name does not
+      contain invalid characters: `" ' \`
+    * If the med name contains invalid characters, will throw an
+      `InvalidAttributeValueException`
+    * If the med can not be added to the Medication Table, will throw an `UnableToAddMedicationToTableException`_
 
-_(repeat, but you can use shorthand here, indicating what is different, likely primarily the data in/out and error conditions. If the sequence diagram is nearly identical, you can say in a few words how it is the same/different from the first endpoint)_
+![Sequence diagram add medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20diagram%20add%20medication.png)
+
+
+## 6.4 _Remove Medication Endpoint_
+
+* Accepts `DELETE` requests to `/medications/:customerId`
+* Accepts a customer ID and a medName to be Deleted.
+    * For security concerns, we will validate the provided med name does not
+      contain invalid characters: `" ' \`
+    * If the med name contains invalid characters, will throw an
+      `InvalidAttributeValueException`
+    * If no med found on the table, will throw an `UnableToFindMedicationTableException`
+    * If the med can not be deleted to the Medication Table, will throw an `UnableToDeleteMedicationTableException`
+  
+![Sequence Diagram remove medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20remove%20medication.png)
+
+
+## 6.5 _Update Medication Endpoint_
+* Accepts `PUT` requests to `/medications/:customerId`
+* Accepts a customer ID and a medName to be updated.
+    * For security concerns, we will validate the provided med name does not
+      contain invalid characters: `" ' \`
+    * If the med name contains invalid characters, will throw an
+      `InvalidAttributeValueException`
+    * If no med found on the table, will throw an `UnableToFindMedicationTableException`
+    * If the med can not be updated on the Medication Table, will throw an `UnableToUpdateMedicationTableException`
+  
+![Sequence Diagram Update Medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Update%20Medication.png)
+
+
+## 6.6 _Get Notification Endpoint_
+* Accepts `GET` requests to `/notifications/:customerId`
+* Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
+    * If there are no notifications on the table, return an empty Set.
+
+![Sequence Diagram Get Notifications.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Get%20Notifications.png)
+
+
+## 6.7 _Add Notification Endpoint_
+
+* Accepts `POST` requests to `/notifications/:customerId`
+* Accepts a customer ID and a time to be added.
+
+    * If the time contains invalid characters, will throw an
+      `InvalidAttributeValueException`
+    * If the notification can not be added to the Notifications Table, will throw an `UnableToAddNotificationToTableException`_
+
+## 6.8 _Update Notification Endpoint_
 
 # 7. Tables
 

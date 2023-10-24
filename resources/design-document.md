@@ -28,7 +28,7 @@ U2. _As a user, I would like to be able to login to my account._
 
 U3. _As a user, a banner will display and notify me if I am supposed to take a medication, it will include dosage and other info, should only be posted for duration of 15 minutes before and after the alarm._
 
-U4. _As a user, I would like to be able to view my health chart with my medications._
+U4. _As a user, I would like to be able to view my health chart with my medications, medication info, and the alarms that are set for those medications._
 
 U5. _As a user, I would like to be able to add a medication to my chart._
 
@@ -43,7 +43,6 @@ U9. _As a user, I would like to be able to update my medication information sect
 U10. _As a user, I would like to be able to change the alarm time._
 
 U11. _As a user, I would like to remove the alarm/ have no alarm._
-
 
 
 ### Stretch Use Cases:
@@ -148,12 +147,20 @@ String medInfo;
 ![Sequence Diagram Update Medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Update%20Medication.png)
 
 
-## 6.6 _Get Notification Endpoint_
+## 6.6 _Get Notification for Time Endpoint_
 * Accepts `GET` requests to `/notifications/:customerId`
 * Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Get%20Notifications.png)
+
+
+## 6.6 _Get Notification for Medication Endpoint_
+* Accepts `GET` requests to `/notifications/:customerId`
+* Scans medication table based on customerId and medName, returns all Notifications for that customerId and that medication.
+    * If there are no notifications on the table, return an empty Set.
+
+![Sequence Diagram Get Notification medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Get%20Notification%20medication.png)
 
 
 ## 6.7 _Add Notification Endpoint_
@@ -186,14 +193,12 @@ String medInfo;
 customer_id // partition key, string
 med_name // sort key, string 
 med_info // string 
-notifications // stringSet
 ```
 
 ### 7.2. `Notifications`
 ```
 customer_id // partition key, string
 time // sort key, string 
-notification_id // string
 med_name // string 
 med_info // string
 
@@ -201,4 +206,6 @@ med_info // string
 
 # 8. Pages
 
-_Include mock-ups of the web pages you expect to build. These can be as sophisticated as mockups/wireframes using drawing software, or as simple as hand-drawn pictures that represent the key customer-facing components of the pages. It should be clear what the interactions will be on the page, especially where customers enter and submit data. You may want to accompany the mockups with some description of behaviors of the page (e.g. “When customer submits the submit-dog-photo button, the customer is sent to the doggie detail page”)_
+![Pages Design jamboard DailyDose.png](..%2F..%2F..%2FDesktop%2FPages%20Design%20jamboard%20DailyDose.png)
+
+![Pages2 Design Jamboard DailyDose.png](..%2F..%2F..%2FDesktop%2FPages2%20Design%20Jamboard%20DailyDose.png)

@@ -71,7 +71,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationTimeLambda, GetNotificationMedicationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -86,7 +86,6 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 String customerId;
 String medName;
 String medInfo;
-Set<String> notificationId;
 ```
 
 ```

@@ -72,7 +72,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, UpdateNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -129,8 +129,8 @@ String medInfo;
       contain invalid characters: `" ' \`
     * If the med name contains invalid characters, will throw an
       `InvalidAttributeValueException`
-    * If no med found on the table, will throw an `UnableToFindMedicationTableException`
-    * If the med can not be deleted to the Medication Table, will throw an `UnableToDeleteMedicationTableException`
+    * If no med found on the table, will throw an `UnableToFindMedicationException`
+    * If the med can not be deleted to the Medication Table, will throw an `UnableToDeleteMedicationException`
   
 ![Sequence Diagram remove medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20remove%20medication.png)
 
@@ -165,11 +165,39 @@ String medInfo;
       `InvalidAttributeValueException`
     * If the notification can not be added to the Notifications Table, will throw an `UnableToAddNotificationToTableException`_
 
-## 6.8 _Update Notification Endpoint_
+![Sequence Diagram Add Notification.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Add%20Notification.png)
+
+
+## 6.8 _Remove Notification Endpoint_
+* Accepts `DELETE` requests to `/notifications/:customerId`
+* Accepts a customer ID and a time to delete notification.
+    * If the time contains invalid characters, will throw an
+      `InvalidAttributeValueException`
+    * If no notification found on the table, will throw an `UnableToFindNotificationException`
+    * If the notification can not be deleted to the Medication Table, will throw an `UnableToDeleteNotificationException`
+
+![Sequence Diagram Remove Notification.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Remove%20Notification.png)
+
 
 # 7. Tables
 
-_Define the DynamoDB tables you will need for the data your service will use. It may be helpful to first think of what objects your service will need, then translate that to a table structure, like with the *`Playlist` POJO* versus the `playlists` table in the Unit 3 project._
+### 7.1. `Medications`
+```
+customer_id // partition key, string
+med_name // sort key, string 
+med_info // string 
+notifications // stringSet
+```
+
+### 7.2. `Notifications`
+```
+customer_id // partition key, string
+time // sort key, string 
+notification_id // string
+med_name // string 
+med_info // string
+
+```
 
 # 8. Pages
 

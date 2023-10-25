@@ -27,12 +27,21 @@ _You will submit your completed Accomplishment Tracking Document to your instruc
 ## Week 1
 
 **Goals:**
+Finalize problem statement. Finish design Doc.
 
 **Activity:**
+My problem statement was approved by Gabe. 
+Created the project in local drive and connected it to github. Did the gradle build. 
+I submitted my design doc to go under review. Created project board on github and started creating tasks for stories/use cases.
 
 **Important Docs, Commits, or Pull Requests**:
 
+https://github.com/pcianelli/DailyDose/tree/main
+
+https://github.com/pcianelli/DailyDose/blob/main/resources/design-document.md
+
 **Things learned:**
+nothing new but good review on building a project and creating a design doc with endpoints, api calls etc. 
 
 ## Week 2
 

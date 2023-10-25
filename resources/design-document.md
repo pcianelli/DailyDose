@@ -71,7 +71,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationTimeLambda, GetNotificationMedicationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -104,7 +104,8 @@ String medInfo;
 * Scans medication table based on customerId and returns all MedicationModels for a customerId.
     * If there are no medications on the table, return an empty Set.
   
-![GetAllMedicationsPlantUMl.png](..%2F..%2F..%2FDesktop%2FGetAllMedicationsPlantUMl.png)
+![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
+
 
 ## 6.3 _Add Medication Endpoint_
 
@@ -116,7 +117,7 @@ String medInfo;
       `InvalidAttributeValueException`
     * If the med can not be added to the Medication Table, will throw an `UnableToAddMedicationToTableException`_
 
-![Sequence diagram add medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20diagram%20add%20medication.png)
+![Sequence diagram add medication.png](images%2FdesignImages%2FSequence%20diagram%20add%20medication.png)
 
 
 ## 6.4 _Remove Medication Endpoint_
@@ -130,7 +131,7 @@ String medInfo;
     * If no med found on the table, will throw an `UnableToFindMedicationException`
     * If the med can not be deleted to the Medication Table, will throw an `UnableToDeleteMedicationException`
   
-![Sequence Diagram remove medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20remove%20medication.png)
+![Sequence Diagram remove medication.png](images%2FdesignImages%2FSequence%20Diagram%20remove%20medication.png)
 
 
 ## 6.5 _Update Medication Endpoint_
@@ -143,23 +144,15 @@ String medInfo;
     * If no med found on the table, will throw an `UnableToFindMedicationTableException`
     * If the med can not be updated on the Medication Table, will throw an `UnableToUpdateMedicationTableException`
   
-![Sequence Diagram Update Medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Update%20Medication.png)
+![Sequence Diagram Update Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Update%20Medication.png)
 
 
-## 6.6 _Get Notification for Time Endpoint_
+## 6.6 _Get Notification Endpoint_
 * Accepts `GET` requests to `/notifications/:customerId`
 * Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
     * If there are no notifications on the table, return an empty Set.
 
-![Sequence Diagram Get Notifications.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Get%20Notifications.png)
-
-
-## 6.6 _Get Notification for Medication Endpoint_
-* Accepts `GET` requests to `/notifications/:customerId`
-* Scans medication table based on customerId and medName, returns all Notifications for that customerId and that medication.
-    * If there are no notifications on the table, return an empty Set.
-
-![Sequence Diagram Get Notification medication.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Get%20Notification%20medication.png)
+![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
 
 
 ## 6.7 _Add Notification Endpoint_
@@ -171,7 +164,7 @@ String medInfo;
       `InvalidAttributeValueException`
     * If the notification can not be added to the Notifications Table, will throw an `UnableToAddNotificationToTableException`_
 
-![Sequence Diagram Add Notification.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Add%20Notification.png)
+![Sequence Diagram Add Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Add%20Notification.png)
 
 
 ## 6.8 _Remove Notification Endpoint_
@@ -182,7 +175,7 @@ String medInfo;
     * If no notification found on the table, will throw an `UnableToFindNotificationException`
     * If the notification can not be deleted to the Medication Table, will throw an `UnableToDeleteNotificationException`
 
-![Sequence Diagram Remove Notification.png](..%2F..%2F..%2FDesktop%2FNSS%2FSequence%20Diagram%20Remove%20Notification.png)
+![Sequence Diagram Remove Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Remove%20Notification.png)
 
 
 # 7. Tables
@@ -206,6 +199,6 @@ med_info // string
 
 # 8. Pages
 
-![Pages Design jamboard DailyDose.png](..%2F..%2F..%2FDesktop%2FNSS%2FPages%20Design%20jamboard%20DailyDose.png)
+![Pages Design jamboard DailyDose.png](images/designImages/Pages%20Design%20jamboard%20DailyDose.png)
 
-
+![Pages2 Design Jamboard DailyDose.png](images%2FdesignImages%2FPages2%20Design%20Jamboard%20DailyDose.png)

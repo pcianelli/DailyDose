@@ -86,7 +86,7 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 String customerId;
 String medName;
 String medInfo;
-Set<String> notificationTime;
+Set<String> notificationTimes;
 ```
 
 ```
@@ -185,7 +185,7 @@ String medInfo;
 customer_id // partition key, string
 med_name // sort key, string 
 med_info // string 
-notifications // stringset
+notificationTimes // stringset
 ```
 
 ### 7.2. `Notifications`

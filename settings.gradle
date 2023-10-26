@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'com.nashss.se.dailydose'
-include('app')
+include('DailyDoseLambda')

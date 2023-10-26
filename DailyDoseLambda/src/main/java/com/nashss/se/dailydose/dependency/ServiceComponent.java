@@ -1,6 +1,7 @@
 package com.nashss.se.dailydose.dependency;
 
 import com.nashss.se.dailydose.activity.GetMedicationsActivity;
+
 import dagger.Component;
 
 import javax.inject.Singleton;

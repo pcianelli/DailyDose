@@ -2,7 +2,7 @@ package com.nashss.se.dailydose.exceptions;
 
 public class MedicationNotFoundException extends RuntimeException{
     /**
-     * Exception to throw when a given Medication name and customerId is not found
+     * Exception to throw when a given customerId is not found
      * in the database.
      */
 

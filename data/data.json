@@ -5,8 +5,7 @@
         "Item": {
           "customerId": { "S": "1111" },
           "medName": { "S": "Albuterol" },
-          "medInfo": { "S": "Take 2 pills with food twice a day" },
-          "notificationTime": { "SS": [ "8:00 a.m.", "6:30 p.m." ] }
+          "medInfo": { "S": "Take 2 pills with food twice a day" }
         }
       }
     },
@@ -15,8 +14,7 @@
         "Item": {
           "customerId": { "S": "1111" },
           "medName": { "S": "Oxytocin" },
-          "medInfo": { "S": "Take 1 pills when you wake up" },
-          "notificationTime": { "SS": [ "7:00 a.m." ] }
+          "medInfo": { "S": "Take 1 pills when you wake up" }
         }
       }
     },
@@ -25,8 +23,7 @@
         "Item": {
           "customerId": { "S": "2222" },
           "medName": { "S": "Lantus" },
-          "medInfo": { "S": "Take 2 pills twice a day" },
-          "notificationTime": { "SS": [ "8:00 a.m.", "8:30 p.m." ] }
+          "medInfo": { "S": "Take 2 pills twice a day" }
         }
       }
     },
@@ -34,8 +31,7 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "3333" },
-          "medName": { "S": "Cymbalta" },
-          "medInfo": { "S": "Take 1 pill daily anytime" }
+          "medName": { "S": "Cymbalta" }
         }
       }
     }
@@ -46,8 +42,7 @@
         "Item": {
           "customerId": { "S": "1111" },
           "time": { "S": "8:00 a.m." },
-          "medName": { "S": "Albuterol" },
-          "medInfo": { "S": "Take 2 pills with food twice a day" }
+          "medName": { "S": "Albuterol" }
         }
       }
     },
@@ -56,8 +51,7 @@
         "Item": {
           "customerId": { "S": "1111" },
           "time": { "S": "6:30 p.m." },
-          "medName": { "S": "Albuterol" },
-          "medInfo": { "S": "Take 2 pills with food twice a day" }
+          "medName": { "S": "Albuterol" }
         }
       }
     },
@@ -66,8 +60,7 @@
         "Item": {
           "customerId": { "S": "1111" },
           "time": { "S": "7:00 a.m." },
-          "medName": { "S": "Oxytocin" },
-          "medInfo": { "S": "Take 1 pills when you wake up" }
+          "medName": { "S": "Oxytocin" }
         }
       }
     },

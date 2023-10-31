@@ -154,20 +154,14 @@ String medName;
 ![Sequence Diagram Update Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Update%20Medication.png)
 
 
-## 6.6 _Get Notification Time Endpoint_
-* Accepts `GET` requests to `/notifications/:time`
-* Scans medication table time gsi based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
+## 6.6 _Get Notification Endpoint_
+* Accepts `GET` requests to `/notifications/:`
+* 2 different optional query parameters, either /time, or /medName
+* Scans medication table time gsi or med gsi based on query paramater passed in , returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time or that medName specified.
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
 
-
-## 6.6 _Get Notification Med Endpoint_
-* Accepts `GET` requests to `/notifications/:medname`
-* Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
-    * If there are no notifications on the table, return an empty Set.
-
-![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
 
 ## 6.7 _Add Notification Endpoint_
 

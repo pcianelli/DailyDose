@@ -95,21 +95,28 @@ Set<String> notificationTimes;
 String customerId;
 String time;
 String medName;
-String medInfo;
 ```
 
 ## 6.2. _Get All Medications Endpoint_
 
-* Accepts `GET` requests to `/medications/:customerId`
+* Accepts `GET` requests to `/medications/`
 * Scans medication table based on customerId and returns all MedicationModels for a customerId.
     * If there are no medications on the table, return an empty Set.
   
 ![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
 
+## 6.2. _Get One Medications Endpoint_
+
+* Accepts `GET` requests to `/medications/:medName`
+* Scans medication table based on customerId and returns all MedicationModels for a customerId.
+    * If there are no medications on the table, return an empty Set.
+
+![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
+
 
 ## 6.3 _Add Medication Endpoint_
 
-* Accepts `POST` requests to `/medications/:customerId`
+* Accepts `POST` requests to `/medications/:medName`
 * Accepts a customer ID and a medName to be added.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -122,7 +129,7 @@ String medInfo;
 
 ## 6.4 _Remove Medication Endpoint_
 
-* Accepts `DELETE` requests to `/medications/:customerId/{medName}`
+* Accepts `DELETE` requests to `/medications/:medName`
 * Accepts a customer ID and a medName to be Deleted.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -135,7 +142,7 @@ String medInfo;
 
 
 ## 6.5 _Update Medication Endpoint_
-* Accepts `PUT` requests to `/medications/:customerId/{medName}`
+* Accepts `PUT` requests to `/medications/:medName`
 * Accepts a customer ID and a medName to be updated.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -147,17 +154,24 @@ String medInfo;
 ![Sequence Diagram Update Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Update%20Medication.png)
 
 
-## 6.6 _Get Notification Endpoint_
-* Accepts `GET` requests to `/notifications/:customerId`
-* Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
+## 6.6 _Get Notification Time Endpoint_
+* Accepts `GET` requests to `/notifications/:time`
+* Scans medication table time gsi based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
 
 
+## 6.6 _Get Notification Med Endpoint_
+* Accepts `GET` requests to `/notifications/:medname`
+* Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
+    * If there are no notifications on the table, return an empty Set.
+
+![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
+
 ## 6.7 _Add Notification Endpoint_
 
-* Accepts `POST` requests to `/notifications/:customerId`
+* Accepts `POST` requests to `/notifications/:time/medName`
 * Accepts a customer ID and a time to be added.
 
     * If the time contains invalid characters, will throw an
@@ -168,7 +182,7 @@ String medInfo;
 
 
 ## 6.8 _Remove Notification Endpoint_
-* Accepts `DELETE` requests to `/notifications/:customerId/{time}`
+* Accepts `DELETE` requests to `/notifications/:time/medName`
 * Accepts a customer ID and a time to delete notification.
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`
@@ -185,16 +199,26 @@ String medInfo;
 customer_id // partition key, string
 med_name // sort key, string 
 med_info // string 
-notificationTimes // stringset
 ```
 
 ### 7.2. `Notifications`
 ```
 customer_id // partition key, string
-time // sort key, string 
+time // string 
 med_name // string 
-med_info // string
+```
+GSI on notificationsTable
+```
+query/filter on customerId
+partion key time // string 
+med_name // string 
+```
 
+GSI on notificationsTable
+```
+query/filter on customerId
+partion key medName// string 
+time // string 
 ```
 
 # 8. Pages

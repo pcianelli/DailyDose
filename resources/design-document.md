@@ -122,7 +122,7 @@ String medInfo;
 
 ## 6.4 _Remove Medication Endpoint_
 
-* Accepts `DELETE` requests to `/medications/:customerId`
+* Accepts `DELETE` requests to `/medications/:customerId/{medName}`
 * Accepts a customer ID and a medName to be Deleted.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -135,7 +135,7 @@ String medInfo;
 
 
 ## 6.5 _Update Medication Endpoint_
-* Accepts `PUT` requests to `/medications/:customerId`
+* Accepts `PUT` requests to `/medications/:customerId/{medName}`
 * Accepts a customer ID and a medName to be updated.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -168,7 +168,7 @@ String medInfo;
 
 
 ## 6.8 _Remove Notification Endpoint_
-* Accepts `DELETE` requests to `/notifications/:customerId`
+* Accepts `DELETE` requests to `/notifications/:customerId/{time}`
 * Accepts a customer ID and a time to delete notification.
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`

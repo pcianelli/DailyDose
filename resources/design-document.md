@@ -71,7 +71,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -86,7 +86,7 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 String customerId;
 String medName;
 String medInfo;
-Set<String> notificationTimes;
+Set<Notification> notifications;
 ```
 
 ```
@@ -96,22 +96,17 @@ String customerId;
 String time;
 String medName;
 ```
+###Note - inorder to to populate the medication model fully, the activity calls on the medication dao to get the medName, and med Info, and also calls the notification dao to get the set of notifications and query the notifications table based on the customer Id and medName to get all the notifications for that medName. 
+
 
 ## 6.2. _Get All Medications Endpoint_
 
 * Accepts `GET` requests to `/medications/`
-* Scans medication table based on customerId and returns all MedicationModels for a customerId.
+* query on just hashkey.  medication table based on customerId and returns all MedicationModels for a customerId.
     * If there are no medications on the table, return an empty Set.
   
 ![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
 
-## 6.2. _Get One Medications Endpoint_
-
-* Accepts `GET` requests to `/medications/:medName`
-* Scans medication table based on customerId and returns all MedicationModels for a customerId.
-    * If there are no medications on the table, return an empty Set.
-
-![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
 
 
 ## 6.3 _Add Medication Endpoint_
@@ -155,9 +150,8 @@ String medName;
 
 
 ## 6.6 _Get Notification Endpoint_
-* Accepts `GET` requests to `/notifications/:`
-* 2 different optional query parameters, either /time, or /medName
-* Scans medication table time gsi or med gsi based on query paramater passed in , returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time or that medName specified.
+* Accepts `GET` requests to `/notifications/:time` 
+* Query time gsi if the parameter passed in is time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time or that medName specified. This is used to populate the banner only, not the health chart. 
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
@@ -199,20 +193,13 @@ med_info // string
 ```
 customer_id // partition key, string
 time // string 
-med_name // string 
+med_name // sort key, string 
 ```
 GSI on notificationsTable
 ```
 query/filter on customerId
 partion key time // string 
 med_name // string 
-```
-
-GSI on notificationsTable
-```
-query/filter on customerId
-partion key medName// string 
-time // string 
 ```
 
 # 8. Pages

@@ -2,7 +2,6 @@ package com.nashss.se.dailydose.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
@@ -12,7 +11,6 @@ public class Notification {
     private String customerId;
     private String time;
     private String medName;
-    private String medInfo;
 
     @DynamoDBHashKey(attributeName = "customerId")
     public String getCustomerId() {
@@ -23,7 +21,7 @@ public class Notification {
         this.customerId = customerId;
     }
 
-    @DynamoDBRangeKey(attributeName = "time")
+    @DynamoDBAttribute(attributeName = "time")
     public String getTime() {
         return time;
     }
@@ -41,25 +39,16 @@ public class Notification {
         this.medName = medName;
     }
 
-    @DynamoDBAttribute(attributeName = "medInfo")
-    public String getMedInfo() {
-        return medInfo;
-    }
-
-    public void setMedInfo(String medInfo) {
-        this.medInfo = medInfo;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(time, that.time) && Objects.equals(medName, that.medName) && Objects.equals(medInfo, that.medInfo);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(time, that.time) && Objects.equals(medName, that.medName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, time, medName, medInfo);
+        return Objects.hash(customerId, time, medName);
     }
 }

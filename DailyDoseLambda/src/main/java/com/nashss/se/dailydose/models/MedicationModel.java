@@ -1,5 +1,7 @@
 package com.nashss.se.dailydose.models;
 
+import com.nashss.se.dailydose.dynamodb.models.Notification;
+
 import java.util.Objects;
 import java.util.Set;
 
@@ -7,13 +9,13 @@ public class MedicationModel {
     private final String customerId;
     private final String medName;
     private final String medInfo;
-    private final Set<String> notificationTimes;
+    private final Set<Notification> notifications;
 
-    private MedicationModel(String customerId, String medName, String medInfo, Set<String> notificationTimes) {
+    private MedicationModel(String customerId, String medName, String medInfo, Set<Notification> notifications) {
         this.customerId = customerId;
         this.medName = medName;
         this.medInfo = medInfo;
-        this.notificationTimes = notificationTimes;
+        this.notifications = notifications;
     }
 
     public String getCustomerId() {
@@ -32,8 +34,8 @@ public class MedicationModel {
      *
      * @return Set of notification times
      */
-    public Set<String> getNotificationTimes() {
-        return notificationTimes;
+    public Set<Notification> getNotificationTimes() {
+        return notifications;
     }
 
     @Override
@@ -41,12 +43,12 @@ public class MedicationModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MedicationModel that = (MedicationModel) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(medInfo, that.medInfo) && Objects.equals(notificationTimes, that.notificationTimes);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(medInfo, that.medInfo) && Objects.equals(notifications, that.notifications);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, medName, medInfo, notificationTimes);
+        return Objects.hash(customerId, medName, medInfo, notifications);
     }
 
 
@@ -60,7 +62,7 @@ public class MedicationModel {
         private String customerId;
         private String medName;
         private String medInfo;
-        private Set<String> notificationTimes;
+        private Set<Notification> notifications;
 
 
         /**
@@ -91,15 +93,15 @@ public class MedicationModel {
         }
 
         /**
-         * @param buildNotificationTimes Set of strings
+         * @param buildNotifications Set of strings
          * @return this
          */
-        public Builder withNotificationTimes(Set<String> buildNotificationTimes) {
-            this.notificationTimes = buildNotificationTimes;
+        public Builder withNotifications(Set<Notification> buildNotifications) {
+            this.notifications = buildNotifications;
             return this;
         }
     }
     public MedicationModel build() {
-        return new MedicationModel(customerId, medName, medInfo, notificationTimes);
+        return new MedicationModel(customerId, medName, medInfo, notifications);
     }
 }

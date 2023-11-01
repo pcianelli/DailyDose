@@ -220,7 +220,7 @@ Resources:
   # Lambda Functions Configuration
   #-----------------------------------------------------
 
-  GetMedicationsLambda:
+  GetAllMedicationsLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn
@@ -268,13 +268,9 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "customerId"
           AttributeType: "S"
-        - AttributeName: "time"
-          AttributeType: "S"
       KeySchema:
         - AttributeName: "customerId"
           KeyType: "HASH"
-        - AttributeName: "time"
-          KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "notifications"
 

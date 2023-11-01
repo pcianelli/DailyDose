@@ -6,13 +6,12 @@ public class NotificationModel{
     private final String customerId;
     private final String time;
     private final String medName;
-    private final String medInfo;
 
-    private NotificationModel(String customerId, String time, String medName, String medInfo) {
+
+    private NotificationModel(String customerId, String time, String medName) {
         this.customerId = customerId;
         this.time = time;
         this.medName = medName;
-        this.medInfo = medInfo;
     }
 
     public String getCustomerId() {
@@ -27,21 +26,17 @@ public class NotificationModel{
         return medName;
     }
 
-    public String getMedInfo() {
-        return medInfo;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NotificationModel that = (NotificationModel) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(time, that.time) && Objects.equals(medName, that.medName) && Objects.equals(medInfo, that.medInfo);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(time, that.time) && Objects.equals(medName, that.medName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, time, medName, medInfo);
+        return Objects.hash(customerId, time, medName);
     }
 
     /**
@@ -54,7 +49,6 @@ public class NotificationModel{
         private String customerId;
         private String time;
         private String medName;
-        private String medInfo;
 
         /**
          * @param buildCustomerId string
@@ -82,17 +76,8 @@ public class NotificationModel{
             this.medName = buildMedName;
             return this;
         }
-
-        /**
-         * @param buildMedInfo string
-         * @return this
-         */
-        public Builder withMedInfo(String buildMedInfo) {
-            this.medInfo = buildMedInfo;
-            return this;
-        }
     }
     public NotificationModel build() {
-        return new NotificationModel(customerId, time, medName, medInfo);
+        return new NotificationModel(customerId, time, medName);
     }
 }

@@ -5,7 +5,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
-import com.nashss.se.dailydose.exceptions.MedicationNotFoundException;
 import com.nashss.se.dailydose.metrics.MetricsConstants;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 
@@ -60,7 +59,7 @@ public class MedicationDao {
 
         QueryResultPage<Medication> medicationQueryResults = dynamoDbMapper.queryPage(Medication.class, queryExpression);
 
-        if(medicationQueryResults == null) {
+        if (medicationQueryResults == null) {
             metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 1);
             return Collections.emptyList();
         }

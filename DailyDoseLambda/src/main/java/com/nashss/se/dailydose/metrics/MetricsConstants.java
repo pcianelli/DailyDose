@@ -8,4 +8,6 @@ public class MetricsConstants {
 
     public static final String NAMESPACE_NAME = "U3/DailyDose";
 
+    public static final String GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT = "GetMedications.MedicationNotFoundException.Count";
+
 }

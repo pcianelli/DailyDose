@@ -156,22 +156,25 @@ String time;
 
 ## 6.7 _Add Notification Endpoint_
 
-* Accepts `POST` requests to `/notifications/:time/medName`
-* Accepts a customer ID and a time to be added.
+* Accepts `POST` requests to `/notifications/:medName/time`
+* Accepts a customer ID, medName and a time to be added.
 
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`
+    * If the medName and time does not exist on table, will throw an
+        `UnableToAddNotificationToTableException`
     * If the notification can not be added to the Notifications Table, will throw an `UnableToAddNotificationToTableException`_
 
 ![Sequence Diagram Add Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Add%20Notification.png)
 
 
 ## 6.8 _Remove Notification Endpoint_
-* Accepts `DELETE` requests to `/notifications/:time/medName`
-* Accepts a customer ID and a time to delete notification.
+* Accepts `DELETE` requests to `/notifications/:medName/time`
+* Accepts a customer ID, medName, and a time to delete notification.
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`
-    * If no notification found on the table, will throw an `UnableToFindNotificationException`
+    * If the medName and time does not exist on table, will throw an
+        `UnableToAddNotificationToTableException`
     * If the notification can not be deleted to the Medication Table, will throw an `UnableToDeleteNotificationException`
 
 ![Sequence Diagram Remove Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Remove%20Notification.png)

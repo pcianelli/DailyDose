@@ -4,39 +4,40 @@ import java.util.Objects;
 
 public class NotificationModel{
     private final String customerId;
-    private final String time;
     private final String medName;
+    private final String time;
 
 
-    private NotificationModel(String customerId, String time, String medName) {
+    private NotificationModel(String customerId, String medName, String time) {
         this.customerId = customerId;
-        this.time = time;
         this.medName = medName;
+        this.time = time;
     }
 
     public String getCustomerId() {
         return customerId;
+    }
+    public String getMedName() {
+        return medName;
     }
 
     public String getTime() {
         return time;
     }
 
-    public String getMedName() {
-        return medName;
-    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         NotificationModel that = (NotificationModel) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(time, that.time) && Objects.equals(medName, that.medName);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, time, medName);
+        return Objects.hash(customerId, medName, time);
     }
 
     /**
@@ -47,8 +48,9 @@ public class NotificationModel{
 
     public static class Builder {
         private String customerId;
-        private String time;
         private String medName;
+        private String time;
+
 
         /**
          * @param buildCustomerId string
@@ -60,15 +62,6 @@ public class NotificationModel{
         }
 
         /**
-         * @param buildTime string
-         * @return this
-         */
-        public Builder withTime(String buildTime) {
-            this.time = buildTime;
-            return this;
-        }
-
-        /**
          * @param buildMedName string
          * @return this
          */
@@ -76,8 +69,17 @@ public class NotificationModel{
             this.medName = buildMedName;
             return this;
         }
+
+        /**
+         * @param buildTime string
+         * @return this
+         */
+        public Builder withTime(String buildTime) {
+            this.time = buildTime;
+            return this;
+        }
     }
     public NotificationModel build() {
-        return new NotificationModel(customerId, time, medName);
+        return new NotificationModel(customerId, medName, time);
     }
 }

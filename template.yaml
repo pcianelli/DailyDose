@@ -268,12 +268,26 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "customerId"
           AttributeType: "S"
+        - AttributeName: "medName"
+          AttributeType: "S"
+        - AttributeName: "time"
+          AttributeType: "S"
       KeySchema:
         - AttributeName: "customerId"
           KeyType: "HASH"
+        - AttributeName: "medName"
+          KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "notifications"
-
+      GlobalSecondaryIndexes:
+        - IndexName: "TimeIndex"      # Name of the GSI
+          KeySchema:
+            - AttributeName: "customerId"  # Hash key of GSI
+              KeyType: "HASH"
+            - AttributeName: "time"       # Range key of GSI
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
 
 
 #-----------------------------------------------------

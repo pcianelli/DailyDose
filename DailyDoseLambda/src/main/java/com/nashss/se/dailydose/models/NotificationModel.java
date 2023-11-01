@@ -2,7 +2,7 @@ package com.nashss.se.dailydose.models;
 
 import java.util.Objects;
 
-public class NotificationModel{
+public class NotificationModel {
     private final String customerId;
     private final String medName;
     private final String time;
@@ -29,10 +29,15 @@ public class NotificationModel{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         NotificationModel that = (NotificationModel) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
+        return Objects.equals(customerId, that.customerId) &&
+                Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override
@@ -44,7 +49,10 @@ public class NotificationModel{
      *
      * @return new Builder of NotificationModel
      */
-    public static MedicationModel.Builder builder() {return new MedicationModel.Builder();}
+
+    public static MedicationModel.Builder builder() {
+        return new MedicationModel.Builder();
+    }
 
     public static class Builder {
         private String customerId;
@@ -78,8 +86,12 @@ public class NotificationModel{
             this.time = buildTime;
             return this;
         }
-    }
-    public NotificationModel build() {
-        return new NotificationModel(customerId, medName, time);
+
+        /**
+         * @return NotificationModel
+         */
+        public NotificationModel build() {
+            return new NotificationModel(customerId, medName, time);
+        }
     }
 }

@@ -1,8 +1,9 @@
 package com.nashss.se.dailydose.dependency;
 
+import com.nashss.se.dailydose.dynamodb.DynamoDbClientProvider;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.nashss.se.dailydose.dynamodb.DynamoDbClientProvider;
 import dagger.Module;
 import dagger.Provides;
 
@@ -21,7 +22,7 @@ public class DaoModule {
      */
     @Provides
     @Singleton
-    public DynamoDBMapper provideDynamoDBMapper(){
+    public DynamoDBMapper provideDynamoDBMapper() {
         return new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_EAST_2));
     }
 }

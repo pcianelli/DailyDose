@@ -1,6 +1,6 @@
 package com.nashss.se.dailydose.exceptions;
 
-public class NotificationNotFoundException extends RuntimeException{
+public class NotificationNotFoundException extends RuntimeException {
     /**
      * Exception to throw when a given Notification time and customerId is not found
      * in the database.

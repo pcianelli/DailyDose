@@ -60,22 +60,17 @@ public class Notification {
     public void setTimeIndexTime(String time) {
         this.time = time;
     }
-
-    @DynamoDBAttribute(attributeName = "medName") // Include medName in the GSI
-    public String getTimeIndexMedName() {
-        return medName;
-    }
-
-    public void setTimeIndexMedName(String medName) {
-        this.medName = medName;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Notification that = (Notification) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
+        return Objects.equals(customerId, that.customerId) &&
+                Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.nashss.se.dailydose.lambda;
 
-
 import com.nashss.se.dailydose.dependency.DaggerServiceComponent;
 import com.nashss.se.dailydose.dependency.ServiceComponent;
 
@@ -56,6 +55,7 @@ public class LambdaActivityRunner<TRequest, TResult> {
         if (service == null) {
             service = DaggerServiceComponent.create();
         }
+//        service = null;
         return service;
     }
 }

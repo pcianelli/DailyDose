@@ -35,15 +35,21 @@ public class MedicationModel {
      * @return Set of notification times
      */
     public Set<Notification> getNotificationTimes() {
+
         return notifications;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MedicationModel that = (MedicationModel) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) && Objects.equals(medInfo, that.medInfo) && Objects.equals(notifications, that.notifications);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(medName, that.medName) &&
+                Objects.equals(medInfo, that.medInfo) && Objects.equals(notifications, that.notifications);
     }
 
     @Override
@@ -51,12 +57,13 @@ public class MedicationModel {
         return Objects.hash(customerId, medName, medInfo, notifications);
     }
 
-
     /**
      *
      * @return new Builder of MedicationModel
      */
-    public static Builder builder() {return new Builder();}
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
         private String customerId;
@@ -100,8 +107,12 @@ public class MedicationModel {
             this.notifications = buildNotifications;
             return this;
         }
-    }
-    public MedicationModel build() {
-        return new MedicationModel(customerId, medName, medInfo, notifications);
+
+        /**
+         * @return MedicationModel
+         */
+        public MedicationModel build() {
+            return new MedicationModel(customerId, medName, medInfo, notifications);
+        }
     }
 }

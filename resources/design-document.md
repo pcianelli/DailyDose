@@ -93,21 +93,19 @@ Set<Notification> notifications;
 // NotificationModel
 
 String customerId;
-String time;
 String medName;
+String time;
 ```
-###Note - inorder to to populate the medication model fully, the activity calls on the medication dao to get the medName, and med Info, and also calls the notification dao to get the set of notifications and query the notifications table based on the customer Id and medName to get all the notifications for that medName. 
 
+###Notes - inorder to to populate the medication model fully, the activity calls on the medication dao to get the medName, and med Info, and also calls the notification dao to get the set of notifications and query the notifications table based on the customerId and medName to get all the notifications for that medName. The MedicationModel is used for the health chart.
 
 ## 6.2. _Get All Medications Endpoint_
 
 * Accepts `GET` requests to `/medications/`
-* query on just hashkey.  medication table based on customerId and returns all MedicationModels for a customerId.
-    * If there are no medications on the table, return an empty Set.
-  
-![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
+* Query on just hashkey.  Medication table based on customerId and returns all Medications for a customerId.
+* If there are no medications on the table, return an empty Set.
 
-
+![Sequence Diagram Get Medications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medications.png)
 
 ## 6.3 _Add Medication Endpoint_
 
@@ -151,11 +149,10 @@ String medName;
 
 ## 6.6 _Get Notification Endpoint_
 * Accepts `GET` requests to `/notifications/:time` 
-* Query time gsi if the parameter passed in is time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time or that medName specified. This is used to populate the banner only, not the health chart. 
+* Query notification gsi if the parameter passed in is time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time. This is used to populate the banner only, not the health chart. 
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
-
 
 ## 6.7 _Add Notification Endpoint_
 
@@ -192,13 +189,14 @@ med_info // string
 ### 7.2. `Notifications`
 ```
 customer_id // partition key, string
-time // string 
 med_name // sort key, string 
+time // string 
 ```
-GSI on notificationsTable
+
+### 7.2. `GSI Notifications`
 ```
-query/filter on customerId
-partion key time // string 
+customer_id // partition key, string
+time // sort key, string 
 med_name // string 
 ```
 

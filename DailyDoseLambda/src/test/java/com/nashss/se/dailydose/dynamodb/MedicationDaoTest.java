@@ -3,7 +3,6 @@ package com.nashss.se.dailydose.dynamodb;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
@@ -169,9 +168,10 @@ class MedicationDaoTest {
 
     @Test
     public void getMedications_withNullOnMedicationsTable_returnsEmptyList () {
+        // GIVEN
         QueryResultPage<Medication> queryResultPage = new QueryResultPage<>();
         queryResultPage.setResults(Collections.emptyList());
-        // GIVEN
+
         String customerId = "1111";
         ArgumentCaptor<DynamoDBQueryExpression<Medication>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
         when(dynamoDBMapper.queryPage(eq(Medication.class), any(DynamoDBQueryExpression.class))).thenReturn(queryResultPage);

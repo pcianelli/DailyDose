@@ -14,6 +14,7 @@ import com.nashss.se.dailydose.metrics.MetricsPublisher;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,6 +84,10 @@ public class NotificationDao {
      */
     public List<Notification> getTimeNotifications (String customerId, String time) {
 
+        if(time == null) {
+            throw new NotificationNotFoundException("Time cannot be null");
+        }
+
         LocalTime tenMinutesBefore = converter.unconvert(time).minusMinutes(15);
         LocalTime tenMinutesAfter = converter.unconvert(time).plusMinutes(15);
 
@@ -98,6 +103,15 @@ public class NotificationDao {
                 .withExpressionAttributeValues(valueMap)
                 .withExpressionAttributeNames(Collections.singletonMap("#time", "time"));
 
-        return dynamoDbMapper.query(Notification.class, queryExpression);
+        PaginatedQueryList<Notification> paginatedQueryList = dynamoDbMapper.query(Notification.class, queryExpression);
+
+        if(paginatedQueryList.isEmpty()) {
+            metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 1);
+            return new ArrayList<>();
+        }
+        else {
+            metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
+            return paginatedQueryList;
+        }
     }
 }

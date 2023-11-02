@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -161,16 +162,19 @@ class MedicationDaoTest {
 
         assertEquals(customerId, queriedMedication.getCustomerId(), "Expected query expression to query for partition key: " +
                 customerId);
-        assertNull(queriedExclusiveStartKey, "Expected query expression to not include an exclusive start key");
+        assertNotNull(queriedExclusiveStartKey, "Expected query expression to include an exclusive start key");
+        System.out.println(queriedExclusiveStartKey);
         assertEquals(limit, queriedLimit, "Expected query expression to query with limit " + limit);
     }
 
     @Test
     public void getMedications_withNullOnMedicationsTable_returnsEmptyList () {
+        QueryResultPage<Medication> queryResultPage = new QueryResultPage<>();
+        queryResultPage.setResults(Collections.emptyList());
         // GIVEN
         String customerId = "1111";
         ArgumentCaptor<DynamoDBQueryExpression<Medication>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
-        when(dynamoDBMapper.queryPage(eq(Medication.class), any(DynamoDBQueryExpression.class))).thenReturn(null);
+        when(dynamoDBMapper.queryPage(eq(Medication.class), any(DynamoDBQueryExpression.class))).thenReturn(queryResultPage);
 
         // WHEN
         List<Medication> result = medicationDao.getMedications(customerId, null);

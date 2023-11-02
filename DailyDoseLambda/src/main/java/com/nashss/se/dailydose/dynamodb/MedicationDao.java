@@ -57,11 +57,12 @@ public class MedicationDao {
 
         DynamoDBQueryExpression<Medication> queryExpression = new DynamoDBQueryExpression<Medication>()
                 .withHashKeyValues(medication)
-                .withLimit(PAGINATED_LIMIT);
+                .withLimit(PAGINATED_LIMIT)
+                .withExclusiveStartKey(exclusiveStartKey);
 
         QueryResultPage<Medication> medicationQueryResults = dynamoDbMapper.queryPage(Medication.class, queryExpression);
 
-        if (medicationQueryResults == null) {
+        if (medicationQueryResults.getResults().isEmpty()) {
             metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 1);
             return Collections.emptyList();
         }

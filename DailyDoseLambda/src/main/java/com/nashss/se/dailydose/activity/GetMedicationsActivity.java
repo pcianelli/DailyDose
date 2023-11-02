@@ -2,6 +2,7 @@ package com.nashss.se.dailydose.activity;
 
 import com.nashss.se.dailydose.dynamodb.MedicationDao;
 
+import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,13 +16,16 @@ import javax.inject.Inject;
 public class GetMedicationsActivity {
     private final Logger log = LogManager.getLogger();
     private final MedicationDao medicationDao;
+    private final NotificationDao notificationDao;
+
     /**
      * Instantiates a new GetMedicationsActivity object.
      *
      * @param medicationDao medicationDao to access the medications table.
      */
     @Inject
-    public GetMedicationsActivity(MedicationDao medicationDao) {
+    public GetMedicationsActivity(MedicationDao medicationDao, NotificationDao notificationDao) {
         this.medicationDao = medicationDao;
+        this.notificationDao = notificationDao;
     }
 }

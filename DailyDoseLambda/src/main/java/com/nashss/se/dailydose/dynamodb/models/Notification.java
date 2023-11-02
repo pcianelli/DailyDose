@@ -6,14 +6,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.nashss.se.dailydose.converters.LocalTimeConverter;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 @DynamoDBTable(tableName = "notifications")
 public class Notification {
     private String customerId;
     private String medName;
-    private String time;
+    private LocalTime time;
 
 
     @DynamoDBHashKey(attributeName = "customerId")
@@ -35,11 +38,12 @@ public class Notification {
     }
 
     @DynamoDBAttribute(attributeName = "time")
-    public String getTime() {
+    @DynamoDBTypeConverted(converter = LocalTimeConverter.class)
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
@@ -53,11 +57,12 @@ public class Notification {
     }
 
     @DynamoDBIndexRangeKey(globalSecondaryIndexName = "TimeIndex", attributeName = "time")
-    public String getTimeIndexTime() {
+    @DynamoDBTypeConverted(converter = LocalTimeConverter.class)
+    public LocalTime getTimeIndexTime() {
         return time;
     }
 
-    public void setTimeIndexTime(String time) {
+    public void setTimeIndexTime(LocalTime time) {
         this.time = time;
     }
     @Override

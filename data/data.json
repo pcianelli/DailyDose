@@ -69,8 +69,7 @@
         "Item": {
           "customerId": { "S": "2222" },
           "time": { "S": "8:00 a.m." },
-          "medName": { "S": "Lantus" },
-          "medInfo": { "S": "Take 2 pills twice a day" }
+          "medName": { "S": "Lantus" }
         }
       }
     },
@@ -79,8 +78,7 @@
         "Item": {
           "customerId": { "S": "2222" },
           "time": { "S": "8:30 p.m." },
-          "medName": { "S": "Lantus" },
-          "medInfo": { "S": "Take 2 pills twice a day" }
+          "medName": { "S": "Lantus" }
         }
       }
     }

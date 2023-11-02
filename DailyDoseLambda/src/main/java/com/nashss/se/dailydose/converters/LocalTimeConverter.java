@@ -2,12 +2,13 @@ package com.nashss.se.dailydose.converters;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ZoneDateTimeConverter implements DynamoDBTypeConverter<String, ZonedDateTime> {
+public class LocalTimeConverter implements DynamoDBTypeConverter<String, LocalTime> {
     @Override
-    public String convert(ZonedDateTime dateTime) {
+    public String convert(LocalTime dateTime) {
         if (dateTime == null) {
             return null;
         }
@@ -15,8 +16,8 @@ public class ZoneDateTimeConverter implements DynamoDBTypeConverter<String, Zone
     }
 
     @Override
-    public ZonedDateTime unconvert(String dateTimeRepresentation) {
-        return ZonedDateTime.parse(dateTimeRepresentation);
+    public LocalTime unconvert(String localTimeRepresentation) {
+        return LocalTime.parse(localTimeRepresentation);
     }
 
 }

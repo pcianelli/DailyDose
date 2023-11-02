@@ -43,7 +43,7 @@ public class MedicationDao {
      * @param customerId medications containing search criteria.
      * @return a List of Medication objects that match the search criteria.
      */
-    public List<Medication> getMedications(String customerId, String exclusiveStartMedName) {
+    public List<Medication> getMedications (String customerId, String exclusiveStartMedName) {
 
         Medication medication = new Medication();
         medication.setCustomerId(customerId);

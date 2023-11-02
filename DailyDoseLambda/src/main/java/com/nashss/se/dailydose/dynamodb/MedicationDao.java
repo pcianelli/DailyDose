@@ -8,6 +8,7 @@ import com.nashss.se.dailydose.dynamodb.models.Medication;
 import com.nashss.se.dailydose.metrics.MetricsConstants;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public class MedicationDao {
      * @param dynamoDbMapper   the {@link DynamoDBMapper} used to interact with the medications table
      * @param metricsPublisher the {@link MetricsPublisher} used to record metrics.
      */
+    @Inject
     public MedicationDao( DynamoDBMapper dynamoDbMapper, MetricsPublisher metricsPublisher) {
         this.dynamoDbMapper = dynamoDbMapper;
         this.metricsPublisher = metricsPublisher;

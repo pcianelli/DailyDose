@@ -86,7 +86,7 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 String customerId;
 String medName;
 String medInfo;
-Set<Notification> notifications;
+Set<NotificationModel> notifications;
 ```
 
 ```
@@ -110,7 +110,7 @@ String time;
 ## 6.3 _Add Medication Endpoint_
 
 * Accepts `POST` requests to `/medications/:medName`
-* Accepts a customer ID and a medName to be added.
+* Accepts a customer ID and a medName and medInfo, to be added.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
     * If the med name contains invalid characters, will throw an
@@ -136,7 +136,7 @@ String time;
 
 ## 6.5 _Update Medication Endpoint_
 * Accepts `PUT` requests to `/medications/:medName`
-* Accepts a customer ID and a medName to be updated.
+* Accepts a customer ID, a medName, and medInfo to be updated.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
     * If the med name contains invalid characters, will throw an

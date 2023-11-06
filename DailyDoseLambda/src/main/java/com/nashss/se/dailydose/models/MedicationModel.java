@@ -9,9 +9,9 @@ public class MedicationModel {
     private final String customerId;
     private final String medName;
     private final String medInfo;
-    private final Set<Notification> notifications;
+    private final Set<NotificationModel> notifications;
 
-    private MedicationModel(String customerId, String medName, String medInfo, Set<Notification> notifications) {
+    private MedicationModel(String customerId, String medName, String medInfo, Set<NotificationModel> notifications) {
         this.customerId = customerId;
         this.medName = medName;
         this.medInfo = medInfo;
@@ -34,7 +34,7 @@ public class MedicationModel {
      *
      * @return Set of notification times
      */
-    public Set<Notification> getNotificationTimes() {
+    public Set<NotificationModel> getNotificationTimes() {
 
         return notifications;
     }
@@ -69,7 +69,7 @@ public class MedicationModel {
         private String customerId;
         private String medName;
         private String medInfo;
-        private Set<Notification> notifications;
+        private Set<NotificationModel> notifications;
 
 
         /**
@@ -103,7 +103,7 @@ public class MedicationModel {
          * @param buildNotifications Set of strings
          * @return this
          */
-        public Builder withNotifications(Set<Notification> buildNotifications) {
+        public Builder withNotifications(Set<NotificationModel> buildNotifications) {
             this.notifications = buildNotifications;
             return this;
         }

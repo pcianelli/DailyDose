@@ -237,7 +237,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medications/{customerId}
+            Path: /medications/
             Method: get
             Auth:
               Authorizer: 'NONE'

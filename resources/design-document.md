@@ -98,6 +98,7 @@ String time;
 ```
 
 ###Notes - inorder to to populate the medication model fully, the activity calls on the medication dao to get the medName, and med Info, and also calls the notification dao to get the set of notifications and query the notifications table based on the customerId and medName to get all the notifications for that medName. The MedicationModel is used for the health chart.
+The notifications will be loaded from the gsi anytime you click on the home page which has the notification banner.
 
 ## 6.2. _Get All Medications Endpoint_
 
@@ -109,7 +110,7 @@ String time;
 
 ## 6.3 _Add Medication Endpoint_
 
-* Accepts `POST` requests to `/medications/:medName`
+* Accepts `POST` requests to `/medications/`
 * Accepts a customer ID and a medName and medInfo, to be added.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`

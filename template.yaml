@@ -220,7 +220,7 @@ Resources:
   # Lambda Functions Configuration
   #-----------------------------------------------------
 
-  GetAllMedicationsLambda:
+  GetMedicationsLambda:
     Type: AWS::Serverless::Function
     Properties:
       Role: !GetAtt AccessRole.Arn

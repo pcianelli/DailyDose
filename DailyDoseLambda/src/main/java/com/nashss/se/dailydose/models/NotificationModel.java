@@ -50,8 +50,8 @@ public class NotificationModel {
      * @return new Builder of NotificationModel
      */
 
-    public static MedicationModel.Builder builder() {
-        return new MedicationModel.Builder();
+    public static NotificationModel.Builder builder() {
+        return new NotificationModel.Builder();
     }
 
     public static class Builder {

@@ -3,8 +3,6 @@ package com.nashss.se.dailydose.dynamodb;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
-import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
@@ -135,14 +133,89 @@ class  NotificationDaoTest {
         verify(dynamoDBMapper, times(1)).query(eq(Notification.class), captor.capture());
 
     }
-//
-//    @Test
-//    void getTimeNotifications_withNotificationsOnTheTable_ReturnsListOfNotifications15MinutesBeforeAndAfter() {
 
-//    LocalTime currentTime = LocalTime.now();
-//    LocalTime futureTimeTen = currentTime.plusMinutes(10);
-//    LocalTime futureTimeTen30 = currentTime.plusMinutes(30);
-//    LocalTime earlierTime10 = currentTime.minusMinutes(10);
-//    LocalTime earlierTime30 = currentTime.minusMinutes(30);
-//    }
+    @Test
+    void getTimeNotifications_withNotificationsOnTheTableInTimeRange_ReturnsListOfNotifications15MinutesBeforeAndAfter() {
+
+        String customerId = "1111";
+        String medName1 = "medName1";
+        converter = new LocalTimeConverter();
+        notificationList = new ArrayList<>();
+
+        Notification notification1 = new Notification();
+        Notification notification2 = new Notification();
+        Notification notification3 = new Notification();
+
+        LocalTime currentTime = LocalTime.now();
+        String currentTimeStr = converter.convert(currentTime);
+        LocalTime futureTimeTen = currentTime.plusMinutes(10);
+        String currentTimeStr2 = converter.convert(futureTimeTen);
+        LocalTime earlierTime10 = currentTime.minusMinutes(10);
+        String currentTimeStr3 = converter.convert(earlierTime10);
+
+        notification1.setCustomerId(customerId);
+        notification1.setMedName(medName1);
+        notification1.setTime(currentTime);
+        notification2.setCustomerId(customerId);
+        notification2.setMedName(medName1);
+        notification2.setTime(futureTimeTen);
+        notification3.setCustomerId(customerId);
+        notification3.setMedName(medName1);
+        notification3.setTime(earlierTime10);
+
+        notificationList.add(notification1);
+        notificationList.add(notification2);
+        notificationList.add(notification3);
+
+//        when(queryPaginatedResult.isEmpty()).thenReturn(false);
+//        when(queryPaginatedResult.iterator()).thenReturn(notificationList.iterator());
+
+        ArgumentCaptor<DynamoDBQueryExpression<Notification>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class))).thenReturn(queryPaginatedResult);
+
+        //WHEN
+        List<Notification> result = notificationDao.getTimeNotifications(customerId, converter.convert(currentTime));
+
+        //THEN
+        assertEquals(notificationList, result, "Expect result match notification List with 3 notifications");
+        assertEquals(3, result.size(), "Expected 3 notifications");
+    }
+
+    @Test
+    void getTimeNotifications_withNotificationsOnTheTableNotInTimeRange_ReturnsListOfNotifications15MinutesBeforeAndAfter() {
+        String customerId = "1111";
+        String medName1 = "medName1";
+        converter = new LocalTimeConverter();
+        notificationList = new ArrayList<>();
+
+        Notification notification1 = new Notification();
+        Notification notification4 = new Notification();
+        Notification notification5 = new Notification();
+
+        LocalTime currentTime = LocalTime.now();
+        LocalTime futureTimeTen30 = currentTime.plusMinutes(30);
+        LocalTime earlierTime30 = currentTime.minusMinutes(30);
+
+        notification1.setCustomerId(customerId);
+        notification1.setMedName(medName1);
+        notification1.setTime(currentTime);
+        notification4.setCustomerId(customerId);
+        notification4.setMedName(medName1);
+        notification4.setTime(futureTimeTen30);
+        notification5.setCustomerId(customerId);
+        notification5.setMedName(medName1);
+        notification5.setTime(earlierTime30);
+
+        notificationList.add(notification1);
+
+        ArgumentCaptor<DynamoDBQueryExpression<Notification>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class))).thenReturn(queryPaginatedResult);
+
+        //WHEN
+        List<Notification> result = notificationDao.getTimeNotifications(customerId, converter.convert(currentTime));
+
+        //THEN
+        assertEquals(notificationList, result, "Expect result match notification List with 1 notifications");
+        assertEquals(1, result.size(), "Expected 1 notifications, not 1 because of time range limit");
+    }
 }

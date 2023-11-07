@@ -90,13 +90,13 @@ public class NotificationDao {
             throw new NotificationNotFoundException("Time cannot be null");
         }
 
-        LocalTime tenMinutesBefore = converter.unconvert(time).minusMinutes(15);
-        LocalTime tenMinutesAfter = converter.unconvert(time).plusMinutes(15);
+        LocalTime fifteenMinutesBefore = converter.unconvert(time).minusMinutes(15);
+        LocalTime fifteenMinutesAfter = converter.unconvert(time).plusMinutes(15);
 
         Map<String, AttributeValue> valueMap = new HashMap<>();
         valueMap.put(":customerId", new AttributeValue().withS(customerId));
-        valueMap.put(":startTime", new AttributeValue().withS(converter.convert(tenMinutesBefore)));
-        valueMap.put(":endTime", new AttributeValue().withS(converter.convert(tenMinutesAfter)));
+        valueMap.put(":startTime", new AttributeValue().withS(converter.convert(fifteenMinutesBefore)));
+        valueMap.put(":endTime", new AttributeValue().withS(converter.convert(fifteenMinutesAfter)));
 
         DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
                 .withIndexName("TimeIndex")

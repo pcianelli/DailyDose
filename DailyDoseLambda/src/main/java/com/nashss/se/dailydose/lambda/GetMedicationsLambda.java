@@ -1,4 +1,26 @@
 package com.nashss.se.dailydose.lambda;
 
-public class GetMedicationsLambda {
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.nashss.se.dailydose.activity.requests.GetMedicationsRequest;
+import com.nashss.se.dailydose.activity.results.GetMedicationsResult;
+
+public class GetMedicationsLambda
+        extends LambdaActivityRunner<GetMedicationsRequest, GetMedicationsResult>
+        implements RequestHandler<AuthenticatedLambdaRequest<GetMedicationsRequest>, LambdaResponse> {
+    @Override
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetMedicationsRequest> input, Context context) {
+        return super.runActivity(
+                () -> {
+                    GetMedicationsRequest unauthenticatedRequest = input.fromBody(GetMedicationsRequest.class);
+                    return input.fromUserClaims(claims ->
+                            GetMedicationsRequest.builder()
+                                    .withCustomerId(claims.get("email"))
+                                    .withMedName(unauthenticatedRequest.getMedName())
+                                    .build());
+                },
+                (request, servicComponent) ->
+                        servicComponent.provideGetMedicationsActivity().handleRequest(request)
+        );
+    }
 }

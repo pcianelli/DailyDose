@@ -13,8 +13,6 @@ import java.util.Set;
 public class ModelConverter {
     private LocalTimeConverter converter = new LocalTimeConverter();
 
-
-
     /**
      * Converts a provided Medication into a MedicationModel representation.
      *
@@ -41,7 +39,6 @@ public class ModelConverter {
         medications.forEach(medication -> medicationModels.add(toMedicationModel(medication, notificationModelSet)));
         return medicationModels;
     }
-
 
     /**
      * Converts a set of Notifications into a set of NotificationModels.

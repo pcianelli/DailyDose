@@ -1,12 +1,21 @@
 package com.nashss.se.dailydose.activity;
 
+import com.nashss.se.dailydose.activity.requests.GetMedicationsRequest;
+import com.nashss.se.dailydose.activity.results.GetMedicationsResult;
+import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.MedicationDao;
 
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
+import com.nashss.se.dailydose.dynamodb.models.Medication;
+import com.nashss.se.dailydose.dynamodb.models.Notification;
+import com.nashss.se.dailydose.models.MedicationModel;
+import com.nashss.se.dailydose.models.NotificationModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the GetMedicationsActivity for the DailyDose GetMedications API.
@@ -22,10 +31,41 @@ public class GetMedicationsActivity {
      * Instantiates a new GetMedicationsActivity object.
      *
      * @param medicationDao medicationDao to access the medications table.
+     * @param notificationDao notificationDao to access the notification table.
      */
     @Inject
     public GetMedicationsActivity(MedicationDao medicationDao, NotificationDao notificationDao) {
         this.medicationDao = medicationDao;
         this.notificationDao = notificationDao;
+    }
+
+    /**
+     * This method handles the incoming request by retrieving all medications from the database
+     * and a set of Notifications from the notification table.
+     * <p>
+     * It then returns a List of MedicationModels.
+     * <p>
+     * If the medication or notification does not exist, this should return an empty list.
+     *
+     * @param getMedicationsRequest request object
+     * @return getMedicationResult result object containing the list of medicationModels
+     */
+    public GetMedicationsResult handleRequest(final GetMedicationsRequest getMedicationsRequest) {
+        log.info("Received GetMedicationsRequest {}", getMedicationsRequest);
+
+        String customerId = getMedicationsRequest.getCustomerId();
+        String medName = getMedicationsRequest.getMedName();
+
+        Set<Notification> notificationSet = notificationDao.getNotifications(customerId, medName);
+        Set<NotificationModel> notificationModelSet = new ModelConverter().toNotificationModelSet(notificationSet);
+
+        List<Medication> medicationList = medicationDao.getMedications(customerId, medName);
+        List<MedicationModel> medicationModelList = new ModelConverter().toMedicationModelList(medicationList, notificationModelSet);
+
+        return GetMedicationsResult.builder()
+                .withMedicationModelList(medicationModelList)
+                .withCustomerId(customerId)
+                .withMedName(medName)
+                .build();
     }
 }

@@ -86,8 +86,10 @@ class GetMedicationsActivityTest {
         }
         assertNotNull(resultList.get(0).getNotificationTimes());
         assertNotNull(resultList.get(1).getNotificationTimes());
-        assertEquals(customerId, lastCustomerId, "CustomerId's should stay the same and should be future startId");
-        assertEquals("medName5", lastMedName, "Future start medName should be equal to last item medName of limit 5");
+        assertEquals(customerId, lastCustomerId, "CustomerId's " +
+                "should stay the same and should be future startId");
+        assertEquals("medName5", lastMedName, "Future " +
+                "start medName should be equal to last item medName of limit 5");
     }
 
     @Test
@@ -123,8 +125,10 @@ class GetMedicationsActivityTest {
         assertEquals(customerId, resultList.get(0).getCustomerId());
         assertEquals("medInfo0", resultList.get(0).getMedInfo());
         assertNotNull(resultList.get(0).getNotificationTimes());
-        assertEquals(customerId, lastCustomerId, "CustomerId's should stay the same and should be future startId");
-        assertEquals("medName5", lastMedName, "Future start medName should be equal to last item medName of limit 5");
+        assertEquals(customerId, lastCustomerId, "CustomerId's should " +
+                "stay the same and should be future startId");
+        assertEquals("medName5", lastMedName, "Future start " +
+                "medName should be equal to last item medName of limit 5");
 
         for (MedicationModel medicationModel : resultList) {
             System.out.println(medicationModel.getMedName());

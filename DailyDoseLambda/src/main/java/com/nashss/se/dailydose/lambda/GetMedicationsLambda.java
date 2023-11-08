@@ -19,8 +19,8 @@ public class GetMedicationsLambda
                                     .withMedName(unauthenticatedRequest.getMedName())
                                     .build());
                 },
-                (request, servicComponent) ->
-                        servicComponent.provideGetMedicationsActivity().handleRequest(request)
+                (request, serviceComponent) ->
+                        serviceComponent.provideGetMedicationsActivity().handleRequest(request)
         );
     }
 }

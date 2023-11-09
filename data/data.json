@@ -21,6 +21,51 @@
     {
       "PutRequest": {
         "Item": {
+          "customerId": { "S": "1111" },
+          "medName": { "S": "Lantus" },
+          "medInfo": { "S": "Take 2 pills twice a day" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "customerId": { "S": "1111" },
+          "medName": { "S": "Accutane" },
+          "medInfo": { "S": "Take 2 pills twice a day" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "customerId": { "S": "1111" },
+          "medName": { "S": "ACE" },
+          "medInfo": { "S": "Take 2 pills twice a day" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "customerId": { "S": "1111" },
+          "medName": { "S": "Acilac" },
+          "medInfo": { "S": "Take 2 pills twice a day" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "customerId": { "S": "1111" },
+          "medName": { "S": "Aciphex" },
+          "medInfo": { "S": "Take 2 pills twice a day" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
           "customerId": { "S": "2222" },
           "medName": { "S": "Lantus" },
           "medInfo": { "S": "Take 2 pills twice a day" }

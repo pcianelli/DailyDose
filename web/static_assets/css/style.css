@@ -39,6 +39,32 @@
     justify-content: space-between;
 }
 
+#pagination-controls {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+#medications-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--tertiary-color);
+    background: rgba(0, 0, 0, 0.7);
+      transition: opacity 0.3s ease-in-out;
+}
+
+#prevButton:hover {
+    background-color: #E57300;
+}
+
+#nextButton:hover {
+    background-color: #E57300;
+}
+
 .header_home {
     font-size: 36px;
     line-height: 40px;

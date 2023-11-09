@@ -225,7 +225,7 @@ Resources:
     Properties:
       Role: !GetAtt AccessRole.Arn
       CodeUri: DailyDoseLambda
-      Handler: com.nashss.se.dailydose.lambda.GetMedicationsambda::handleRequest
+      Handler: com.nashss.se.dailydose.lambda.GetMedicationsLambda::handleRequest
       Runtime: java11
       Architectures:
         - x86_64

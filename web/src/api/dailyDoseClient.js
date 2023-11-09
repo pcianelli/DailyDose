@@ -83,8 +83,10 @@ export default class DailyDoseClient extends BindingClass {
                 medications: response.data.medicationList,
                 currentCustomerId: parameter1,
                 currentMedName: parameter2,
-                nextCustomerId: response.data.id,
-                nextMedName: response.data.name
+                nextCustomerId: response.data.customerId,
+                nextMedName: response.data.medName,
+                medInfo: response.data.medInfo,
+                notifications: response.data.notifications
             };
             return result;
         }

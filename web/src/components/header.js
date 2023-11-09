@@ -1,4 +1,4 @@
-import MusicPlaylistClient from '../api/musicPlaylistClient';
+import dailyDoseClient from '../api/dailyDoseClient';
 import BindingClass from "../util/bindingClass";
 
 /**
@@ -14,7 +14,7 @@ export default class Header extends BindingClass {
         ];
         this.bindClassMethods(methodsToBind, this);
 
-        this.client = new MusicPlaylistClient();
+        this.client = new dailyDoseClient();
     }
 
     /**
@@ -35,7 +35,7 @@ export default class Header extends BindingClass {
         const homeButton = document.createElement('a');
         homeButton.classList.add('header_home');
         homeButton.href = 'index.html';
-        homeButton.innerText = 'Playlists';
+        homeButton.innerText = 'DailyDose';
 
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');
@@ -48,12 +48,14 @@ export default class Header extends BindingClass {
         const userInfo = document.createElement('div');
         userInfo.classList.add('user');
 
-        const childContent = currentUser
-            ? this.createLogoutButton(currentUser)
-            : this.createLoginButton();
+        if (currentUser) {
+            const logoutButton = this.createLogoutButton(currentUser);
+            userInfo.appendChild(logoutButton);
 
-        userInfo.appendChild(childContent);
-
+        } else {
+            const loginButton = this.createLoginButton();
+            userInfo.appendChild(loginButton);
+        }
         return userInfo;
     }
 

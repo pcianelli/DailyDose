@@ -64,6 +64,8 @@ public class NotificationDao {
         valueMap.put(":medName", new AttributeValue().withS(medName));
 
         DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
+                .withIndexName("MedNameIndex")
+                .withConsistentRead(false)
                 .withKeyConditionExpression("customerId = :customerId AND medName = :medName")
                 .withExpressionAttributeValues(valueMap);
 

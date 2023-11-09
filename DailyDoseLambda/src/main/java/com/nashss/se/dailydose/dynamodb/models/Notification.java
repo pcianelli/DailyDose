@@ -16,6 +16,7 @@ import java.util.Objects;
 @DynamoDBTable(tableName = "notifications")
 public class Notification {
     private String customerId;
+    private String notificationId;
     private String medName;
     private LocalTime time;
 
@@ -29,7 +30,16 @@ public class Notification {
         this.customerId = customerId;
     }
 
-    @DynamoDBRangeKey(attributeName = "medName")
+    @DynamoDBRangeKey(attributeName = "notificationId")
+    public String getNotificationId() {
+        return notificationId;
+    }
+
+    public void setNotificationId(String notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    @DynamoDBAttribute(attributeName = "medName")
     public String getMedName() {
         return medName;
     }
@@ -48,15 +58,21 @@ public class Notification {
         this.time = time;
     }
 
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TimeIndex", attributeName = "customerId")
-    public String getTimeIndexCustomerId() {
+
+    // GSI with hash key of customerId and range key of medName
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "MedNameIndex", attributeName = "customerId")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "MedNameIndex", attributeName = "medName")
+    public String getMedNameIndexCustomerId() {
         return customerId;
     }
 
-    public void setTimeIndexCustomerId(String customerId) {
+    public void setMedNameIndexCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
+
+    // GSI with hash key of customerId and range key of time
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TimeIndex", attributeName = "customerId")
     @DynamoDBIndexRangeKey(globalSecondaryIndexName = "TimeIndex", attributeName = "time")
     @DynamoDBTypeConverted(converter = LocalTimeConverter.class)
     public LocalTime getTimeIndexTime() {
@@ -66,21 +82,18 @@ public class Notification {
     public void setTimeIndexTime(LocalTime time) {
         this.time = time;
     }
+
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Notification that = (Notification) o;
-        return Objects.equals(customerId, that.customerId) &&
-                Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(notificationId, that.notificationId) && Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, medName, time);
+        return Objects.hash(customerId, notificationId, medName, time);
     }
 }

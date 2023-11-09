@@ -64,6 +64,7 @@ public class ModelConverter {
     public NotificationModel toNotificationModel(Notification notification) {
         return NotificationModel.builder()
                 .withCustomerId(notification.getCustomerId())
+                .withNotificationId(notification.getNotificationId())
                 .withMedName(notification.getMedName())
                 .withTime(converter.convert(notification.getTime()))
                 .build();

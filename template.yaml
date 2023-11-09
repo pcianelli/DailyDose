@@ -268,6 +268,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: "customerId"
           AttributeType: "S"
+        - AttributeName: "notificationId"
+          AttributeType: "S"
         - AttributeName: "medName"
           AttributeType: "S"
         - AttributeName: "time"
@@ -275,7 +277,7 @@ Resources:
       KeySchema:
         - AttributeName: "customerId"
           KeyType: "HASH"
-        - AttributeName: "medName"
+        - AttributeName: "notificationId"
           KeyType: "RANGE"
       BillingMode: "PAY_PER_REQUEST"
       TableName: "notifications"
@@ -288,7 +290,14 @@ Resources:
               KeyType: "RANGE"
           Projection:
             ProjectionType: "ALL"
-
+        - IndexName: "MedNameIndex"  # section for the new GSI
+          KeySchema:
+            - AttributeName: "customerId"
+              KeyType: "HASH"
+            - AttributeName: "medName"
+              KeyType: "RANGE"
+          Projection:
+            ProjectionType: "ALL"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed

@@ -60,6 +60,7 @@ public class GetMedicationsActivity {
 
         Set<Notification> notificationSet = notificationDao.getNotifications(customerId, medName);
         Set<NotificationModel> notificationModelSet = new ModelConverter().toNotificationModelSet(notificationSet);
+
         List<Medication> medicationList = medicationDao.getMedications(customerId, medName);
         List<MedicationModel> medicationModelList = new ModelConverter()
                 .toMedicationModelList(medicationList, notificationModelSet);

@@ -93,6 +93,7 @@ Set<NotificationModel> notifications;
 // NotificationModel
 
 String customerId;
+String notificationId;
 String medName;
 String time;
 ```
@@ -193,15 +194,25 @@ med_info // string
 ### 7.2. `Notifications`
 ```
 customer_id // partition key, string
-med_name // sort key, string 
+notification_id // sort key, string 
+med_name // string 
 time // string 
 ```
 
-### 7.2. `GSI Notifications`
+### 7.2. `GSI NotificationsTime`
 ```
 customer_id // partition key, string
 time // sort key, string 
 med_name // string 
+notification_id // string 
+```
+
+### 7.2. `GSI NotificationsMedName`
+```
+customer_id // partition key, string
+med_name // sort key, string 
+time // string
+notification_id // string 
 ```
 
 # 8. Pages

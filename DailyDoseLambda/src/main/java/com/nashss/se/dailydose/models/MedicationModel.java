@@ -1,7 +1,5 @@
 package com.nashss.se.dailydose.models;
 
-import com.nashss.se.dailydose.dynamodb.models.Notification;
-
 import java.util.Objects;
 import java.util.Set;
 

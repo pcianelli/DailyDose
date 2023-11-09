@@ -17,6 +17,7 @@ public class ModelConverter {
      * Converts a provided Medication into a MedicationModel representation.
      *
      * @param medication the Medication to convert to MedicationModel
+     * @param notificationModelSet the Set of Notification Models to include when converting.
      * @return the converted medicationModel with fields mapped from medication
      */
     public MedicationModel toMedicationModel(Medication medication, Set<NotificationModel> notificationModelSet) {
@@ -32,9 +33,11 @@ public class ModelConverter {
      * Converts a List of Medication into a list of MedicationModels.
      *
      * @param medications the Medication to convert to MedicationModelList
+     * @param notificationModelSet the Set of Notification Models to include when converting.
      * @return the converted medicationModelList with fields mapped from medication
      */
-    public List<MedicationModel> toMedicationModelList(List<Medication> medications, Set<NotificationModel> notificationModelSet) {
+    public List<MedicationModel> toMedicationModelList(List<Medication> medications,
+                                                       Set<NotificationModel> notificationModelSet) {
         List<MedicationModel> medicationModels = new ArrayList<>();
         medications.forEach(medication -> medicationModels.add(toMedicationModel(medication, notificationModelSet)));
         return medicationModels;
@@ -58,7 +61,7 @@ public class ModelConverter {
      * @param notification the Notification to convert to NotificationModel
      * @return the converted NotificationModel with fields mapped from Notification
      */
-    public NotificationModel toNotificationModel (Notification notification) {
+    public NotificationModel toNotificationModel(Notification notification) {
         return NotificationModel.builder()
                 .withCustomerId(notification.getCustomerId())
                 .withMedName(notification.getMedName())

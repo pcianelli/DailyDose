@@ -10,12 +10,14 @@ import com.nashss.se.dailydose.dynamodb.models.Medication;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.models.MedicationModel;
 import com.nashss.se.dailydose.models.NotificationModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.List;
 import java.util.Set;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the GetMedicationsActivity for the DailyDose GetMedications API.
@@ -58,9 +60,9 @@ public class GetMedicationsActivity {
 
         Set<Notification> notificationSet = notificationDao.getNotifications(customerId, medName);
         Set<NotificationModel> notificationModelSet = new ModelConverter().toNotificationModelSet(notificationSet);
-
         List<Medication> medicationList = medicationDao.getMedications(customerId, medName);
-        List<MedicationModel> medicationModelList = new ModelConverter().toMedicationModelList(medicationList, notificationModelSet);
+        List<MedicationModel> medicationModelList = new ModelConverter()
+                .toMedicationModelList(medicationList, notificationModelSet);
 
         return GetMedicationsResult.builder()
                 .withMedicationModelList(medicationModelList)

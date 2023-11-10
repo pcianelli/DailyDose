@@ -12,6 +12,8 @@ class HealthChart extends BindingClass {
         this.client = new DailyDoseClient();
         this.dataStore.addChangeListener(this.displayMedications);
         this.previousKeys = [];
+        this.next = this.next.bind(this);
+        this.previous = this.previous.bind(this);
         console.log("viewAllVendors constructor");
     }
 
@@ -112,12 +114,12 @@ class HealthChart extends BindingClass {
             const medicationCard = document.createElement('section');
             medicationCard.className = 'medicationCard';
 
-            const customerId = encodeURIComponent(medication.customerId);
-            const medName = encodeURIComponent(medication.medName);
-            const medInfo = encodeURIComponent(medication.medInfo);
-            const notifications = encodeURIComponent(medication.notifications);
+//            const customerId = encodeURIComponent(medication.customerId);
+//            const medName = encodeURIComponent(medication.medName);
+//            const medInfo = encodeURIComponent(medication.medInfo);
+//            const notifications = encodeURIComponent(medication.notifications);
 
-            const currentHostname = window.location.hostname;
+//            const currentHostname = window.location.hostname;
 
 //            const isLocal = currentHostname === 'localhost' || currentHostname === '127.0.0.1';
 //            const baseUrl = isLocal ? 'http://localhost:8000/' : 'https://d3hqn9u6ae71hc.cloudfront.net/';
@@ -130,12 +132,18 @@ class HealthChart extends BindingClass {
             const medicationInfo = document.createElement('h3');
             medicationInfo.innerText = medication.medInfo;
 
-            const medNotifications = document.createElement('h4');
-            medNotifications.innerText = medication.notifications;
+            // convert Set<notificationModel> to array so I can use for loop
+            const notifications = Array.from(medication.notifications);
+            notifications.forEach(notification => {
+            // Extract only the 'time' field
+                const time = notification.time;
+                const timeElement = document.createElement('h4');
+                timeElement.innerText = `Alarm Time: ${time}`;
+            });
 
-            vendorCard.appendChild(medicationName);
-            vendorCard.appendChild(medicationInfo);
-            vendorCard.appendChild(medNotifications);
+            medicationCard.appendChild(timeElement);
+            medicationCard.appendChild(medicationName);
+            medicationCard.appendChild(medicationInfo);
 
             displayDiv.appendChild(medicationCard);
         });

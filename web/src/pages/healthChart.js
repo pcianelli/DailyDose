@@ -139,9 +139,9 @@ class HealthChart extends BindingClass {
                 const time = notification.time;
                 const timeElement = document.createElement('h4');
                 timeElement.innerText = `Alarm Time: ${time}`;
+                medicationCard.appendChild(timeElement);
             });
 
-            medicationCard.appendChild(timeElement);
             medicationCard.appendChild(medicationName);
             medicationCard.appendChild(medicationInfo);
 

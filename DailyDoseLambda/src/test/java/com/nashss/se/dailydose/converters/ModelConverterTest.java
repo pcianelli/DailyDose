@@ -7,6 +7,7 @@ import com.nashss.se.dailydose.models.NotificationModel;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +75,7 @@ class ModelConverterTest {
         Notification notification = new Notification();
         notification.setCustomerId("customerId");
         notification.setMedName("medName");
-        notification.setTime(LocalTime.now());
+        notification.setTime(LocalTime.now().truncatedTo(ChronoUnit.SECONDS));
 
         //WHEN
        NotificationModel result = modelConverter.toNotificationModel(notification);

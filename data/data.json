@@ -108,7 +108,7 @@
           "customerId": { "S": "1111" },
           "notificationId": { "S": "9113" },
           "medName": { "S": "Oxytocin" },
-          "time": { "S": "07:00:00 PM" }
+          "time": { "S": "19:00:00" }
         }
       }
     },
@@ -118,7 +118,7 @@
           "customerId": { "S": "2222" },
           "notificationId": { "S": "9114" },
           "medName": { "S": "Lantus" },
-          "time": { "S": "08:00:00 PM" }
+          "time": { "S": "20:00:00" }
         }
       }
     },

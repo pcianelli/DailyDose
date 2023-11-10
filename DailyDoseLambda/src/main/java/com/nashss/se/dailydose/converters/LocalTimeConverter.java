@@ -4,15 +4,17 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class LocalTimeConverter implements DynamoDBTypeConverter<String, LocalTime> {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("hh:mm:ss");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
     @Override
     public String convert(LocalTime localTime) {
         if (localTime == null) {
             return null;
         }
-        return localTime.format(FORMATTER);
+        LocalTime truncatedTime = localTime.truncatedTo(ChronoUnit.SECONDS);
+        return truncatedTime.format(FORMATTER);
     }
 
     @Override

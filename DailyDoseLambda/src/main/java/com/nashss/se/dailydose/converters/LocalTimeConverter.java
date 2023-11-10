@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class LocalTimeConverter implements DynamoDBTypeConverter<String, LocalTime> {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss:nnn-nnn");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("hh:mm:ss");
     @Override
     public String convert(LocalTime localTime) {
         if (localTime == null) {

@@ -8,7 +8,7 @@ import DataStore from '../util/DataStore';
 
  class Index extends BindingClass {
     //Constructor
-    constructor {
+    constructor() {
         super();
         this.bindClassMethods(['clientNotificationLoad', 'displayNotifications', 'mount'], this);
         this.client = new dailyDoseClient();

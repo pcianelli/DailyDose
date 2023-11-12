@@ -51,18 +51,15 @@ public class MedicationDao {
         Medication medication = new Medication();
         medication.setCustomerId(customerId);
 
-        Map<String, AttributeValue> exclusiveStartKey = null;
-        if (exclusiveStartMedName != null) {
-            exclusiveStartKey = new HashMap<>();
-            exclusiveStartKey.put("customerId", new AttributeValue().withS(customerId));
-            exclusiveStartKey.put("medName", new AttributeValue().withS(exclusiveStartMedName));
-        }
-
         DynamoDBQueryExpression<Medication> queryExpression = new DynamoDBQueryExpression<Medication>()
                 .withHashKeyValues(medication)
                 .withLimit(PAGINATED_LIMIT);
 
-        if (exclusiveStartKey != null) {
+        // Check if medName is provided
+        if (exclusiveStartMedName != null) {
+            Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
+            exclusiveStartKey.put("customerId", new AttributeValue().withS(customerId));
+            exclusiveStartKey.put("medName", new AttributeValue().withS(exclusiveStartMedName));
             queryExpression.withExclusiveStartKey(exclusiveStartKey);
         }
 
@@ -73,8 +70,8 @@ public class MedicationDao {
             metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 1);
             return Collections.emptyList();
         }
-        metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 0);
 
+        metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 0);
         return medicationQueryResults.getResults();
     }
 }

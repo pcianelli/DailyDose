@@ -76,6 +76,5 @@ public class GetMedicationsActivity {
         return GetMedicationsResult.builder()
                 .withMedicationModelList(medicationModelList)
                 .build();
-
     }
 }

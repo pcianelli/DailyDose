@@ -14,6 +14,7 @@ import com.nashss.se.dailydose.models.NotificationModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class GetMedicationsActivity {
     private final Logger log = LogManager.getLogger();
     private final MedicationDao medicationDao;
     private final NotificationDao notificationDao;
+    private final ModelConverter modelConverter;
 
     /**
      * Instantiates a new GetMedicationsActivity object.
@@ -39,6 +41,7 @@ public class GetMedicationsActivity {
     public GetMedicationsActivity(MedicationDao medicationDao, NotificationDao notificationDao) {
         this.medicationDao = medicationDao;
         this.notificationDao = notificationDao;
+        modelConverter = new ModelConverter();
     }
 
     /**
@@ -58,12 +61,17 @@ public class GetMedicationsActivity {
         String customerId = getMedicationsRequest.getCustomerId();
         String medName = getMedicationsRequest.getMedName();
 
-        Set<Notification> notificationSet = notificationDao.getNotifications(customerId, medName);
-        Set<NotificationModel> notificationModelSet = new ModelConverter().toNotificationModelSet(notificationSet);
-
         List<Medication> medicationList = medicationDao.getMedications(customerId, medName);
-        List<MedicationModel> medicationModelList = new ModelConverter()
-                .toMedicationModelList(medicationList, notificationModelSet);
+
+        List<MedicationModel> medicationModelList = new ArrayList<>();
+
+        for(Medication medication: medicationList) {
+            Set<Notification> notificationSet = notificationDao.getNotifications(customerId, medication.getMedName());
+            Set<NotificationModel> notificationModelSet = modelConverter.toNotificationModelSet(notificationSet);
+
+            MedicationModel medicationModel = modelConverter.toMedicationModel(medication, notificationModelSet);
+            medicationModelList.add(medicationModel);
+        }
 
         return GetMedicationsResult.builder()
                 .withMedicationModelList(medicationModelList)

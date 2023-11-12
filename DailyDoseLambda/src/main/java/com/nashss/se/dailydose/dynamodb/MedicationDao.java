@@ -60,8 +60,11 @@ public class MedicationDao {
 
         DynamoDBQueryExpression<Medication> queryExpression = new DynamoDBQueryExpression<Medication>()
                 .withHashKeyValues(medication)
-                .withLimit(PAGINATED_LIMIT)
-                .withExclusiveStartKey(exclusiveStartKey);
+                .withLimit(PAGINATED_LIMIT);
+
+        if (exclusiveStartKey != null) {
+            queryExpression.withExclusiveStartKey(exclusiveStartKey);
+        }
 
         QueryResultPage<Medication> medicationQueryResults = dynamoDbMapper
                 .queryPage(Medication.class, queryExpression);

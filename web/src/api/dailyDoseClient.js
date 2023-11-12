@@ -73,9 +73,18 @@ export default class DailyDoseClient extends BindingClass {
     */
     async getMedications(parameter1, parameter2, errorCallback) {
         try {
-            const queryParams = {customerId: parameter1, medName: parameter2}
 
-            const response = await this.axiosClient.get('medications', {params: queryParams});
+            const queryParams = {};
+
+            if (parameter1) {
+                queryParams.customerId = parameter1;
+            }
+
+            if (parameter2) {
+                queryParams.medName = parameter2;
+            }
+
+            const response = await this.axiosClient.get('medications', { params: queryParams });
 
             console.log("Server Response:", response.data);
 

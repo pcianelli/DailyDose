@@ -1,4 +1,4 @@
-import VendorEventClient from '../api/dailyDoseClient';
+import DailyDoseClient from '../api/dailyDoseClient';
 import Header from '../components/header';
 import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'next', 'previous', 'displayMedications', 'showLoading', 'hideLoading']);
+        this.bindClassMethods(['mount', 'clientLoaded', 'next', 'previous', 'displayMedications', 'showLoading', 'hideLoading'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();

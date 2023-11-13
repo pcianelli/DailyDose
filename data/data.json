@@ -3,7 +3,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "Albuterol" },
           "medInfo": { "S": "Take 2 pills with food twice a day" }
         }
@@ -85,7 +85,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "notificationId": { "S": "9111" },
           "medName": { "S": "Albuterol" },
           "time": { "S": "8:00:00" }
@@ -95,7 +95,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "notificationId": { "S": "9112" },
           "medName": { "S": "Albuterol" },
           "time": { "S": "6:30:00" }

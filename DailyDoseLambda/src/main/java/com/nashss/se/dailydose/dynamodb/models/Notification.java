@@ -22,6 +22,7 @@ public class Notification {
 
 
     @DynamoDBHashKey(attributeName = "customerId")
+    @DynamoDBIndexHashKey(globalSecondaryIndexNames = {"MedNameIndex", "TimeIndex"}, attributeName = "customerId")
     public String getCustomerId() {
         return customerId;
     }
@@ -40,6 +41,7 @@ public class Notification {
     }
 
     @DynamoDBAttribute(attributeName = "medName")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "MedNameIndex", attributeName = "medName")
     public String getMedName() {
         return medName;
     }
@@ -49,6 +51,7 @@ public class Notification {
     }
 
     @DynamoDBAttribute(attributeName = "time")
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "TimeIndex", attributeName = "time")
     @DynamoDBTypeConverted(converter = LocalTimeConverter.class)
     public LocalTime getTime() {
         return time;
@@ -57,33 +60,6 @@ public class Notification {
     public void setTime(LocalTime time) {
         this.time = time;
     }
-
-
-    // GSI with hash key of customerId and range key of medName
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "MedNameIndex", attributeName = "customerId")
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "MedNameIndex", attributeName = "medName")
-    public String getMedNameIndexCustomerId() {
-        return customerId;
-    }
-
-    public void setMedNameIndexCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-
-    // GSI with hash key of customerId and range key of time
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "TimeIndex", attributeName = "customerId")
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = "TimeIndex", attributeName = "time")
-    @DynamoDBTypeConverted(converter = LocalTimeConverter.class)
-    public LocalTime getTimeIndexTime() {
-        return time;
-    }
-
-    public void setTimeIndexTime(LocalTime time) {
-        this.time = time;
-    }
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

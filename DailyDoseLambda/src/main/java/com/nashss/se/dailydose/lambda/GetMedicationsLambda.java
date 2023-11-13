@@ -12,11 +12,9 @@ public class GetMedicationsLambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetMedicationsRequest> input, Context context) {
         return super.runActivity(() -> {
-                GetMedicationsRequest unauthenticatedRequest = input.fromBody(GetMedicationsRequest.class);
                 return input.fromUserClaims(claims ->
                     GetMedicationsRequest.builder()
                         .withCustomerId(claims.get("email"))
-                        .withMedName(unauthenticatedRequest.getMedName())
                             .build());
         },
             (request, serviceComponent) ->

@@ -71,31 +71,21 @@ export default class DailyDoseClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The list of medications.
     */
-    async getMedications(parameter1, parameter2, errorCallback) {
+    async getMedications(errorCallback) {
         try {
+            const token = await this.getTokenOrThrow("Only authenticated users can create vendors.");
 
-            const queryParams = {};
-
-            if (parameter1) {
-                queryParams.customerId = parameter1;
-            }
-
-            if (parameter2) {
-                queryParams.medName = parameter2;
-            }
-
-            const response = await this.axiosClient.get('medications', { params: queryParams });
+            const response = await this.axiosClient.get('medications',
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                    }
+            });
 
             console.log("Server Response:", response.data);
 
             const result = {
-                medications: response.data.medicationList,
-                currentCustomerId: parameter1,
-                currentMedName: parameter2,
-                nextCustomerId: response.data.customerId,
-                nextMedName: response.data.medName,
-                medInfo: response.data.medInfo,
-                notifications: response.data.notifications
+                medications: response.data.medicationList
             };
             return result;
         }

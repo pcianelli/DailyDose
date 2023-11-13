@@ -86,7 +86,7 @@ class MedicationDaoTest {
         ArgumentCaptor<DynamoDBQueryExpression<Medication>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
 
         //WHEN
-        List<Medication> result = medicationDao.getMedications(customerId, null);
+        List<Medication> result = medicationDao.getMedications(customerId);
 
         //THEN
         assertEquals(result, medicationList, "Expected list of medicationList to be what was returned by DynamoDB");
@@ -149,7 +149,7 @@ class MedicationDaoTest {
         ArgumentCaptor<DynamoDBQueryExpression<Medication>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
 
         //WHEN
-        List<Medication> result = medicationDao.getMedications(customerId, medication3.getMedName());
+        List<Medication> result = medicationDao.getMedications(customerId);
 
         //THEN
         assertEquals(result, medicationList, "Expected list of medicationList to be what was returned by DynamoDB");
@@ -177,7 +177,7 @@ class MedicationDaoTest {
         when(dynamoDBMapper.queryPage(eq(Medication.class), any(DynamoDBQueryExpression.class))).thenReturn(queryResultPage);
 
         // WHEN
-        List<Medication> result = medicationDao.getMedications(customerId, null);
+        List<Medication> result = medicationDao.getMedications(customerId);
 
         // THEN
         assertEquals(Collections.emptyList(), result, "should return an emptyList");

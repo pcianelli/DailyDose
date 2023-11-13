@@ -63,7 +63,7 @@ class GetMedicationsActivityTest {
         notificationSet.add(notification2);
 
         when(notificationDao.getNotifications(customerId, medName)).thenReturn(notificationSet);
-        when(medicationDao.getMedications(customerId, medName)).thenReturn(medicationList);
+        when(medicationDao.getMedications(customerId)).thenReturn(medicationList);
 
         GetMedicationsRequest request = GetMedicationsRequest.builder()
                 .withCustomerId(customerId)
@@ -90,48 +90,5 @@ class GetMedicationsActivityTest {
                 "should stay the same and should be future startId");
         assertEquals("medName5", lastMedName, "Future " +
                 "start medName should be equal to last item medName of limit 5");
-    }
-
-    @Test
-    void handleRequest_withCustomerIdAndStartKeyMedNameIsNotNull_ReturnsListOfMedicationModel() {
-        //GIVEN
-
-        String customerId = "1111";
-
-        List<Medication> medicationList = MedicationTestHelper.generateMedicationList(6, customerId);
-
-        String startMedName = medicationList.get(0).getMedName();
-
-        Set<Notification> notificationSet = new HashSet<>();
-
-
-        when(notificationDao.getNotifications(customerId, startMedName)).thenReturn(notificationSet);
-        when(medicationDao.getMedications(customerId, startMedName)).thenReturn(medicationList);
-
-        GetMedicationsRequest request = GetMedicationsRequest.builder()
-                .withCustomerId(customerId)
-                .withMedName(startMedName)
-                .build();
-
-        //WHEN
-        GetMedicationsResult result = activity.handleRequest(request);
-
-        //THEN
-        List<MedicationModel> resultList = result.getMedicationModelList();
-        String lastCustomerId = resultList.get(resultList.size()-1).getCustomerId();
-        String lastMedName = resultList.get(resultList.size()-1).getMedName();
-
-        assertEquals(startMedName, resultList.get(0).getMedName());
-        assertEquals(customerId, resultList.get(0).getCustomerId());
-        assertEquals("medInfo0", resultList.get(0).getMedInfo());
-        assertNotNull(resultList.get(0).getNotificationTimes());
-        assertEquals(customerId, lastCustomerId, "CustomerId's should " +
-                "stay the same and should be future startId");
-        assertEquals("medName5", lastMedName, "Future start " +
-                "medName should be equal to last item medName of limit 5");
-
-        for (MedicationModel medicationModel : resultList) {
-            System.out.println(medicationModel.getMedName());
-        }
     }
 }

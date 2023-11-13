@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'next', 'previous', 'displayMedications', 'showLoading', 'hideLoading'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -14,7 +14,7 @@ class HealthChart extends BindingClass {
         this.previousKeys = [];
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
-        console.log("viewAllVendors constructor");
+        console.log("viewMedications constructor");
     }
 
     showLoading() {
@@ -113,18 +113,6 @@ class HealthChart extends BindingClass {
         medications.forEach(medication => {
             const medicationCard = document.createElement('section');
             medicationCard.className = 'medicationCard';
-
-//            const customerId = encodeURIComponent(medication.customerId);
-//            const medName = encodeURIComponent(medication.medName);
-//            const medInfo = encodeURIComponent(medication.medInfo);
-//            const notifications = encodeURIComponent(medication.notifications);
-
-//            const currentHostname = window.location.hostname;
-
-//            const isLocal = currentHostname === 'localhost' || currentHostname === '127.0.0.1';
-//            const baseUrl = isLocal ? 'http://localhost:8000/' : 'https://d3hqn9u6ae71hc.cloudfront.net/';
-
-//            const vendorPageUrl = `${baseUrl}viewVendor.html?id=${customerId}&name=${encodeURIComponent(medName)}`;
 
             const medicationName = document.createElement('h2');
             medicationName.innerText = medication.medName;

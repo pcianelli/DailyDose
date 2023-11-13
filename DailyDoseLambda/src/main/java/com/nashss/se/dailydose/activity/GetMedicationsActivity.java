@@ -59,9 +59,8 @@ public class GetMedicationsActivity {
         log.info("Received GetMedicationsRequest {}", getMedicationsRequest);
 
         String customerId = getMedicationsRequest.getCustomerId();
-        String medName = getMedicationsRequest.getMedName();
 
-        List<Medication> medicationList = medicationDao.getMedications(customerId, medName);
+        List<Medication> medicationList = medicationDao.getMedications(customerId);
 
         List<MedicationModel> medicationModelList = new ArrayList<>();
 

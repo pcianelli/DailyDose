@@ -46,22 +46,13 @@ public class MedicationDao {
      * @param exclusiveStartMedName start key for pagination
      * @return a List of Medication objects that match the search criteria.
      */
-    public List<Medication> getMedications(String customerId, String exclusiveStartMedName) {
+    public List<Medication> getMedications(String customerId) {
 
         Medication medication = new Medication();
         medication.setCustomerId(customerId);
 
         DynamoDBQueryExpression<Medication> queryExpression = new DynamoDBQueryExpression<Medication>()
-                .withHashKeyValues(medication)
-                .withLimit(PAGINATED_LIMIT);
-
-        // Check if medName is provided
-        if (exclusiveStartMedName != null) {
-            Map<String, AttributeValue> exclusiveStartKey = new HashMap<>();
-            exclusiveStartKey.put("customerId", new AttributeValue().withS(customerId));
-            exclusiveStartKey.put("medName", new AttributeValue().withS(exclusiveStartMedName));
-            queryExpression.withExclusiveStartKey(exclusiveStartKey);
-        }
+                .withHashKeyValues(medication);
 
         QueryResultPage<Medication> medicationQueryResults = dynamoDbMapper
                 .queryPage(Medication.class, queryExpression);

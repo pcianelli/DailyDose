@@ -1,5 +1,6 @@
 package com.nashss.se.dailydose.dependency;
 
+import com.nashss.se.dailydose.activity.AddMedicationActivity;
 import com.nashss.se.dailydose.activity.GetMedicationsActivity;
 
 import dagger.Component;
@@ -18,4 +19,10 @@ public interface ServiceComponent {
      * @return GetMedicationsActivity
      */
     GetMedicationsActivity provideGetMedicationsActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return AddMedicationsActivity
+     */
+    AddMedicationActivity provideAddMedicationActivity();
 }

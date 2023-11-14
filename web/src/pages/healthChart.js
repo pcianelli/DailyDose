@@ -62,12 +62,14 @@ class HealthChart extends BindingClass {
              console.log('Notification Times:', medication.notificationTimes);
 
             const medicationCard = document.createElement('section');
-            medicationCard.className = 'medicationCard';
+            medicationCard.className = 'medication-card';
 
             const medicationName = document.createElement('h2');
+            medicationName.className = 'medication-name';
             medicationName.innerHTML = "Medication Name: " + medication.medName;
 
             const medicationInfo = document.createElement('h3');
+            medicationInfo.className = 'medication-info';
             medicationInfo.innerHTML = "Medication Info: " + medication.medInfo;
 
             medicationCard.appendChild(medicationName);
@@ -79,10 +81,24 @@ class HealthChart extends BindingClass {
 
 
             notifications.forEach(notification => {
-            // Extract only the 'time' field
                 const time = notification.time;
+                const parsedTime = new Date(`2000-01-01T${time}`);
+
+                // Get hours and minutes
+                const hours = parsedTime.getHours();
+                const minutes = parsedTime.getMinutes();
+
+                // Convert to AM/PM format
+                const amPm = hours >= 12 ? 'PM' : 'AM';
+                const displayHours = hours % 12 || 12; // Convert 0 to 12 for noon/midnight
+
+                // Format the time string
+                const formattedTime = `${displayHours}:${minutes.toLocaleString('en-US', {minimumIntegerDigits: 2})} ${amPm}`;
+
                 const timeElement = document.createElement('h4');
-                timeElement.innerHTML = `Alarm Time: ${time}`;
+                timeElement.className = 'alarm-time';
+                timeElement.innerHTML = `Alarm Time: ${formattedTime}`;
+
                 medicationCard.appendChild(timeElement);
             });
 

@@ -12,7 +12,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "Oxytocin" },
           "medInfo": { "S": "Take 1 pills when you wake up" }
         }
@@ -21,7 +21,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "Lantus" },
           "medInfo": { "S": "Take 2 pills twice a day" }
         }
@@ -30,7 +30,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "Accutane" },
           "medInfo": { "S": "Take 2 pills twice a day" }
         }
@@ -39,7 +39,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "ACE" },
           "medInfo": { "S": "Take 2 pills twice a day" }
         }
@@ -48,7 +48,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "medName": { "S": "Acilac" },
           "medInfo": { "S": "Take 2 pills twice a day" }
         }
@@ -105,7 +105,7 @@
     {
       "PutRequest": {
         "Item": {
-          "customerId": { "S": "1111" },
+          "customerId": { "S": "p.cianelli@yahoo.com" },
           "notificationId": { "S": "9113" },
           "medName": { "S": "Oxytocin" },
           "time": { "S": "19:00:00" }

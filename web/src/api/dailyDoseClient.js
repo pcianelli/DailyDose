@@ -85,8 +85,9 @@ export default class DailyDoseClient extends BindingClass {
             console.log("Server Response:", response.data);
 
             const result = {
-                medications: response.data.medicationList
+                medications: response.data.medicationModelList
             };
+            console.log("Result:", result);
             return result;
         }
         catch (error) {

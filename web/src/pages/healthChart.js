@@ -11,10 +11,12 @@ class HealthChart extends BindingClass {
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
         this.dataStore.addChangeListener(this.displayMedications);
-        this.previousKeys = [];
-        this.next = this.next.bind(this);
-        this.previous = this.previous.bind(this);
         console.log("viewMedications constructor");
+    }
+
+    mount() {
+        this.header.addHeaderToPage();
+        this.clientLoaded();
     }
 
     showLoading() {
@@ -32,107 +34,58 @@ class HealthChart extends BindingClass {
         this.showLoading();
         const result = await this.client.getMedications();
         this.hideLoading();
-        console.log("Result:", result);
+        console.log("Result in clientLoaded:", result);
         const medications = result.medications;
 
-        this.previousKeys.push({customerId: result.currentCustomerId, medName: result.currentMedName});
-
         this.dataStore.set('medications', medications);
-        this.dataStore.set('previousId', result.currentCustomerId);
-        this.dataStore.set('previousName', result.currentMedName);
-        this.dataStore.set('nextCustomerId', result.nextCustomerId);
-        this.dataStore.set('nextMedName', result.nextMedName);
+//        this.dataStore.set('previousId', result.currentCustomerId);
+//        this.dataStore.set('previousName', result.currentMedName);
+//        this.dataStore.set('nextCustomerId', result.nextCustomerId);
+//        this.dataStore.set('nextMedName', result.nextMedName);
         this.displayMedications();
-    }
-
-    /**
-    * Add the header to the page and load the VendorEventClient.
-    */
-    mount() {
-        this.header.addHeaderToPage();
-        this.clientLoaded();
-        document.getElementById('nextButton').addEventListener('click', this.next);
-        document.getElementById('prevButton').addEventListener('click', this.previous);
-    }
-
-    async next() {
-        this.showLoading();
-        // To make the it stop at the end rather than looping around
-        if (this.dataStore.get('medications') == 0) {
-            this.displayMedications();
-        }
-        else {
-        const nextId = this.dataStore.get('nextCustomerId');
-        const nextName = this.dataStore.get('nextMedName');
-
-        const result = await this.client.getMedications(nextCustomerId, nextMedName);
-        console.log("Result:", result);
-        const medications = result.medications;
-        console.log("Received medications:", medications);
-
-        this.previousKeys.push({customerId: this.dataStore.get('previousId'), medName: this.dataStore.get('previousName')});
-
-        this.dataStore.set('medications', medications);
-        this.dataStore.set('previousId', result.currentCustomerId);
-        this.dataStore.set('previousName', result.currentMedName);
-        this.dataStore.set('nextCustomerId', result.nextCustomerId);
-        this.dataStore.set('nextMedName', result.nextMedName);
-        this.hideLoading();
-        }
-    }
-
-    async previous() {
-        this.showLoading();
-
-        let result;
-        if (this.previousKeys.length > 0) {
-            const previousRequest = this.previousKeys.pop();
-            result = await this.client.getMedications(previousRequest.customerId, previousRequest.medName);
-        }
-        else {
-            result = await this.client.getMedications(this.dataStore.get('previousId'), this.dataStore.get('previousName'));
-        }
-
-        console.log("Result:", result);
-        const medications = result.medications;
-        console.log("Received medications:", medications);
-
-        this.dataStore.set('medications', medications);
-        this.dataStore.set('previousId', result.currentCustomerId);
-        this.dataStore.set('previousName', result.currentMedName);
-        this.dataStore.set('nextCustomerId', result.nextCustomerId);
-        this.dataStore.set('nextMedName', result.nextMedName);
-        this.hideLoading();
     }
 
     displayMedications() {
         const medications = this.dataStore.get('medications');
+        console.log('Medications:', medications);
         const displayDiv = document.getElementById('medication-list-display');
-        displayDiv.innerText = medications.length > 0 ? "" : "No more Medications available.";
+
+        if (!medications || medications.length === 0) {
+                displayDiv.innerText = "No available.";
+                return;
+            }
 
         medications.forEach(medication => {
+             console.log('Medication:', medication);
+             console.log('Medication Name:', medication.medName);
+             console.log('Medication Info:', medication.medInfo);
+             console.log('Notification Times:', medication.notificationTimes);
+
             const medicationCard = document.createElement('section');
             medicationCard.className = 'medicationCard';
 
             const medicationName = document.createElement('h2');
-            medicationName.innerText = medication.medName;
+            medicationName.innerHTML = "Medication Name: " + medication.medName;
 
             const medicationInfo = document.createElement('h3');
-            medicationInfo.innerText = medication.medInfo;
+            medicationInfo.innerHTML = "Medication Info: " + medication.medInfo;
 
             // convert Set<notificationModel> to array so I can use for loop
-            const notifications = Array.from(medication.notifications);
+            const notifications = Array.from(medication.notificationTimes || []);
+            console.log('Notifications:', notifications);
+
             notifications.forEach(notification => {
             // Extract only the 'time' field
                 const time = notification.time;
                 const timeElement = document.createElement('h4');
-                timeElement.innerText = `Alarm Time: ${time}`;
+                timeElement.innerHTML = `Alarm Time: ${time}`;
+
+
                 medicationCard.appendChild(timeElement);
             });
-
+            
             medicationCard.appendChild(medicationName);
             medicationCard.appendChild(medicationInfo);
-
             displayDiv.appendChild(medicationCard);
         });
     }

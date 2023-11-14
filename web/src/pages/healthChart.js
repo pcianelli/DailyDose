@@ -31,6 +31,7 @@ class HealthChart extends BindingClass {
     * Once the client is loaded, get the list of medications.
     */
     async clientLoaded() {
+    console.log("client Loaded called...");
         this.showLoading();
         const result = await this.client.getMedications();
         this.hideLoading();
@@ -38,20 +39,19 @@ class HealthChart extends BindingClass {
         const medications = result.medications;
 
         this.dataStore.set('medications', medications);
-//        this.dataStore.set('previousId', result.currentCustomerId);
-//        this.dataStore.set('previousName', result.currentMedName);
-//        this.dataStore.set('nextCustomerId', result.nextCustomerId);
-//        this.dataStore.set('nextMedName', result.nextMedName);
-        this.displayMedications();
     }
 
     displayMedications() {
+        console.log("Displaying Medications...");
         const medications = this.dataStore.get('medications');
         console.log('Medications:', medications);
         const displayDiv = document.getElementById('medication-list-display');
 
+        const uniqueMedicationNames = new Set(medications.map(medication => medication.medName));
+        console.log('Unique Medication Names:', Array.from(uniqueMedicationNames));
+
         if (!medications || medications.length === 0) {
-                displayDiv.innerText = "No available.";
+                displayDiv.innerText = "No available medications.";
                 return;
             }
 
@@ -70,22 +70,22 @@ class HealthChart extends BindingClass {
             const medicationInfo = document.createElement('h3');
             medicationInfo.innerHTML = "Medication Info: " + medication.medInfo;
 
+            medicationCard.appendChild(medicationName);
+            medicationCard.appendChild(medicationInfo);
+
             // convert Set<notificationModel> to array so I can use for loop
             const notifications = Array.from(medication.notificationTimes || []);
             console.log('Notifications:', notifications);
+
 
             notifications.forEach(notification => {
             // Extract only the 'time' field
                 const time = notification.time;
                 const timeElement = document.createElement('h4');
                 timeElement.innerHTML = `Alarm Time: ${time}`;
-
-
                 medicationCard.appendChild(timeElement);
             });
-            
-            medicationCard.appendChild(medicationName);
-            medicationCard.appendChild(medicationInfo);
+
             displayDiv.appendChild(medicationCard);
         });
     }

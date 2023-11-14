@@ -71,7 +71,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetAllMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -86,31 +86,33 @@ _I will store Medications in a dynamoDbTable. I will store Notifications in a dy
 String customerId;
 String medName;
 String medInfo;
-Set<String> notificationTime;
+Set<NotificationModel> notifications;
 ```
 
 ```
 // NotificationModel
 
 String customerId;
-String time;
+String notificationId;
 String medName;
-String medInfo;
+String time;
 ```
+
+###Notes - inorder to to populate the medication model fully, the activity calls on the medication dao to get the medName, and med Info, and also calls the notification dao to get the set of notifications and query the notifications table based on the customerId and medName to get all the notifications for that medName. The MedicationModel is used for the health chart.
+The notifications will be loaded from the gsi anytime you click on the home page which has the notification banner.
 
 ## 6.2. _Get All Medications Endpoint_
 
-* Accepts `GET` requests to `/medications/:customerId`
-* Scans medication table based on customerId and returns all MedicationModels for a customerId.
-    * If there are no medications on the table, return an empty Set.
-  
-![Sequence Diagram Get Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medication.png)
+* Accepts `GET` requests to `/medications/`
+* Query on just hashkey.  Medication table based on customerId and returns all Medications for a customerId.
+* If there are no medications on the table, return an empty Set.
 
+![Sequence Diagram Get Medications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Medications.png)
 
 ## 6.3 _Add Medication Endpoint_
 
-* Accepts `POST` requests to `/medications/:customerId`
-* Accepts a customer ID and a medName to be added.
+* Accepts `POST` requests to `/medications/`
+* Accepts a customer ID and a medName and medInfo, to be added.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
     * If the med name contains invalid characters, will throw an
@@ -122,7 +124,7 @@ String medInfo;
 
 ## 6.4 _Remove Medication Endpoint_
 
-* Accepts `DELETE` requests to `/medications/:customerId`
+* Accepts `DELETE` requests to `/medications/:medName`
 * Accepts a customer ID and a medName to be Deleted.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
@@ -135,8 +137,8 @@ String medInfo;
 
 
 ## 6.5 _Update Medication Endpoint_
-* Accepts `PUT` requests to `/medications/:customerId`
-* Accepts a customer ID and a medName to be updated.
+* Accepts `PUT` requests to `/medications/:medName`
+* Accepts a customer ID, a medName, and medInfo to be updated.
     * For security concerns, we will validate the provided med name does not
       contain invalid characters: `" ' \`
     * If the med name contains invalid characters, will throw an
@@ -148,31 +150,33 @@ String medInfo;
 
 
 ## 6.6 _Get Notification Endpoint_
-* Accepts `GET` requests to `/notifications/:customerId`
-* Scans medication table based on customerId and time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time.
+* Accepts `GET` requests to `/notifications/:time` 
+* Query notification gsi if the parameter passed in is time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time. This is used to populate the banner only, not the health chart. 
     * If there are no notifications on the table, return an empty Set.
 
 ![Sequence Diagram Get Notifications.png](images%2FdesignImages%2FSequence%20Diagram%20Get%20Notifications.png)
 
-
 ## 6.7 _Add Notification Endpoint_
 
-* Accepts `POST` requests to `/notifications/:customerId`
-* Accepts a customer ID and a time to be added.
+* Accepts `POST` requests to `/notifications/:medName/time`
+* Accepts a customer ID, medName and a time to be added.
 
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`
+    * If the medName and time does not exist on table, will throw an
+        `UnableToAddNotificationToTableException`
     * If the notification can not be added to the Notifications Table, will throw an `UnableToAddNotificationToTableException`_
 
 ![Sequence Diagram Add Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Add%20Notification.png)
 
 
 ## 6.8 _Remove Notification Endpoint_
-* Accepts `DELETE` requests to `/notifications/:customerId`
-* Accepts a customer ID and a time to delete notification.
+* Accepts `DELETE` requests to `/notifications/:medName/time`
+* Accepts a customer ID, medName, and a time to delete notification.
     * If the time contains invalid characters, will throw an
       `InvalidAttributeValueException`
-    * If no notification found on the table, will throw an `UnableToFindNotificationException`
+    * If the medName and time does not exist on table, will throw an
+        `UnableToAddNotificationToTableException`
     * If the notification can not be deleted to the Medication Table, will throw an `UnableToDeleteNotificationException`
 
 ![Sequence Diagram Remove Notification.png](images%2FdesignImages%2FSequence%20Diagram%20Remove%20Notification.png)
@@ -185,16 +189,30 @@ String medInfo;
 customer_id // partition key, string
 med_name // sort key, string 
 med_info // string 
-notifications // stringset
 ```
 
 ### 7.2. `Notifications`
 ```
 customer_id // partition key, string
+notification_id // sort key, string 
+med_name // string 
+time // string 
+```
+
+### 7.2. `GSI NotificationsTime`
+```
+customer_id // partition key, string
 time // sort key, string 
 med_name // string 
-med_info // string
+notification_id // string 
+```
 
+### 7.2. `GSI NotificationsMedName`
+```
+customer_id // partition key, string
+med_name // sort key, string 
+time // string
+notification_id // string 
 ```
 
 # 8. Pages

@@ -1,6 +1,6 @@
 package com.nashss.se.dailydose.exceptions;
 
-public class InvalidAttributeException extends RuntimeException{
+public class InvalidAttributeException extends RuntimeException {
     /**
      * General exception covering cases where an attribute is invalid.
      * For example, formatting/validation errors, or if the attribute is being modified

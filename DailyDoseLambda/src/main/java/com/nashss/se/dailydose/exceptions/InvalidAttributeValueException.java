@@ -1,6 +1,6 @@
 package com.nashss.se.dailydose.exceptions;
 
-public class InvalidAttributeValueException extends InvalidAttributeException{
+public class InvalidAttributeValueException extends InvalidAttributeException {
     private static final long serialVersionUID = -306480760515735195L;
 
     /**

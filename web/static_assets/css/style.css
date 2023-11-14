@@ -1,9 +1,9 @@
 :root {
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
-    --primary-color: #5D5E5E;
-    --secondary-color: #ffffff;
-    --tertiary-color: #F5881F;
-    --error-color: #EE3A23;
+    --primary-color: #2c3e50; /* Dark blue-gray */
+    --secondary-color: #ecf0f1; /* Light gray */
+    --tertiary-color: #009999; /* Dark blue-gray */
+    --error-color: #c0392b;
 }
 
 .background {
@@ -18,25 +18,43 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
     color: var(--secondary-color);
     padding: 4px 20px;
 }
 
 .button {
-  background-color: var(--tertiary-color);
-  border: none;
-  color: var(--secondary-color);
-  padding: 6px 8px 4px 8px;
-  text-align: center;
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
+    background-color: var(--tertiary-color); /* Set an initial background color */
+    border: none;
+    color: var(--secondary-color);
+    padding: 6px 8px 4px 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Add transition for a smoother effect */
+}
+
+.button:hover {
+    background-color: rgba(173, 216, 230, 0.5); /* Light shade of light blue with transparency */
+    color: #000; /* Black text on hover */
 }
 
 .button-group {
     display: flex;
     justify-content: space-between;
+}
+
+#medications-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--tertiary-color);
+    background: rgba(0, 0, 0, 0.7);
+      transition: opacity 0.3s ease-in-out;
 }
 
 .header_home {
@@ -49,22 +67,59 @@
 
 .card {
     color: var(--primary-color);
+    border: 1px solid #e0e0e0;
+    text-align: center;
     background-color: var(--secondary-color);
-    margin: 20px;
-    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#medication-list-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Adjust alignment */
+  gap: 20px;
+}
+
+.medication-card {
+    background-color: #fff; /* White background */
+    border: 1px solid #e0e0e0; /* Light gray border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: transform 0.2s ease-in-out; /* Add a subtle hover effect */
+}
+
+.medication-card:hover {
+    transform: scale(1.02); /* Scale up on hover */
+}
+
+.medication-name {
+    text-align: center;
+    font-size: 1.8em; /* Larger font size for medication name */
+    font-weight: 600; /* Slightly bolder */
+    margin-bottom: 8px; /* Smaller margin */
+    color: #333; /* Darker text color */
+}
+
+.medication-info {
+    font-size: 1.1em; /* Slightly smaller font size for medication info */
+    margin-bottom: 12px; /* Increase margin for separation */
+    color: #555;
+}
+
+.alarm-time {
+    text-align: center;
+    font-size: 1em;
+    color: #009999;
 }
 
 .error {
     color: var(--error-color);
     border: 1px solid var(--error-color);
     padding: 8px;
-}
-
-.validated-field:invalid {
-    outline: 2px solid var(--error-color);
-}
-.validated-field:focus:invalid {
-    color: var(--error-color);
 }
 
 .card-content {
@@ -76,51 +131,11 @@
     flex-direction: column;
 }
 
-.tags {
-    display: flex;
-    flex-direction: row;
-}
-
-.tag {
-    font-size: 12px;
-    margin: 0 10px;
-    padding: 4px 8px;
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
-    position: relative;
-    border-radius: 16px;
-}
-
-.song {
-    padding: 2px;
-    display: flex;
-}
-
-.song .title {
-    flex: 20%;
-}
-
-.song .album {
-    flex: 80%;
-}
-
-/*
-Flexbox on a lists removes the numbers. We use a counter here to add them back.
-https://stackoverflow.com/a/34316093
-https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters
-*/
-.song:before {
-    counter-increment: section;
-    content: counter(section) ".";
-    position: absolute;
-    margin-left: -40px;
-}
-
 .hidden {
     display: none;
 }
 
-/* table styles */ 
+/* table styles */
 
 th, td {
     padding: 15px;
@@ -134,4 +149,10 @@ th {
 a {
     color: var(--tertiary-color);
     text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    #medication-list-display {
+        justify-content: center;
+    }
 }

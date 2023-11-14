@@ -2,7 +2,7 @@
     /* css variables: https://developer.mozilla.org/en-US/docs/Web/CSS/var */
     --primary-color: #2c3e50; /* Dark blue-gray */
     --secondary-color: #ecf0f1; /* Light gray */
-    --tertiary-color: #e74c3c; /* Red */
+    --tertiary-color: #009999; /* Dark blue-gray */
     --error-color: #c0392b;
 }
 
@@ -18,7 +18,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
     color: var(--secondary-color);
     padding: 4px 20px;
 }
@@ -97,6 +97,7 @@
 }
 
 .medication-name {
+    text-align: center;
     font-size: 1.8em; /* Larger font size for medication name */
     font-weight: 600; /* Slightly bolder */
     margin-bottom: 8px; /* Smaller margin */
@@ -112,7 +113,7 @@
 .alarm-time {
     text-align: center;
     font-size: 1em;
-    color: #007bff;
+    color: #009999;
 }
 
 .error {

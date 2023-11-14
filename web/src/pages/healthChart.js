@@ -66,11 +66,11 @@ class HealthChart extends BindingClass {
 
             const medicationName = document.createElement('h2');
             medicationName.className = 'medication-name';
-            medicationName.innerHTML = "Medication Name: " + medication.medName;
+            medicationName.innerHTML = medication.medName;
 
             const medicationInfo = document.createElement('h3');
             medicationInfo.className = 'medication-info';
-            medicationInfo.innerHTML = "Medication Info: " + medication.medInfo;
+            medicationInfo.innerHTML = "Info: " + medication.medInfo;
 
             medicationCard.appendChild(medicationName);
             medicationCard.appendChild(medicationInfo);

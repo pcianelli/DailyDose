@@ -2,13 +2,16 @@ package com.nashss.se.dailydose.activity;
 
 import com.nashss.se.dailydose.activity.requests.AddMedicationRequest;
 import com.nashss.se.dailydose.activity.results.AddMedicationResult;
+import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
+import com.nashss.se.dailydose.models.MedicationModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.util.HashSet;
 
 /**
  * Implementation of the AddMedicationActivity for the DailyDose's AddMedicationActivity  API.
@@ -56,14 +59,12 @@ public class AddMedicationActivity {
             medication.setMedInfo(addMedicationRequest.getMedInfo());
         }
 
-        boolean success = medicationDao.addMedication(medication);
-        String message = success ? "Medication added successfully." : "Failed to add Medication.";
+        medicationDao.addMedication(medication);
+
+        MedicationModel medicationModel = new ModelConverter().toMedicationModel(medication, new HashSet<>());
 
         return AddMedicationResult.builder()
-                .withCustomerId(medication.getCustomerId())
-                .withMedName(medication.getMedName())
-                .withSuccess(success)
-                .withMessage(message)
+                .withMedicationModel(medicationModel)
                 .build();
     }
 }

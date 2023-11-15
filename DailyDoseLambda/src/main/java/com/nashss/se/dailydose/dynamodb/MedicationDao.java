@@ -69,19 +69,17 @@ public class MedicationDao {
      * @param medication the medication object to be stored
      * @return the boolean true if medication was successfully added;
      */
-    public boolean addMedication(Medication medication) {
+    public Medication addMedication(Medication medication) {
         if (medication == null) {
             throw new IllegalArgumentException("medication cannot be null");
         }
-
         try {
             dynamoDbMapper.save(medication);
             metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
-            return true;
         } catch (Exception e) {
             log.error("Error creating medication to add", e);
             metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_FAIL_COUNT, 1);
-            return false;
         }
+        return medication;
     }
 }

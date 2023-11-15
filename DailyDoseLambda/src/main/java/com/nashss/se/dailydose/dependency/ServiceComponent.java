@@ -3,6 +3,7 @@ package com.nashss.se.dailydose.dependency;
 import com.nashss.se.dailydose.activity.AddMedicationActivity;
 import com.nashss.se.dailydose.activity.GetMedicationsActivity;
 
+import com.nashss.se.dailydose.activity.RemoveMedicationActivity;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -25,4 +26,10 @@ public interface ServiceComponent {
      * @return AddMedicationsActivity
      */
     AddMedicationActivity provideAddMedicationActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return RemoveMedicationsActivity
+     */
+    RemoveMedicationActivity provideRemoveMedicationActivity();
 }

@@ -67,7 +67,7 @@ public class MedicationDao {
     /**
      * Creates a medication in the database.
      * @param medication the medication object to be stored
-     * @return the boolean true if medication was successfully added;
+     * @return the medication added;
      */
     public Medication addMedication(Medication medication) {
         if (medication == null) {
@@ -79,6 +79,25 @@ public class MedicationDao {
         } catch (Exception e) {
             log.error("Error creating medication to add", e);
             metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_FAIL_COUNT, 1);
+        }
+        return medication;
+    }
+
+    /**
+     * Removes a medication in the database.
+     * @param medication the medication object to be removed
+     * @return medication removed;
+     */
+    public Medication removeMedication(Medication medication) {
+        if (medication == null) {
+            throw new IllegalArgumentException("medication cannot be null");
+        }
+        try {
+            dynamoDbMapper.delete(medication);
+            metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_SUCCESS_COUNT, 1);
+        } catch (Exception e) {
+            log.error("Error deleting medication to add", e);
+            metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_FAIL_COUNT, 1);
         }
         return medication;
     }

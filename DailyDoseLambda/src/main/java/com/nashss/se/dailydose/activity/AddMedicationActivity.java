@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import java.util.HashSet;
 
 /**
- * Implementation of the AddMedicationActivity for the DailyDose's AddMedicationActivity  API.
+ * Implementation of the AddMedicationActivity for the DailyDose's AddMedicationActivity API.
  * This API allows the user to add a medication to their healthChart.
  */
 public class AddMedicationActivity {

@@ -257,7 +257,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medications
+            Path: /medication/
             Method: post
 
   #-----------------------------------------------------

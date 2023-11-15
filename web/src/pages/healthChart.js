@@ -70,7 +70,11 @@ class HealthChart extends BindingClass {
 
             const medicationInfo = document.createElement('h3');
             medicationInfo.className = 'medication-info';
-            medicationInfo.innerHTML = "Info: " + medication.medInfo;
+            if (medication.medInfo !== null) {
+                medicationInfo.innerHTML = "Info: " + medication.medInfo;
+            } else {
+                medicationInfo.innerHTML = medication.medInfo || ""; // Use an empty string if medInfo is null
+            }
 
             medicationCard.appendChild(medicationName);
             medicationCard.appendChild(medicationInfo);

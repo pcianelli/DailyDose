@@ -21,7 +21,9 @@ export default class Header extends BindingClass {
      * Add the header to the page.
      */
     async addHeaderToPage() {
+        console.log('Adding header to page...');
         const currentUser = await this.client.getIdentity();
+        console.log('Current user:', currentUser);
 
         const siteTitle = this.createSiteTitle();
         const userInfo = this.createUserInfoForHeader(currentUser);
@@ -29,6 +31,7 @@ export default class Header extends BindingClass {
         const header = document.getElementById('header');
         header.appendChild(siteTitle);
         header.appendChild(userInfo);
+        console.log('Header added successfully.');
     }
 
     createSiteTitle() {

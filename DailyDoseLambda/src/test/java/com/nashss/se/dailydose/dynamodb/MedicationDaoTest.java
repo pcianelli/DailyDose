@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
@@ -111,6 +112,32 @@ class MedicationDaoTest {
         // THEN
         assertEquals(Collections.emptyList(), result, "should return an emptyList");
         verify(dynamoDBMapper, times(1)).queryPage(eq(Medication.class), captor.capture());
+    }
+
+    @Test
+    public void addMedication_withValidMedication_addsMedicationToTableReturnsSuccess() {
+        //GIVEN
+        Medication medication = new Medication();
+        medication.setCustomerId("customerId");
+        medication.setMedName("medName");
+        medication.setMedInfo("medInfo");
+
+
+        //WHEN
+        Medication medicationrResult = medicationDao.addMedication(medication);
+
+        //THEN
+        verify(dynamoDBMapper).save(medication);
+        assertEquals(medication, medicationrResult);
+    }
+
+    @Test
+    public void addMedication_withNullMedication_returnsIllegalArgumentException() {
+        //GIVEN
+        Medication medication = null;
+
+        //WHEN and THEN
+        assertThrows(IllegalArgumentException.class, () -> medicationDao.addMedication(medication));
     }
 
 }

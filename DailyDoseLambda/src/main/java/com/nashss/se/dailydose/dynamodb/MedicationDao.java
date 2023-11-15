@@ -7,12 +7,11 @@ import com.nashss.se.dailydose.metrics.MetricsPublisher;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,9 +21,9 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class MedicationDao {
-    private static final int PAGINATED_LIMIT = 5;
     private final DynamoDBMapper dynamoDbMapper;
     private final MetricsPublisher metricsPublisher;
+    private final Logger log = LogManager.getLogger();
 
 
     /**
@@ -43,7 +42,6 @@ public class MedicationDao {
      * Perform a search (via a "query") of the medications table for medications matching the given medication criteria.
      *
      * @param customerId medications containing search criteria.
-     * @param exclusiveStartMedName start key for pagination
      * @return a List of Medication objects that match the search criteria.
      */
     public List<Medication> getMedications(String customerId) {
@@ -64,5 +62,24 @@ public class MedicationDao {
 
         metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 0);
         return medicationQueryResults.getResults();
+    }
+
+    /**
+     * Creates a medication in the database.
+     * @param medication the medication object to be stored
+     * @return the boolean true if medication was successfully added;
+     */
+    public Medication addMedication(Medication medication) {
+        if (medication == null) {
+            throw new IllegalArgumentException("medication cannot be null");
+        }
+        try {
+            dynamoDbMapper.save(medication);
+            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
+        } catch (Exception e) {
+            log.error("Error creating medication to add", e);
+            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_FAIL_COUNT, 1);
+        }
+        return medication;
     }
 }

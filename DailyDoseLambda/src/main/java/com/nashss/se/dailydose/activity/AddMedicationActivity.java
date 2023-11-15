@@ -49,6 +49,9 @@ public class AddMedicationActivity {
         if (!medName.matches("[a-zA-Z0-9 ]*")) {
             throw new InvalidAttributeValueException("Invalid characters in the vendor name.");
         }
+        if(medName.equals("")) {
+            throw new IllegalArgumentException("MedName cannot be null or blank");
+        }
 
         Medication medication = new Medication();
         medication.setCustomerId(addMedicationRequest.getCustomerId());

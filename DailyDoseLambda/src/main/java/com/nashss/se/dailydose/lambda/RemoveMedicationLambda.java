@@ -13,7 +13,7 @@ public class RemoveMedicationLambda
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<RemoveMedicationRequest> input, Context context) {
         return super.runActivity(
                 () -> {
-                    RemoveMedicationRequest unauthenticatedRequest = input.fromBody(RemoveMedicationRequest.class);
+                    RemoveMedicationRequest unauthenticatedRequest = input.fromPath(RemoveMedicationRequest.class);
                     return input.fromUserClaims(claims ->
                             RemoveMedicationRequest.builder()
                                     .withCustomerId(claims.get("email"))

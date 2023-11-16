@@ -7,11 +7,13 @@ import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.MedicationModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.HashSet;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the AddMedicationActivity for the DailyDose's AddMedicationActivity API.
@@ -49,14 +51,14 @@ public class AddMedicationActivity {
         if (!medName.matches("[a-zA-Z0-9 ]*")) {
             throw new InvalidAttributeValueException("Invalid characters in the vendor name.");
         }
-        if(medName.equals("")) {
+        if (medName.equals("")) {
             throw new IllegalArgumentException("MedName cannot be null or blank");
         }
 
         Medication medication = new Medication();
         medication.setCustomerId(addMedicationRequest.getCustomerId());
         medication.setMedName(addMedicationRequest.getMedName());
-        if(addMedicationRequest.getMedInfo() == null || addMedicationRequest.getMedInfo().equals("")) {
+        if (addMedicationRequest.getMedInfo() == null || addMedicationRequest.getMedInfo().equals("")) {
             medication.setMedInfo("");
         } else {
             medication.setMedInfo(addMedicationRequest.getMedInfo());

@@ -113,6 +113,21 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    async removeMedication(medName, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+
+            const response = await this.axiosClient.delete(`medication/${medName}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+                });
+            return response.data.medication;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
 
     /**
      * Helper method to log the error and run any error functions.

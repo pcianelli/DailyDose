@@ -3,19 +3,17 @@ package com.nashss.se.dailydose.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * This class represents a request to add a medication.
- * It is used as a part of the AddMedicationActivity API.
+ * This class represents a request to remove a medication.
+ * It is used as a part of the RemoveMedicationActivity API.
  */
-@JsonDeserialize(builder = AddMedicationRequest.Builder.class)
-public class AddMedicationRequest {
+@JsonDeserialize(builder = RemoveMedicationRequest.Builder.class)
+public class RemoveMedicationRequest {
     private final String customerId;
     private final String medName;
-    private final String medInfo;
 
-    private AddMedicationRequest(String customerId, String medName, String medInfo) {
+    private RemoveMedicationRequest(String customerId, String medName) {
         this.customerId = customerId;
         this.medName = medName;
-        this.medInfo = medInfo;
     }
 
     public String getCustomerId() {
@@ -26,21 +24,16 @@ public class AddMedicationRequest {
         return medName;
     }
 
-    public String getMedInfo() {
-        return medInfo;
-    }
-
     @Override
     public String toString() {
-        return "AddMedicationRequest{" +
+        return "RemoveMedicationRequest{" +
                 "customerId='" + customerId + '\'' +
                 ", medName='" + medName + '\'' +
-                ", medInfo='" + medInfo + '\'' +
                 '}';
     }
 
     /**
-     * This method returns a new Builder object for building a AddMedicationsRequest object.
+     * This method returns a new Builder object for building a RemoveMedicationsRequest object.
      *
      * @return a new Builder object.
      */
@@ -49,13 +42,11 @@ public class AddMedicationRequest {
     }
 
     /**
-     * This class provides a builder for the AddMedicationsRequest object.
+     * This class provides a builder for the RemoveMedicationsRequest object.
      */
     public static class Builder {
-
         private String customerId;
         private String medName;
-        private String medInfo;
 
         /**
          * This method sets an customerId field.
@@ -78,22 +69,13 @@ public class AddMedicationRequest {
         }
 
         /**
-         * This method sets an medInfo field.
-         * @param medInfo is the attribute field of the Medications table
-         * @return Builder with medInfo set.
-         */
-        public Builder withMedInfo(String medInfo) {
-            this.medInfo = medInfo;
-            return this;
-        }
-
-        /**
-         * This method builds and returns a new AddMedicationsRequest object.
+         * This method builds and returns a new RemoveMedicationsRequest object.
          *
-         * @return a new AddMedicationsRequest object.
+         * @return a new RemoveMedicationsRequest object.
          */
-        public AddMedicationRequest build() {
-            return new AddMedicationRequest(customerId, medName, medInfo);
+        public RemoveMedicationRequest build() {
+            return new RemoveMedicationRequest(customerId, medName);
         }
     }
+
 }

@@ -62,10 +62,15 @@ public class Notification {
     }
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Notification that = (Notification) o;
-        return Objects.equals(customerId, that.customerId) && Objects.equals(notificationId, that.notificationId) && Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
+        return Objects.equals(customerId, that.customerId) && Objects.equals(notificationId, that.notificationId) &&
+                Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override

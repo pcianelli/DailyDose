@@ -4,9 +4,9 @@ import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
 
 /**
-* Logic needed for the add medication page of the website.
+* Logic needed for the remove medication page of the website.
 */
-class AddMedication extends BindingClass {
+class RemoveMedication extends BindingClass {
     constructor() {
         super();
         this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
@@ -21,31 +21,26 @@ class AddMedication extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
-        document.getElementById('add-medication-form').addEventListener('submit', this.submit);
+         document.getElementById('remove-medication-form').addEventListener('submit', (event) => this.submit(event));
     }
 
     /**
     * Method to run when the add medication form is submitted.
     * Calls the DailyDoseService to add the medication.
     */
-    async submit(event) {
+     async submit(event) {
         event.preventDefault();
 
         const medName = document.getElementById('medName').value;
-        const medInfo = document.getElementById('medInfo').value;
-
-        const medicationDetails = {
-            medName: medName,
-            medInfo: medInfo
-        };
 
         try {
-            const addMedication = await this.client.addMedication(medicationDetails);
+            const removeMedication = await this.client.removeMedication(medName);
             this.showSuccessMessageAndRedirect();
-        } catch (error) {
-            console.error("Error adding medication: ", error);
         }
-    }
+        catch (error) {
+            console.error("Error removing medication: ", error);
+        }
+     }
 
     showSuccessMessageAndRedirect() {
         // Hide everything except the header and body background
@@ -62,7 +57,7 @@ class AddMedication extends BindingClass {
         const messageElement = document.createElement('div');
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
-        messageText.innerText = "Medication has been added to your health chart successfully!";
+        messageText.innerText = "Medication has been removed from your health chart successfully!";
         messageText.style.color = "#2c3e50";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
@@ -76,12 +71,11 @@ class AddMedication extends BindingClass {
         }, 3000);  // redirect after 3 seconds
     }
 }
-
 /**
 * Main method to run when the page contents have loaded.
 */
 const main = async () => {
-    const addMedication = new AddMedication();
-    addMedication.mount();
+    const removeMedication = new RemoveMedication();
+    removeMedication.mount();
 };
 window.addEventListener('DOMContentLoaded', main);

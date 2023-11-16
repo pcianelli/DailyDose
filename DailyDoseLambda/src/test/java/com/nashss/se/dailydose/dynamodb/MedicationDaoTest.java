@@ -140,4 +140,30 @@ class MedicationDaoTest {
         assertThrows(IllegalArgumentException.class, () -> medicationDao.addMedication(medication));
     }
 
+    @Test
+    public void removeMedication_withValidMedication_removesMedicationFromTableReturnsMedication() {
+        //GIVEN
+        Medication medication = new Medication();
+        medication.setCustomerId("customerId");
+        medication.setMedName("medName");
+        medication.setMedInfo("medInfo");
+
+
+        //WHEN
+        Medication medicationrResult = medicationDao.removeMedication(medication);
+
+        //THEN
+        verify(dynamoDBMapper).delete(medication);
+        assertEquals(medication, medicationrResult);
+    }
+
+    @Test
+    public void removeMedication_withNullMedication_returnsIllegalArgumentException() {
+        //GIVEN
+        Medication medication = null;
+
+        //WHEN and THEN
+        assertThrows(IllegalArgumentException.class, () -> medicationDao.removeMedication(medication));
+    }
+
 }

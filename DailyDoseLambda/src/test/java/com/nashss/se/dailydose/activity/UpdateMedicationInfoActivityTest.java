@@ -59,6 +59,66 @@ class UpdateMedicationInfoActivityTest {
     }
 
     @Test
+    public void handleRequest_goodRequestMedInfoIsNull_updatesMedicationInfoWithBlankString() {
+        //GIVEN
+        String customerId = "customerId";
+        String medName = "medName";
+        String medInfo = null;
+
+        Medication startingMedication = new Medication();
+        startingMedication.setCustomerId(customerId);
+        startingMedication.setMedName(medName);
+        startingMedication.setMedInfo("OldMedInfo");
+
+        when(medicationDao.getOneMedication(customerId, medName)).thenReturn(startingMedication);
+        when(medicationDao.addMedication(startingMedication)).thenReturn(startingMedication);
+
+        UpdateMedicationInfoRequest request = UpdateMedicationInfoRequest.builder()
+                .withCustomerId(customerId)
+                .withMedName(medName)
+                .withMedInfo(medInfo)
+                .build();
+
+        //WHEN
+        UpdateMedicationInfoResult result = updateMedicationInfoActivity.handleRequest(request);
+
+        //THEN
+        assertEquals(customerId, result.getMedicationModel().getCustomerId());
+        assertEquals(medName,result.getMedicationModel().getMedName());
+        assertEquals("", result.getMedicationModel().getMedInfo());
+    }
+
+    @Test
+    public void handleRequest_goodRequestMedInfoIsBlank_updatesMedicationInfoWithBlankString() {
+        //GIVEN
+        String customerId = "customerId";
+        String medName = "medName";
+        String medInfo = "";
+
+        Medication startingMedication = new Medication();
+        startingMedication.setCustomerId(customerId);
+        startingMedication.setMedName(medName);
+        startingMedication.setMedInfo("OldMedInfo");
+
+        when(medicationDao.getOneMedication(customerId, medName)).thenReturn(startingMedication);
+        when(medicationDao.addMedication(startingMedication)).thenReturn(startingMedication);
+
+        UpdateMedicationInfoRequest request = UpdateMedicationInfoRequest.builder()
+                .withCustomerId(customerId)
+                .withMedName(medName)
+                .withMedInfo(medInfo)
+                .build();
+
+        //WHEN
+        UpdateMedicationInfoResult result = updateMedicationInfoActivity.handleRequest(request);
+
+        //THEN
+        assertEquals(customerId, result.getMedicationModel().getCustomerId());
+        assertEquals(medName,result.getMedicationModel().getMedName());
+        assertEquals("", result.getMedicationModel().getMedInfo());
+    }
+
+    @Test
     public void handleRequest_medicationDoesNotExist_throwsMedicationNotFoundException() {
         //GIVEN
         String customerId = "customerId";

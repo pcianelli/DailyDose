@@ -63,7 +63,13 @@ public class UpdateMedicationInfoActivity {
             throw new MedicationNotFoundException("Medication must exist in your healthChart");
         }
 
-        medication.setMedInfo(updateMedicationInfoRequest.getMedInfo());
+        if (updateMedicationInfoRequest.getMedInfo() == null || updateMedicationInfoRequest.getMedInfo().equals("")) {
+            medication.setMedInfo("");
+        }
+        else {
+            medication.setMedInfo(updateMedicationInfoRequest.getMedInfo());
+        }
+
         medication = medicationDao.addMedication(medication);
 
         MedicationModel medicationModel = modelConverter.toMedicationModel(medication, new HashSet<>());

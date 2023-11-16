@@ -66,19 +66,18 @@ public class MedicationDao {
     }
 
     public Medication getOneMedication(String customerId, String medName) {
-        Medication medication = new Medication();
-        medication.setCustomerId(customerId);
-        medication.setMedName(medName);
 
-        Medication resultMedication = this.dynamoDbMapper.load(medication);
+        Medication resultMedication = this.dynamoDbMapper.load(Medication.class, customerId, medName);
 
         if (resultMedication == null) {
             metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_SUCCESS_COUNT, 1);
             throw new MedicationNotFoundException("Could not find the medication " + medName);
         }
 
-        metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_SUCCESS_COUNT, 0);
-        return resultMedication;
+        else {
+            metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_FAIL_COUNT, 1);
+            return resultMedication;
+        }
     }
 
     /**

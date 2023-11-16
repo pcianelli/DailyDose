@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
+import com.nashss.se.dailydose.exceptions.MedicationNotFoundException;
 import com.nashss.se.dailydose.metrics.MetricsConstants;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,26 +123,29 @@ class MedicationDaoTest {
         //GIVEN
         String customerId = "customerId";
         String medName = "medName";
-        Medication medication = new Medication();
-        medication.setCustomerId(customerId);
-        medication.setMedName(medName);
 
-        when(dynamoDBMapper.load(Medication.class)).thenReturn(medication);
+        when(dynamoDBMapper.load(Medication.class, customerId, medName)).thenReturn(new Medication());
 
-        //WHEN
+        // WHEN
         Medication result = medicationDao.getOneMedication(customerId, medName);
 
-        //THEN
+        // THEN
         assertNotNull(result);
-        verify(dynamoDBMapper).load(medication);
-        verify(metricsPublisher).addCount(eq(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT), anyDouble());
-
+        verify(dynamoDBMapper).load(Medication.class, customerId, medName);
+        verify(metricsPublisher).addCount(eq(MetricsConstants.GETONEMEDICATION_SUCCESS_COUNT), anyDouble());
     }
 
     @Test
     public void getOneMedications_withNullOnMedicationsTable_returnsMedicationNotFoundException () {
         //Given
-        
+        String customerId = "customerId";
+        String medName = "medName";
+
+        when(dynamoDBMapper.load(Medication.class, customerId, medName)).thenReturn(null);
+
+        //WHEN AND THEN
+        assertThrows(MedicationNotFoundException.class, () -> medicationDao.getOneMedication(customerId, medName));
+        verify(metricsPublisher).addCount(eq(MetricsConstants.GETONEMEDICATION_FAIL_COUNT), anyDouble());
     }
 
     @Test

@@ -15,6 +15,8 @@ public class MetricsConstants {
 
     public static final String GETONEMEDICATION_SUCCESS_COUNT = "GetMedications.MedicationNotFoundException.Count";
 
+    public static final String GETONEMEDICATION_FAIL_COUNT = "GetMedications.MedicationNotFoundException.Count";
+
     public static final String ADDMEDICATION_SUCCESS_COUNT = "GetMedications.MedicationNotFoundException.Count";
     public static final String ADDMEDICATION_FAIL_COUNT = "GetMedications.MedicationNotFoundException.Count";
 

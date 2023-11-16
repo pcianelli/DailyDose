@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.QueryResultPage;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
+import com.nashss.se.dailydose.metrics.MetricsConstants;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,8 +18,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -112,6 +115,33 @@ class MedicationDaoTest {
         // THEN
         assertEquals(Collections.emptyList(), result, "should return an emptyList");
         verify(dynamoDBMapper, times(1)).queryPage(eq(Medication.class), captor.capture());
+    }
+
+    @Test
+    public void getOneMedication_withValidMedicationCustomerIdAndMedNameOnTable_returnsMedication() {
+        //GIVEN
+        String customerId = "customerId";
+        String medName = "medName";
+        Medication medication = new Medication();
+        medication.setCustomerId(customerId);
+        medication.setMedName(medName);
+
+        when(dynamoDBMapper.load(Medication.class)).thenReturn(medication);
+
+        //WHEN
+        Medication result = medicationDao.getOneMedication(customerId, medName);
+
+        //THEN
+        assertNotNull(result);
+        verify(dynamoDBMapper).load(medication);
+        verify(metricsPublisher).addCount(eq(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT), anyDouble());
+
+    }
+
+    @Test
+    public void getOneMedications_withNullOnMedicationsTable_returnsMedicationNotFoundException () {
+        //Given
+        
     }
 
     @Test

@@ -4,9 +4,9 @@ import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
 
 /**
-* Logic needed for the add medication page of the website.
+* Logic needed for the update medication info page of the website.
 */
-class AddMedication extends BindingClass {
+class UpdateMedicationInfo extends BindingClass {
     constructor() {
         super();
         this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
@@ -15,13 +15,13 @@ class AddMedication extends BindingClass {
         this.header = new Header(this.dataStore);
     }
 
-/**
+    /**
     * Add the header to the page and load the dailyDoseClient.
     */
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
-        document.getElementById('add-medication-form').addEventListener('submit', this.submit);
+        document.getElementById('update-medication-info-form').addEventListener('submit', this.submit);
     }
 
     /**
@@ -40,7 +40,7 @@ class AddMedication extends BindingClass {
         };
 
         try {
-            const addMedication = await this.client.addMedication(medicationDetails);
+            const updateMedicationInfo = await this.client.updateMedicationInfo(medicationDetails);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
             console.error("Error adding medication: ", error);
@@ -62,7 +62,7 @@ class AddMedication extends BindingClass {
         const messageElement = document.createElement('div');
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
-        messageText.innerText = "Medication has been added to your health chart successfully!";
+        messageText.innerText = "Medication info has been update in your health chart successfully!";
         messageText.style.color = "#2c3e50";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
@@ -81,7 +81,7 @@ class AddMedication extends BindingClass {
 * Main method to run when the page contents have loaded.
 */
 const main = async () => {
-    const addMedication = new AddMedication();
-    addMedication.mount();
+    const updateMedicationInfo = new UpdateMedicationInfo();
+    updateMedicationInfo.mount();
 };
 window.addEventListener('DOMContentLoaded', main);

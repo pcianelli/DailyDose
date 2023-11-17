@@ -1,6 +1,7 @@
 package com.nashss.se.dailydose.dynamodb;
 
 import com.nashss.se.dailydose.dynamodb.models.Medication;
+import com.nashss.se.dailydose.exceptions.MedicationNotFoundException;
 import com.nashss.se.dailydose.metrics.MetricsConstants;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 
@@ -62,6 +63,21 @@ public class MedicationDao {
 
         metricsPublisher.addCount(MetricsConstants.GETMEDICATIONS_MEDICATIONNOTFOUND_COUNT, 0);
         return medicationQueryResults.getResults();
+    }
+
+    public Medication getOneMedication(String customerId, String medName) {
+
+        Medication resultMedication = this.dynamoDbMapper.load(Medication.class, customerId, medName);
+
+        if (resultMedication == null) {
+            metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_SUCCESS_COUNT, 1);
+            throw new MedicationNotFoundException("Could not find the medication " + medName);
+        }
+
+        else {
+            metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_FAIL_COUNT, 1);
+            return resultMedication;
+        }
     }
 
     /**

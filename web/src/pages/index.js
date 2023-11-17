@@ -2,6 +2,7 @@ import dailyDoseClient from '../api/dailyDoseClient';
 import Header from '../components/header';
 import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
+import Authenticator from '../api/authenticator';
 /**
  * Logic needed for the view notification banner and button to view health chart of the website index page.
  */
@@ -13,6 +14,7 @@ import DataStore from '../util/DataStore';
         this.bindClassMethods(['clientNotificationLoad', 'displayNotifications', 'mount'], this);
         this.client = new dailyDoseClient();
         this.dataStore = new DataStore();
+        this.authenticator = new Authenticator();
         this.header = new Header(this.dataStore);
         console.log("index constructor");
     }
@@ -38,7 +40,15 @@ import DataStore from '../util/DataStore';
 
 
 
-    mount() {
+   async mount() {
+
+        const isLoggedIn = await this.authenticator.isUserLoggedIn();
+            if (!isLoggedIn) {
+                        // Redirect to login or create account
+                        this.authenticator.login();
+                        return;
+                    }
+
         this.header.addHeaderToPage();
         this.clientNotificationLoad();
     }

@@ -27,6 +27,7 @@ module.exports = {
     healthChart: path.resolve(__dirname, 'src', 'pages', 'healthChart.js'),
     addMedication: path.resolve(__dirname, 'src', 'pages', 'addMedication.js'),
     removeMedication: path.resolve(__dirname, 'src', 'pages', 'removeMedication.js'),
+    updateMedicationInfo: path.resolve(__dirname, 'src', 'pages', 'updateMedicationInfo.js'),
   },
   output: {
     path: path.resolve(__dirname, 'build', 'assets'),

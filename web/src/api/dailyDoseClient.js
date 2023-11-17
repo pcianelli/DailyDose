@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication' 'updateMedicationInfo'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();

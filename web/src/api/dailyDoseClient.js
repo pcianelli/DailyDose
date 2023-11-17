@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication' 'updateMedicationInfo'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -95,6 +95,11 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    /**
+    * add medications.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a medications that it added.
+    */
     async addMedication(medicationDetails, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
@@ -113,6 +118,11 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    /**
+    * remove medications.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a medications that it removed.
+    */
     async removeMedication(medName, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
@@ -128,6 +138,11 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    /**
+    * updates medication info.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a medications that it updated.
+    */
     async updateMedicationInfo(medicationDetails, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");

@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -128,6 +128,23 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    async updateMedicationInfo(medicationDetails, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+
+            const response = await this.axiosClient.put(`medication`, {
+                medName: medicationDetails.medName,
+                medInfo: medicationDetails.medInfo
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.medication;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
 
     /**
      * Helper method to log the error and run any error functions.

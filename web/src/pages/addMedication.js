@@ -15,7 +15,7 @@ class AddMedication extends BindingClass {
         this.header = new Header(this.dataStore);
     }
 
-    /**
+/**
     * Add the header to the page and load the dailyDoseClient.
     */
     async mount() {

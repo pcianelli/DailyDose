@@ -2,9 +2,12 @@ package com.nashss.se.dailydose.activity;
 
 import com.nashss.se.dailydose.activity.requests.AddNotificationRequest;
 import com.nashss.se.dailydose.activity.results.AddNotificationResult;
+import com.nashss.se.dailydose.converters.LocalTimeConverter;
+import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
+import com.nashss.se.dailydose.models.NotificationModel;
 import com.nashss.se.dailydose.utils.IdUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +21,7 @@ import javax.inject.Inject;
 public class AddNotificationActivity {
     private final Logger log = LogManager.getLogger();
     private final NotificationDao notificationDao;
+    private final LocalTimeConverter timeConverter;
 
     /**
      * Instantiates a new AddNotificationActivity object.
@@ -27,6 +31,7 @@ public class AddNotificationActivity {
     @Inject
     public AddNotificationActivity(NotificationDao notificationDao) {
         this.notificationDao = notificationDao;
+        timeConverter = new LocalTimeConverter();
     }
 
     /**
@@ -61,8 +66,14 @@ public class AddNotificationActivity {
         notification.setCustomerId(addNotificationRequest.getCustomerId());
         notification.setNotificationId(IdUtils.generateNotificationId());
         notification.setMedName(addNotificationRequest.getMedName());
-        notification.setTime(addNotificationRequest.getTime());
+        notification.setTime(timeConverter.unconvert(addNotificationRequest.getTime()));
 
+        Notification result = notificationDao.addNotification(notification);
 
+        NotificationModel notificationModel = new ModelConverter().toNotificationModel(result);
+
+        return AddNotificationResult.builer()
+                .withNotificationModel(notificationModel)
+                .build();
     }
 }

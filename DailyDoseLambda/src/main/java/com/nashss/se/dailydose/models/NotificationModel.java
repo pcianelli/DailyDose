@@ -4,14 +4,14 @@ import java.util.Objects;
 
 public class NotificationModel {
     private final String customerId;
-    private final String notificationModel;
+    private final String notificationId;
     private final String medName;
     private final String time;
 
 
-    private NotificationModel(String customerId, String notificationModel, String medName, String time) {
+    private NotificationModel(String customerId, String notificationId, String medName, String time) {
         this.customerId = customerId;
-        this.notificationModel = notificationModel;
+        this.notificationId = notificationId;
         this.medName = medName;
         this.time = time;
     }
@@ -20,8 +20,8 @@ public class NotificationModel {
         return customerId;
     }
 
-    public String getNotificationModel() {
-        return notificationModel;
+    public String getNotificationId() {
+        return notificationId;
     }
 
     public String getMedName() {
@@ -42,13 +42,13 @@ public class NotificationModel {
         }
         NotificationModel that = (NotificationModel) o;
         return Objects.equals(customerId, that.customerId) &&
-                Objects.equals(notificationModel, that.notificationModel) &&
+                Objects.equals(notificationId, that.notificationId) &&
                 Objects.equals(medName, that.medName) && Objects.equals(time, that.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customerId, notificationModel, medName, time);
+        return Objects.hash(customerId, notificationId, medName, time);
     }
 
     /**

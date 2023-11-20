@@ -122,7 +122,7 @@ public class NotificationDao {
         }
     }
 
-    public Notification addNotificaiton(Notification notification) {
+    public Notification addNotification(Notification notification) {
         if(notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
         }

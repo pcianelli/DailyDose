@@ -23,6 +23,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -177,6 +178,32 @@ class  NotificationDaoTest {
 
         //THEN
         verify(dynamoDBMapper, times(1)).query(eq(Notification.class), captor.capture());
+    }
+
+    @Test
+    public void addNotification_withValidNotification_addsNotificationToTableReturnNotification() {
+        //GIVEN
+        Notification notification = new Notification();
+        notification.setCustomerId("customerId");
+        notification.setNotificationId("notificationId");
+        notification.setMedName("medName");
+        notification.setTime(converter.unconvert("08:30:00"));
+
+        //WHEN
+        Notification result = notificationDao.addNotification(notification);
+
+        //THEN
+        verify(dynamoDBMapper).save(notification);
+        assertEquals(notification, result);
+    }
+
+    @Test
+    public void addNotification_withNullNotification_returnsIllegalArgumentException() {
+        //GIVEN
+        Notification notification = null;
+
+        //WHEN AND THEN
+        assertThrows(IllegalArgumentException.class, () -> notificationDao.addNotification(notification));
     }
 
 

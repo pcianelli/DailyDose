@@ -70,9 +70,10 @@ public class AddNotificationActivity {
 
         Notification result = notificationDao.addNotification(notification);
 
-        NotificationModel notificationModel = new ModelConverter().toNotificationModel(result);
+        ModelConverter modelConverter = new ModelConverter();
+        NotificationModel notificationModel = modelConverter.toNotificationModel(result);
 
-        return AddNotificationResult.builer()
+        return AddNotificationResult.builder()
                 .withNotificationModel(notificationModel)
                 .build();
     }

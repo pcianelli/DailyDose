@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 public class ModelConverter {
-    private LocalTimeConverter converter = new LocalTimeConverter();
 
     /**
      * Converts a provided Medication into a MedicationModel representation.
@@ -62,6 +61,7 @@ public class ModelConverter {
      * @return the converted NotificationModel with fields mapped from Notification
      */
     public NotificationModel toNotificationModel(Notification notification) {
+        LocalTimeConverter converter = new LocalTimeConverter();
         return NotificationModel.builder()
                 .withCustomerId(notification.getCustomerId())
                 .withNotificationId(notification.getNotificationId())

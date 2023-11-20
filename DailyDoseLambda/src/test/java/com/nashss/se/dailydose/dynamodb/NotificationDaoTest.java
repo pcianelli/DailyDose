@@ -183,6 +183,7 @@ class  NotificationDaoTest {
     @Test
     public void addNotification_withValidNotification_addsNotificationToTableReturnNotification() {
         //GIVEN
+        converter = new LocalTimeConverter();
         Notification notification = new Notification();
         notification.setCustomerId("customerId");
         notification.setNotificationId("notificationId");

@@ -21,7 +21,7 @@ public class AddNotificationResult {
     }
 
     //CHECKSTYLE:OFF:Builder
-    public static Builder builer() {
+    public static Builder builder() {
         return new Builder();
     }
 

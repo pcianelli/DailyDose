@@ -4,12 +4,13 @@ import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
 
 /**
-* Logic needed for the add medication page of the website.
+* Logic needed for the add notification page of the website.
 */
-class AddMedication extends BindingClass {
+
+class AddNotification extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        this.bindingClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
@@ -21,7 +22,7 @@ class AddMedication extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
-        document.getElementById('add-medication-form').addEventListener('submit', this.submit);
+        document.getElementById('add-notification-form').addEventListener('submit', this.submit);
     }
 
     /**
@@ -32,15 +33,15 @@ class AddMedication extends BindingClass {
         event.preventDefault();
 
         const medName = document.getElementById('medName').value;
-        const medInfo = document.getElementById('medInfo').value;
+        cont time = document.getElementById('time').value;
 
-        const medicationDetails = {
+        const notificationDetails = {
             medName: medName,
-            medInfo: medInfo
+            time: time;
         };
 
         try {
-            const addMedication = await this.client.addMedication(medicationDetails);
+            const addNotification = await this.client.addNotification(notificationDetails);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
             console.error("Error adding medication: ", error);
@@ -81,7 +82,7 @@ class AddMedication extends BindingClass {
 * Main method to run when the page contents have loaded.
 */
 const main = async () => {
-    const addMedication = new AddMedication();
-    addMedication.mount();
+    const addNotification = new AddNotification();
+    addNotification.mount();
 };
 window.addEventListener('DOMContentLoaded', main);

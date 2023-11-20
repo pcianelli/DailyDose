@@ -299,7 +299,7 @@ Resources:
           Properties:
             Path: /medication/
             Method: put
-  
+
   AddNotificationLambda:
     Type: AWS::Serverless::Function
     Properties:

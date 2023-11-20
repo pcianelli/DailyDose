@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo', 'addNotification'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -156,6 +156,30 @@ export default class DailyDoseClient extends BindingClass {
                 }
             });
             return response.data.medication;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
+    /**
+    * add Notification.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a notification to be added to backend.
+    */
+    async addNotification(notificationDetails, errorCallback) {
+
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+
+            const response = await this.axiosClient.post(`notification`, {
+                medName: notificationDetails.medName,
+                medInfo: notificationDetails.time
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.notification;
         } catch (error) {
             this.handleError(error, errorCallback)
         }

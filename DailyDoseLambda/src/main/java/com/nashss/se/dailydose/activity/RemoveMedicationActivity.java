@@ -48,7 +48,7 @@ public class RemoveMedicationActivity {
         String medName = removeMedicationRequest.getMedName();
         // Check for invalid characters in the name
         if (!medName.matches("[a-zA-Z0-9 ]*")) {
-            throw new InvalidAttributeValueException("Invalid characters in the vendor name.");
+            throw new InvalidAttributeValueException("Invalid characters in the medication name.");
         }
         if (medName.equals("")) {
             throw new IllegalArgumentException("MedName cannot be null or blank");

@@ -337,7 +337,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medication/{medName}/{time}
+            Path: /notification/{medName}/{time}
             Method: delete
 
   #-----------------------------------------------------

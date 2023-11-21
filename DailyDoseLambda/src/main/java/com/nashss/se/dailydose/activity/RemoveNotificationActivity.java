@@ -18,7 +18,6 @@ import javax.inject.Inject;
 public class RemoveNotificationActivity {
     private final Logger log = LogManager.getLogger();
     private final NotificationDao notificationDao;
-    private final ModelConverter modelConverter;
 
     /**
      * Instantiates a new RemoveNotificationActivity object.
@@ -28,7 +27,6 @@ public class RemoveNotificationActivity {
     @Inject
     public RemoveNotificationActivity(NotificationDao notificationDao) {
         this.notificationDao = notificationDao;
-        modelConverter = new ModelConverter();
     }
 
     /**
@@ -43,11 +41,11 @@ public class RemoveNotificationActivity {
     public RemoveNotificationResult handleRequest(final RemoveNotificationRequest removeNotificationRequest) {
         log.info("Received RemoveNotificationRequest {}", removeNotificationRequest);
 
-
         Notification notification = notificationDao.getOneNotification(removeNotificationRequest.getCustomerId(), removeNotificationRequest.getMedName(), removeNotificationRequest.getTime());
 
         Notification result = notificationDao.removeNotification(notification);
 
+        ModelConverter modelConverter = new ModelConverter();
         NotificationModel notificationModel = modelConverter.toNotificationModel(result);
 
         return RemoveNotificationResult.builder()

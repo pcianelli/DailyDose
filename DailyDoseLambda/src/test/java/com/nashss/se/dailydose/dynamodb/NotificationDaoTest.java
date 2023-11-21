@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
+import com.nashss.se.dailydose.exceptions.NotificationNotFoundException;
 import com.nashss.se.dailydose.metrics.MetricsPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -207,5 +208,89 @@ class  NotificationDaoTest {
         assertThrows(IllegalArgumentException.class, () -> notificationDao.addNotification(notification));
     }
 
+    @Test
+    public void removeNotification_withValidNotification_removesNotificationFromTableReturnNotificaiton() {
+        //GIVEN
+        converter = new LocalTimeConverter();
+        Notification notification = new Notification();
+        notification.setCustomerId("customerId");
+        notification.setNotificationId("notificationId");
+        notification.setMedName("medName");
+        notification.setTime(converter.unconvert("08:30:00"));
+
+        //WHEN
+        Notification result = notificationDao.removeNotification(notification);
+
+        //THEN
+        verify(dynamoDBMapper).delete(notification);
+        assertEquals(notification, result);
+
+    }
+
+    @Test
+    public void removeNotification_withNullNotification_returnsIllegalArgumentException() {
+        //GIVEN
+        Notification notification = null;
+
+        //WHEN AND THEN
+        assertThrows(IllegalArgumentException.class, () -> notificationDao.removeNotification(notification));
+    }
+
+    @Test
+    public void getOneNotification_withPopulatedNotificationsGSI_returnsOneNotificationWithNotificationId() {
+        // GIVEN
+        String customerId = "1111";
+        String medName = "medName";
+        converter = new LocalTimeConverter();
+        LocalTime time = LocalTime.now();
+        String time1 = converter.convert(time);
+
+        Notification notification = new Notification();
+        notification.setCustomerId(customerId);
+        notification.setMedName(medName);
+        notification.setTime(time);
+
+        Notification notification2 = new Notification();
+        notification2.setCustomerId(customerId);
+        notification2.setNotificationId("2222");
+        notification2.setMedName(medName);
+        notification2.setTime(time);
+
+        Set<Notification> notificationSet = new HashSet<>();
+        notificationSet.add(notification2);
+
+        // Configure the mock to return the expected result
+        when(queryPaginatedResult.size()).thenReturn(1);
+        when(queryPaginatedResult.get(0)).thenReturn(notification2);
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(queryPaginatedResult);
+
+        // WHEN
+        Notification result = notificationDao.getOneNotification(customerId, medName, time1);
+
+        // THEN
+        assertEquals(notification2, result, "Expected query to return 1 notification");
+        assertNotNull(result.getNotificationId());
+        verify(dynamoDBMapper, times(1)).query(eq(Notification.class), any(DynamoDBQueryExpression.class));
+    }
+    @Test
+    public void getOneNotification_withNoNotificationsGSI_returnsNotificationNotFoundExceptionException() {
+        // GIVEN
+        String customerId = "1111";
+        String medName = "medName";
+        converter = new LocalTimeConverter();
+        LocalTime time = LocalTime.now();
+        String time1 = converter.convert(time);
+
+        Set<Notification> notificationSet = new HashSet<>();
+
+        // Configure the mock to return the expected result
+        when(queryPaginatedResult.size()).thenReturn(0);
+        when(queryPaginatedResult.get(0)).thenReturn(null);
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(queryPaginatedResult);
+
+        assertThrows(NotificationNotFoundException.class, () -> notificationDao.getOneNotification(customerId, medName, time1));
+    }
 
 }

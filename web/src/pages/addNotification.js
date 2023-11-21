@@ -10,50 +10,52 @@ import DataStore from '../util/DataStore';
 class AddNotification extends BindingClass {
     constructor() {
         super();
-        this.bindingClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        console.log("constructor called before binding class")
+        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        console.log("after binding class")
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
+        console.log("addNotification constructor");
     }
 
     /**
     * Add the header to the page and load the dailyDoseClient.
     */
     async mount() {
-        console.log('Mounting AddNotification');
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
         document.getElementById('add-notification-form').addEventListener('submit', this.submit);
-        console.log('AddNotification mounted successfully');
     }
 
     /**
-    * Method to run when the add medication form is submitted.
-    * Calls the DailyDoseService to add the medication.
+    * Add the header to the page and load the dailyDoseClient.
     */
     async submit(event) {
         event.preventDefault();
 
         const medName = document.getElementById('medName').value;
         const timeInput = document.getElementById('time');
-        const time = formatTime(timeInput.value);
+        // Find the 'period' element using querySelector
+        const periodSelect = document.querySelector('#period');
 
-        // Convert time to 24-hour format
-        const [hours, minutes] = time.split(':');
-        const ampm = hours < 12 ? 'am' : 'pm';
-        const convertedHours = (hours % 12) || 12; // Convert 0 to 12
+        // Check if elements are found before accessing their values
+        if (!medName || !timeInput || !periodSelect) {
+            console.error('Required elements not found.');
+            return;
+        }
 
-        // Format the time with seconds set to 00
-        const formattedTime = `${String(convertedHours).padStart(2, '0')}:${minutes}:00 ${ampm}`;
+        // Get the selected option from the period select element
+        const period = periodSelect.options[periodSelect.selectedIndex].value;
+
+        const time = formatTime(timeInput.value, period);
 
         try {
-            const addNotification = await this.client.addNotification({
-                medName: medName,
-                time: formattedTime,
-            });
+            // Pass medName and formattedTime as separate arguments
+            const addNotification = await this.client.addNotification(medName, time);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
-            console.error('Error adding medication: ', error);
+            console.error('Error adding notification: ', error);
         }
     }
 
@@ -90,19 +92,25 @@ class AddNotification extends BindingClass {
 /**
  * Format time to ensure it's in HH:mm:ss format.
  * @param {string} inputTime - The time input from the user.
+ * @param {string} period - The period (am/pm) selected by the user.
  * @returns {string} - Formatted time in HH:mm:ss format.
  */
-function formatTime(inputTime) {
+function formatTime(inputTime, period) {
     // Assuming the inputTime is in HH:mm format
-    const currentTime = new Date();
     const [hours, minutes] = inputTime.split(':');
-    currentTime.setHours(hours);
-    currentTime.setMinutes(minutes);
-    currentTime.setSeconds(0); // Set seconds to 0
+
+    // Convert hours to 24-hour format
+    let convertedHours = parseInt(hours, 10);
+
+    // Adjust for am/pm
+    if (period.toLowerCase() === 'pm' && convertedHours < 12) {
+        convertedHours += 12;
+    } else if (period.toLowerCase() === 'am' && convertedHours === 12) {
+        convertedHours = 0;
+    }
 
     // Format the time as HH:mm:ss
-    // Format the time as HH:mm:ss am/pm
-    const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    const formattedTime = `${String(convertedHours).padStart(2, '0')}:${minutes}:00`;
 
     return formattedTime;
 }

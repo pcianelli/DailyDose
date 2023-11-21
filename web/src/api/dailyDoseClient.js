@@ -167,9 +167,8 @@ export default class DailyDoseClient extends BindingClass {
     * @returns a notification to be added to backend.
     */
     async addNotification(medName, time, errorCallback) {
-
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+            const token = await this.getTokenOrThrow("Only authenticated users can add a notification.");
 
             const response = await this.axiosClient.post(`notification`, {
                 medName: medName,

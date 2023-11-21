@@ -109,7 +109,8 @@ public class NotificationDao {
         DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
                 .withIndexName("MedNameIndex")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("customerId = :customerId AND medName = :medName AND #time = :time")
+                .withKeyConditionExpression("customerId = :customerId AND medName = :medName")
+                .withFilterExpression("#time = :time")
                 .withExpressionAttributeNames(Collections.singletonMap("#time", "time"))
                 .withExpressionAttributeValues(valueMap);
 

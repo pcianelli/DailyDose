@@ -1,5 +1,6 @@
 package com.nashss.se.dailydose.dynamodb;
 
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.NotificationNotFoundException;
@@ -53,7 +54,7 @@ public class NotificationDao {
      * notifications matching the given customerId and medName criteria.
      *
      * @param customerId customerId search criteria.
-     * @param medName the medication name
+     * @param medName the medication name.
      * @return a Set of Notification objects that match the search criteria.
      */
     public Set<Notification> getNotifications(String customerId, String medName) {
@@ -79,6 +80,47 @@ public class NotificationDao {
         } else {
             metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
             return new HashSet<>(notificationsList);
+        }
+    }
+
+    /**
+     * Perform a search (via a "query") of the notifications table for a
+     * notification matching the given customerId, medName criteria and time.
+     *
+     * @param customerId customerId search criteria.
+     * @param medName the medication name search criteria
+     * @param time the time search criteria.
+     * @return a Notification object that match the search criteria with
+     * proper notificationId contained in the object.
+     */
+    public Notification getOneNotification(String customerId, String medName, String time) {
+        if (medName == null) {
+            throw new NotificationNotFoundException("Medication Name cannot be null");
+        }
+        if (time == null) {
+            throw new NotificationNotFoundException("Time cannot be null");
+        }
+
+        Map<String, AttributeValue> valueMap = new HashMap<>();
+        valueMap.put(":customerId", new AttributeValue().withS(customerId));
+        valueMap.put(":medName", new AttributeValue().withS(medName));
+        valueMap.put(":time", new AttributeValue().withS(time));
+
+        DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
+                .withIndexName("MedNameIndex")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("customerId = :customerId AND medName = :medName AND #time = :time")
+                .withExpressionAttributeNames(Collections.singletonMap("#time", "time"))
+                .withExpressionAttributeValues(valueMap);
+
+        PaginatedQueryList<Notification> resultNotifications = dynamoDbMapper.query(Notification.class, queryExpression);
+
+        if (resultNotifications.size() > 0) {
+            metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
+            return resultNotifications.get(0);
+        } else {
+            metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 1);
+            throw new NotificationNotFoundException("No matching notification found");
         }
     }
 
@@ -122,6 +164,12 @@ public class NotificationDao {
         }
     }
 
+    /**
+     * adds a notification to the notifications table.
+     *
+     * @param notification notification criteria to add.
+     * @return a Notification object that you added.
+     */
     public Notification addNotification(Notification notification) {
         if(notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
@@ -132,6 +180,26 @@ public class NotificationDao {
         } catch (Exception e) {
             log.error("Error creating notification to add", e);
             metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_FAIL_COUNT, 1);
+        }
+        return notification;
+    }
+
+    /**
+     * deletes a notification from the notifications table.
+     *
+     * @param notification notification criteria to add.
+     * @return a Notification object that you deleted.
+     */
+    public Notification removeNotification(Notification notification) {
+        if(notification == null) {
+            throw new IllegalArgumentException("notification cannot be null");
+        }
+        try {
+            dynamoDbMapper.delete(notification);
+            metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_SUCCESS_COUNT, 1);
+        } catch (Exception e) {
+            log.error("Error deleting notification", e);
+            metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_FAIL_COUNT, 1);
         }
         return notification;
     }

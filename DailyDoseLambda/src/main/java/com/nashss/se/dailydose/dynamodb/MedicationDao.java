@@ -112,7 +112,7 @@ public class MedicationDao {
             dynamoDbMapper.delete(medication);
             metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_SUCCESS_COUNT, 1);
         } catch (Exception e) {
-            log.error("Error deleting medication to add", e);
+            log.error("Error deleting medication", e);
             metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_FAIL_COUNT, 1);
         }
         return medication;

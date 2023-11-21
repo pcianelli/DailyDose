@@ -12,21 +12,21 @@ public class RemoveNotificationLambda
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<RemoveNotificationRequest> input, Context context) {
         return super.runActivity(
-                () -> {
-                    RemoveNotificationRequest unauthenticatedRequest = input.fromPath(path ->
-                            RemoveNotificationRequest.builder()
-                                    .withMedName(path.get("medName"))
-                                    .withTime(path.get("time"))
-                                    .build());
-                    return input.fromUserClaims(claims ->
-                            RemoveNotificationRequest.builder()
-                                    .withCustomerId(claims.get("email"))
-                                    .withMedName(unauthenticatedRequest.getMedName())
-                                    .withTime(unauthenticatedRequest.getTime())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideRemoveNotificationActivity().handleRequest(request)
+            () -> {
+                RemoveNotificationRequest unauthenticatedRequest = input.fromPath(path ->
+                    RemoveNotificationRequest.builder()
+                        .withMedName(path.get("medName"))
+                        .withTime(path.get("time"))
+                        .build());
+                return input.fromUserClaims(claims ->
+                    RemoveNotificationRequest.builder()
+                        .withCustomerId(claims.get("email"))
+                        .withMedName(unauthenticatedRequest.getMedName())
+                        .withTime(unauthenticatedRequest.getTime())
+                        .build());
+            },
+            (request, serviceComponent) ->
+                serviceComponent.provideRemoveNotificationActivity().handleRequest(request)
         );
     }
 }

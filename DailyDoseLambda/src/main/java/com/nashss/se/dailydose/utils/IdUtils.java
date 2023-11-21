@@ -12,11 +12,11 @@ public class IdUtils {
     private static final Pattern INVALID_CHARACTER_PATTERN = Pattern.compile("[\"'\\\\]");
     private static final int MAX_ID_LENGTH = 8;
 
-    /**
-     * Instantiates a new IdUtils object.
-     */
-    private IdUtils() {
-    }
+//    /**
+//     * Instantiates a new IdUtils object.
+//     */
+//    private IdUtils() {
+//    }
 
     /**
      * If the parameter does not have any invalid characters.

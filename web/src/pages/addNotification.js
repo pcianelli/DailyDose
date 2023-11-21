@@ -4,15 +4,19 @@ import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
 
 /**
-* Logic needed for the add medication page of the website.
+* Logic needed for the add notification page of the website.
 */
-class AddMedication extends BindingClass {
+
+class AddNotification extends BindingClass {
     constructor() {
         super();
+        console.log("constructor called before binding class")
         this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        console.log("after binding class")
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
+        console.log("addNotification constructor");
     }
 
     /**
@@ -21,29 +25,37 @@ class AddMedication extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
-        document.getElementById('add-medication-form').addEventListener('submit', this.submit);
+        document.getElementById('add-notification-form').addEventListener('submit', this.submit);
     }
 
     /**
-    * Method to run when the add medication form is submitted.
-    * Calls the DailyDoseService to add the medication.
+    * Add the header to the page and load the dailyDoseClient.
     */
     async submit(event) {
         event.preventDefault();
 
         const medName = document.getElementById('medName').value;
-        const medInfo = document.getElementById('medInfo').value;
+        const timeInput = document.getElementById('time');
+        // Find the 'period' element using querySelector
+        const periodSelect = document.querySelector('#period');
 
-        const medicationDetails = {
-            medName: medName,
-            medInfo: medInfo
-        };
+        // Check if elements are found before accessing their values
+        if (!medName || !timeInput || !periodSelect) {
+            console.error('Required elements not found.');
+            return;
+        }
+
+        // Get the selected option from the period select element
+        const period = periodSelect.options[periodSelect.selectedIndex].value;
+
+        const time = formatTime(timeInput.value, period);
 
         try {
-            const addMedication = await this.client.addMedication(medicationDetails);
+            // Pass medName and formattedTime as separate arguments
+            const addNotification = await this.client.addNotification(medName, time);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
-            console.error("Error adding medication: ", error);
+            console.error('Error adding notification: ', error);
         }
     }
 
@@ -62,7 +74,7 @@ class AddMedication extends BindingClass {
         const messageElement = document.createElement('div');
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
-        messageText.innerText = "Medication has been added to your health chart successfully!";
+        messageText.innerText = "Notification has been added to your health chart successfully!";
         messageText.style.color = "#2c3e50";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
@@ -78,10 +90,37 @@ class AddMedication extends BindingClass {
 }
 
 /**
+ * Format time to ensure it's in HH:mm:ss format.
+ * @param {string} inputTime - The time input from the user.
+ * @param {string} period - The period (am/pm) selected by the user.
+ * @returns {string} - Formatted time in HH:mm:ss format.
+ */
+function formatTime(inputTime, period) {
+    // Assuming the inputTime is in HH:mm format
+    const [hours, minutes] = inputTime.split(':');
+
+    // Convert hours to 24-hour format
+    let convertedHours = parseInt(hours, 10);
+
+    // Adjust for am/pm
+    if (period.toLowerCase() === 'pm' && convertedHours < 12) {
+        convertedHours += 12;
+    } else if (period.toLowerCase() === 'am' && convertedHours === 12) {
+        convertedHours = 0;
+    }
+
+    // Format the time as HH:mm:ss
+    const formattedTime = `${String(convertedHours).padStart(2, '0')}:${minutes}:00`;
+
+    return formattedTime;
+}
+
+/**
 * Main method to run when the page contents have loaded.
 */
 const main = async () => {
-    const addMedication = new AddMedication();
-    addMedication.mount();
+    console.log('Main method called');
+    const addNotification = new AddNotification();
+    addNotification.mount();
 };
 window.addEventListener('DOMContentLoaded', main);

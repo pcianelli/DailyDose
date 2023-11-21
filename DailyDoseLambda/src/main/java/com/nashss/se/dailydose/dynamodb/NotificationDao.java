@@ -10,6 +10,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class NotificationDao {
     private final DynamoDBMapper dynamoDbMapper;
     private final MetricsPublisher metricsPublisher;
     private final LocalTimeConverter converter;
+    private final Logger log = LogManager.getLogger();
 
     /**
      * Instantiates a NotificationDao object.
@@ -117,5 +120,19 @@ public class NotificationDao {
             metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
             return paginatedQueryList;
         }
+    }
+
+    public Notification addNotification(Notification notification) {
+        if(notification == null) {
+            throw new IllegalArgumentException("notification cannot be null");
+        }
+        try {
+            dynamoDbMapper.save(notification);
+            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
+        } catch (Exception e) {
+            log.error("Error creating notification to add", e);
+            metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_FAIL_COUNT, 1);
+        }
+        return notification;
     }
 }

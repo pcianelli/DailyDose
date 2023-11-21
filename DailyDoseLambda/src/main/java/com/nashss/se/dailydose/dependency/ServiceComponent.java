@@ -6,6 +6,7 @@ import com.nashss.se.dailydose.activity.GetMedicationsActivity;
 
 import com.nashss.se.dailydose.activity.RemoveMedicationActivity;
 
+import com.nashss.se.dailydose.activity.RemoveNotificationActivity;
 import com.nashss.se.dailydose.activity.UpdateMedicationInfoActivity;
 import dagger.Component;
 
@@ -47,4 +48,10 @@ public interface ServiceComponent {
      * @return addNotificationActivity
      */
     AddNotificationActivity provideAddNotificationActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return removeNotificationActivity
+     */
+    RemoveNotificationActivity provideRemoveNotificationActivity();
 }

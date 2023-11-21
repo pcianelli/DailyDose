@@ -166,14 +166,14 @@ export default class DailyDoseClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns a notification to be added to backend.
     */
-    async addNotification(notificationDetails, errorCallback) {
+    async addNotification(medName, time, errorCallback) {
 
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
 
             const response = await this.axiosClient.post(`notification`, {
-                medName: notificationDetails.medName,
-                medInfo: notificationDetails.time
+                medName: medName,
+                time: time
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`

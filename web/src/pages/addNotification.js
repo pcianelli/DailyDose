@@ -20,9 +20,11 @@ class AddNotification extends BindingClass {
     * Add the header to the page and load the dailyDoseClient.
     */
     async mount() {
+        console.log('Mounting AddNotification');
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
         document.getElementById('add-notification-form').addEventListener('submit', this.submit);
+        console.log('AddNotification mounted successfully');
     }
 
     /**
@@ -33,18 +35,25 @@ class AddNotification extends BindingClass {
         event.preventDefault();
 
         const medName = document.getElementById('medName').value;
-        cont time = document.getElementById('time').value;
+        const timeInput = document.getElementById('time');
+        const time = formatTime(timeInput.value);
 
-        const notificationDetails = {
-            medName: medName,
-            time: time;
-        };
+        // Convert time to 24-hour format
+        const [hours, minutes] = time.split(':');
+        const ampm = hours < 12 ? 'am' : 'pm';
+        const convertedHours = (hours % 12) || 12; // Convert 0 to 12
+
+        // Format the time with seconds set to 00
+        const formattedTime = `${String(convertedHours).padStart(2, '0')}:${minutes}:00 ${ampm}`;
 
         try {
-            const addNotification = await this.client.addNotification(notificationDetails);
+            const addNotification = await this.client.addNotification({
+                medName: medName,
+                time: formattedTime,
+            });
             this.showSuccessMessageAndRedirect();
         } catch (error) {
-            console.error("Error adding medication: ", error);
+            console.error('Error adding medication: ', error);
         }
     }
 
@@ -63,7 +72,7 @@ class AddNotification extends BindingClass {
         const messageElement = document.createElement('div');
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
-        messageText.innerText = "Medication has been added to your health chart successfully!";
+        messageText.innerText = "Notification has been added to your health chart successfully!";
         messageText.style.color = "#2c3e50";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
@@ -79,9 +88,30 @@ class AddNotification extends BindingClass {
 }
 
 /**
+ * Format time to ensure it's in HH:mm:ss format.
+ * @param {string} inputTime - The time input from the user.
+ * @returns {string} - Formatted time in HH:mm:ss format.
+ */
+function formatTime(inputTime) {
+    // Assuming the inputTime is in HH:mm format
+    const currentTime = new Date();
+    const [hours, minutes] = inputTime.split(':');
+    currentTime.setHours(hours);
+    currentTime.setMinutes(minutes);
+    currentTime.setSeconds(0); // Set seconds to 0
+
+    // Format the time as HH:mm:ss
+    // Format the time as HH:mm:ss am/pm
+    const formattedTime = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+
+    return formattedTime;
+}
+
+/**
 * Main method to run when the page contents have loaded.
 */
 const main = async () => {
+    console.log('Main method called');
     const addNotification = new AddNotification();
     addNotification.mount();
 };

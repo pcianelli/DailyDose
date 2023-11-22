@@ -293,4 +293,64 @@ class  NotificationDaoTest {
         assertThrows(NotificationNotFoundException.class, () -> notificationDao.getOneNotification(customerId, medName, time1));
     }
 
+    @Test
+    public void getTimeNotifications_withPopulatedNotificationsOnTimeIndexGSI_ReturnsListOfNotifications() {
+        // GIVEN
+        String customerId = "1111";
+        converter = new LocalTimeConverter();
+        LocalTime time = LocalTime.parse("12:00:00");
+        String time1 = converter.convert(time);
+
+        Notification notification = new Notification();
+        notification.setCustomerId(customerId);
+        notification.setNotificationId("2222");
+        notification.setMedName("MedName1");
+        notification.setTime(time);
+
+        Notification notification2 = new Notification();
+        notification2.setCustomerId(customerId);
+        notification2.setNotificationId("3333");
+        notification2.setMedName("medName2");
+        notification2.setTime(time);
+
+        List<Notification> notificationList = new ArrayList<>();
+        notificationList.add(notification);
+        notificationList.add(notification2);
+
+        when(queryPaginatedResult.iterator()).thenReturn(notificationList.iterator());
+
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(queryPaginatedResult);
+
+        //WHEN
+        List<Notification> resultList = notificationDao.getTimeNotifications(customerId, time1);
+
+        //THEN
+        assertEquals(notificationList, resultList, "Expected query to return 2 notifications");
+        verify(dynamoDBMapper, times(1)).query(eq(Notification.class), any(DynamoDBQueryExpression.class));
+    }
+
+    @Test
+    public void getTimeNotifications_withNoNotificationsOnTheOnTimeIndexGSI_ReturnsEmptyList() {
+        //GIVEN
+        String customerId = "1111";
+        converter = new LocalTimeConverter();
+        LocalTime time = LocalTime.parse("12:00:00");
+        String time1 = converter.convert(time);
+        List<Notification> emptyList = new ArrayList<>();
+
+        PaginatedQueryList<Notification> paginatedQueryList = Mockito.mock(PaginatedQueryList.class);
+        Mockito.when(paginatedQueryList.isEmpty()).thenReturn(true);
+
+        ArgumentCaptor<DynamoDBQueryExpression<Notification>> captor = ArgumentCaptor.forClass(DynamoDBQueryExpression.class);
+        when(dynamoDBMapper.query(eq(Notification.class), any(DynamoDBQueryExpression.class))).thenReturn(paginatedQueryList);
+
+        //WHEN
+        List<Notification> result = notificationDao.getTimeNotifications(customerId, time1);
+
+        //THEN
+        assertEquals(emptyList, result, "Should return an empty List");
+        verify(dynamoDBMapper, times(1)).query(eq(Notification.class), captor.capture());
+    }
+
 }

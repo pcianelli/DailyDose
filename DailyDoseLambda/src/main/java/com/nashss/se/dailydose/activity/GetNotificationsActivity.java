@@ -8,7 +8,6 @@ import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.models.NotificationModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -62,5 +61,3 @@ public class GetNotificationsActivity {
                 .build();
     }
 }
-
-

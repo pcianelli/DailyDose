@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo', 'addNotification'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo', 'addNotification', 'removeNotification'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -125,7 +125,7 @@ export default class DailyDoseClient extends BindingClass {
     */
     async removeMedication(medName, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+            const token = await this.getTokenOrThrow("Only authenticated users can remove a medication.");
 
             const response = await this.axiosClient.delete(`medication/${medName}`, {
                 headers: {
@@ -145,7 +145,7 @@ export default class DailyDoseClient extends BindingClass {
     */
     async updateMedicationInfo(medicationDetails, errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
+            const token = await this.getTokenOrThrow("Only authenticated users can update a medication.");
 
             const response = await this.axiosClient.put(`medication`, {
                 medName: medicationDetails.medName,
@@ -183,6 +183,27 @@ export default class DailyDoseClient extends BindingClass {
             this.handleError(error, errorCallback)
         }
     }
+
+    /**
+    * remove Notification.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a notification to be added to backend.
+    */
+    async removeNotification(medName, time, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can remove a notification.");
+
+            const response = await this.axiosClient.delete(`notification/${medName}/${time}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data.notification;
+        } catch (error) {
+            this.handleError(error, errorCallback)
+        }
+    }
+
 
     /**
      * Helper method to log the error and run any error functions.

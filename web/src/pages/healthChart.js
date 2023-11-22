@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -39,6 +39,51 @@ class HealthChart extends BindingClass {
         const medications = result.medications;
 
         this.dataStore.set('medications', medications);
+    }
+
+    removeNotificationClicked(medName, time) {
+        // Handle the "Remove Notification" button click
+        console.log(`Remove Notification Clicked for ${medName} at ${time}`);
+        // Add your logic to call the removeNotification method in your DailyDoseClient
+        try {
+            // Call the removeNotification method in your DailyDoseClient
+            this.client.removeNotification(medName, time);
+
+            // Show success message and redirect
+            this.showSuccessMessageAndRedirect();
+        } catch (error) {
+            console.error('Error removing notification:', error);
+            // Handle error
+        }
+    }
+
+    showSuccessMessageAndRedirect() {
+        // Hide everything except the header and body background
+        const allChildren = document.body.children;
+
+        for (let i = 0; i < allChildren.length; i++) {
+            const element = allChildren[i];
+            if (element.id !== 'header') {
+                element.style.display = 'none';
+            }
+        }
+
+        // Create success message with card class
+        const messageElement = document.createElement('div');
+        messageElement.className = 'card';  // Add the card class
+        const messageText = document.createElement('p');
+        messageText.innerText = "Notification has been removed from your health chart successfully!";
+        messageText.style.color = "#2c3e50";
+        messageText.style.fontSize = "40px";
+        messageText.style.margin = "20px 0";
+        messageElement.appendChild(messageText);
+        document.body.appendChild(messageElement);
+        setTimeout(() => {
+            const currentHostname = window.location.hostname;
+            const isLocal = currentHostname === 'localhost' || currentHostname === '127.0.0.1';
+            const baseUrl = isLocal ? 'http://localhost:8000/' : 'https://d3hqn9u6ae71hc.cloudfront.net/';
+            window.location.href = `${baseUrl}healthChart.html?timestamp=${Date.now()}`;
+        }, 3000);  // redirect after 3 seconds
     }
 
     displayMedications() {
@@ -103,7 +148,25 @@ class HealthChart extends BindingClass {
                 timeElement.className = 'alarm-time';
                 timeElement.innerHTML = `Alarm Time: ${formattedTime}`;
 
-                medicationCard.appendChild(timeElement);
+                // Create "Remove Notification" button
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'Remove Alarm';
+                removeButton.className = 'remove-notification-button';
+
+                // Attach a click event listener to the button
+                removeButton.addEventListener('click', () => {
+                    this.removeNotificationClicked(medication.medName, time); // Add your logic to handle the button click
+                });
+                const removeButtonContainer = document.createElement('div');
+                removeButtonContainer.className = 'remove-button-container';
+                removeButtonContainer.appendChild(removeButton);
+
+                const notificationContainer = document.createElement('div');
+                notificationContainer.className = 'notification-container';
+                notificationContainer.appendChild(timeElement);
+                notificationContainer.appendChild(removeButtonContainer);
+
+                medicationCard.appendChild(notificationContainer);
             });
 
             displayDiv.appendChild(medicationCard);

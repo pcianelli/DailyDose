@@ -357,7 +357,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /notification/
+            Path: /notification/time
             Method: get
 
   #-----------------------------------------------------

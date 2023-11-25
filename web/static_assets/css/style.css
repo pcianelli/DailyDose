@@ -57,6 +57,18 @@
       transition: opacity 0.3s ease-in-out;
 }
 
+#notifications-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--tertiary-color);
+    background: rgba(0, 0, 0, 0.7);
+      transition: opacity 0.3s ease-in-out;
+}
+
 .header_home {
     font-size: 36px;
     line-height: 40px;
@@ -82,7 +94,24 @@
   gap: 20px;
 }
 
+#notification-list-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around; /* Adjust alignment */
+  gap: 20px;
+}
+
 .medication-card {
+    background-color: #fff; /* White background */
+    border: 1px solid #e0e0e0; /* Light gray border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 20px;
+    padding: 20px;
+    transition: transform 0.2s ease-in-out; /* Add a subtle hover effect */
+}
+
+.notification-card {
     background-color: #fff; /* White background */
     border: 1px solid #e0e0e0; /* Light gray border */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */

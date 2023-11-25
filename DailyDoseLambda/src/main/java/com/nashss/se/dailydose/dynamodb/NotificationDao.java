@@ -147,12 +147,17 @@ public class NotificationDao {
         valueMap.put(":startTime", new AttributeValue().withS(converter.convert(fifteenMinutesBefore)));
         valueMap.put(":endTime", new AttributeValue().withS(converter.convert(fifteenMinutesAfter)));
 
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        expressionAttributeNames.put("#customerAttr", "customerId");
+        expressionAttributeNames.put("#timeAttr", "time");
+
         DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
                 .withIndexName("TimeIndex")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("customerId = :customerId and time between :startTime and :endTime")
+                .withKeyConditionExpression("#customerAttr = :customerId and #timeAttr between :startTime and :endTime")
                 .withExpressionAttributeValues(valueMap)
-                .withExpressionAttributeNames(Collections.singletonMap("#time", "time"));
+                .withExpressionAttributeNames(expressionAttributeNames);
+
 
         PaginatedQueryList<Notification> paginatedQueryList = dynamoDbMapper.query(Notification.class, queryExpression);
 

@@ -1,9 +1,13 @@
 package com.nashss.se.dailydose.activity.requests;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * This class represents a request to get all notifications for a specific time window.
  * It is used as a part of the GetNotificationsActivity API.
  */
+@JsonDeserialize(builder = GetNotificationsRequest.Builder.class)
 public class GetNotificationsRequest {
     private final String customerId;
     private final String time;
@@ -39,6 +43,7 @@ public class GetNotificationsRequest {
         return new Builder();
     }
 
+    @JsonPOJOBuilder
     public static class Builder {
         private String customerId;
         private String time;

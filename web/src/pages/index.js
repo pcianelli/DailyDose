@@ -56,9 +56,10 @@ import Authenticator from '../api/authenticator';
         console.log("client Loaded called...");
         this.showLoading();
 
-        const currentTime = this.getCurrentTime();
+        const time = this.getCurrentTime();
+        console.log("time :", time);
 
-        const result = await this.client.getNotifications(currentTime);
+        const result = await this.client.getNotifications(time);
         this.hideLoading();
         console.log("Result in clientLoaded: ", result);
 

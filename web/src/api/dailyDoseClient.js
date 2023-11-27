@@ -100,7 +100,7 @@ export default class DailyDoseClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns The list of notifications.
     */
-    async getNotifications(currentTime, errorCallback) {
+    async getNotifications(time, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can get notifications.");
 
@@ -109,7 +109,7 @@ export default class DailyDoseClient extends BindingClass {
                 Authorization: `Bearer ${token}`,
               },
               params: {
-                time: currentTime, // Pass the current time as a parameter
+                time:time, // Pass the current time as a parameter
               },
             });
 

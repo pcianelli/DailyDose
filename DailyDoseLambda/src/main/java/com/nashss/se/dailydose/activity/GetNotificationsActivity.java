@@ -6,12 +6,14 @@ import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.models.NotificationModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the GetNotificationsActivity for the DailyDose GetNotifications API.
@@ -48,11 +50,12 @@ public class GetNotificationsActivity {
     public GetNotificationsResult handleRequest(final GetNotificationsRequest getNotificationsRequest) {
         log.info("Received GetNotificationsRequest {}", getNotificationsRequest);
 
-        List<Notification> notificationList = notificationDao.getTimeNotifications(getNotificationsRequest.getCustomerId(), getNotificationsRequest.getTime());
+        List<Notification> notificationList = notificationDao.getTimeNotifications(
+                getNotificationsRequest.getCustomerId(), getNotificationsRequest.getTime());
 
         List<NotificationModel> notificationModelList = new ArrayList<>();
 
-        for(Notification notification: notificationList) {
+        for (Notification notification: notificationList) {
             notificationModelList.add(modelConverter.toNotificationModel(notification));
         }
 

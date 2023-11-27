@@ -40,59 +40,32 @@ public class AddNotificationRequest {
                 '}';
     }
 
-    /**
-     * This method returns a new Builder object for building a AddNotificationRequest object.
-     *
-     * @return a new Builder object.
-     */
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
 
-    /**
-     * This class provides a builder for the AddNotificationRequest object.
-     */
     @JsonPOJOBuilder
     public static class Builder {
         private String customerId;
         private String medName;
         private String time;
 
-        /**
-         * This method sets an customerId field.
-         * @param customerId is the partition key of the Notifications table
-         * @return Builder with customerId set.
-         */
         public Builder withCustomerId(String customerId) {
             this.customerId = customerId;
             return this;
         }
 
-        /**
-         * This method sets an medName field.
-         * @param medName is the partition key of the Notifications table
-         * @return Builder with medName set.
-         */
         public Builder withMedName(String medName) {
             this.medName = medName;
             return this;
         }
 
-        /**
-         * This method sets a time field.
-         * @param time is the partition key of the Notifications table
-         * @return Builder with time set.
-         */
         public Builder withTime(String time) {
             this.time = time;
             return this;
         }
 
-        /**
-         * This method builds and returns a new AddNotificationRequest object.
-         *
-         * @return a new AddNotificationRequest object.
-         */
         public AddNotificationRequest build() {
             return new AddNotificationRequest(customerId, medName, time);
         }

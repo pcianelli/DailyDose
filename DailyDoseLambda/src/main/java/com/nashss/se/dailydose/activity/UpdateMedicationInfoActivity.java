@@ -7,11 +7,13 @@ import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
 import com.nashss.se.dailydose.exceptions.MedicationNotFoundException;
 import com.nashss.se.dailydose.models.MedicationModel;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.util.HashSet;
+
+import javax.inject.Inject;
 
 public class UpdateMedicationInfoActivity {
 
@@ -50,14 +52,15 @@ public class UpdateMedicationInfoActivity {
      * If the request tries to update the customer ID,
      * this should throw an InvalidAttributeChangeException
      *
-     * @param updateMedicationInfoRequest request object containing the medication ID, medication name, and medication info
-     *                              associated with it
+     * @param updateMedicationInfoRequest request object containing the medication ID,
+     *                                    medication name, and medication info associated with it
      * @return updateMedicationInfoResult result object containing the API defined {@link MedicationModel}
      */
     public UpdateMedicationInfoResult handleRequest(final UpdateMedicationInfoRequest updateMedicationInfoRequest) {
         log.info("Received UpdatedMedicationInfoRequest {}", updateMedicationInfoRequest);
 
-        Medication medication = medicationDao.getOneMedication(updateMedicationInfoRequest.getCustomerId(), updateMedicationInfoRequest.getMedName());
+        Medication medication = medicationDao.getOneMedication(updateMedicationInfoRequest.getCustomerId(),
+                updateMedicationInfoRequest.getMedName());
 
         if (!medication.getMedName().equals(updateMedicationInfoRequest.getMedName())) {
             throw new MedicationNotFoundException("Medication must exist in your healthChart");
@@ -65,8 +68,7 @@ public class UpdateMedicationInfoActivity {
 
         if (updateMedicationInfoRequest.getMedInfo() == null || updateMedicationInfoRequest.getMedInfo().equals("")) {
             medication.setMedInfo("");
-        }
-        else {
+        } else {
             medication.setMedInfo(updateMedicationInfoRequest.getMedInfo());
         }
 

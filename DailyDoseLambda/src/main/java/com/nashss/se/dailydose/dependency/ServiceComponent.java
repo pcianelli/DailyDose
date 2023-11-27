@@ -9,6 +9,7 @@ import com.nashss.se.dailydose.activity.RemoveMedicationActivity;
 
 import com.nashss.se.dailydose.activity.RemoveNotificationActivity;
 import com.nashss.se.dailydose.activity.UpdateMedicationInfoActivity;
+
 import dagger.Component;
 
 import javax.inject.Singleton;

@@ -65,6 +65,13 @@ public class MedicationDao {
         return medicationQueryResults.getResults();
     }
 
+    /**
+     * Perform a load on the medications table for a medication matching the given medication criteria.
+     *
+     * @param customerId medications containing search criteria.
+     * @param medName medication containing search criteria.
+     * @return a Medication object that matches the search criteria.
+     */
     public Medication getOneMedication(String customerId, String medName) {
 
         Medication resultMedication = this.dynamoDbMapper.load(Medication.class, customerId, medName);
@@ -72,9 +79,7 @@ public class MedicationDao {
         if (resultMedication == null) {
             metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_SUCCESS_COUNT, 1);
             throw new MedicationNotFoundException("Could not find the medication " + medName);
-        }
-
-        else {
+        } else {
             metricsPublisher.addCount(MetricsConstants.GETONEMEDICATION_FAIL_COUNT, 1);
             return resultMedication;
         }

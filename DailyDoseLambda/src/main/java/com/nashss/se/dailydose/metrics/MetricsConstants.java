@@ -26,6 +26,7 @@ public class MetricsConstants {
     public static final String ADDNOTIFICATION_SUCCESS_COUNT = "GetNotifications.NotificationNotFoundException.Count";
     public static final String ADDNOTIFICATION_FAIL_COUNT = "GetNotifications.NotificationNotFoundException.Count";
 
-    public static final String REMOVENOTIFICATION_SUCCESS_COUNT = "GetNotifications.NotificationNotFoundException.Count";
+    public static final String REMOVENOTIFICATION_SUCCESS_COUNT =
+            "GetNotifications.NotificationNotFoundException.Count";
     public static final String REMOVENOTIFICATION_FAIL_COUNT = "GetNotifications.NotificationNotFoundException.Count";
 }

@@ -1,6 +1,5 @@
 package com.nashss.se.dailydose.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.NotificationNotFoundException;
@@ -114,7 +113,8 @@ public class NotificationDao {
                 .withExpressionAttributeNames(Collections.singletonMap("#time", "time"))
                 .withExpressionAttributeValues(valueMap);
 
-        PaginatedQueryList<Notification> resultNotifications = dynamoDbMapper.query(Notification.class, queryExpression);
+        PaginatedQueryList<Notification> resultNotifications =
+                dynamoDbMapper.query(Notification.class, queryExpression);
 
         if (resultNotifications.size() > 0) {
             metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
@@ -177,7 +177,7 @@ public class NotificationDao {
      * @return a Notification object that you added.
      */
     public Notification addNotification(Notification notification) {
-        if(notification == null) {
+        if (notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
         }
         try {
@@ -197,7 +197,7 @@ public class NotificationDao {
      * @return a Notification object that you deleted.
      */
     public Notification removeNotification(Notification notification) {
-        if(notification == null) {
+        if (notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
         }
         try {

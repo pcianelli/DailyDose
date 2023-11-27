@@ -1,6 +1,5 @@
 package com.nashss.se.dailydose.dynamodb;
 
-import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.NotificationNotFoundException;
@@ -114,7 +113,8 @@ public class NotificationDao {
                 .withExpressionAttributeNames(Collections.singletonMap("#time", "time"))
                 .withExpressionAttributeValues(valueMap);
 
-        PaginatedQueryList<Notification> resultNotifications = dynamoDbMapper.query(Notification.class, queryExpression);
+        PaginatedQueryList<Notification> resultNotifications =
+                dynamoDbMapper.query(Notification.class, queryExpression);
 
         if (resultNotifications.size() > 0) {
             metricsPublisher.addCount(MetricsConstants.GETNOTIFICATIONS_NOTIFATIONSNOTFOUND_COUNT, 0);
@@ -147,12 +147,17 @@ public class NotificationDao {
         valueMap.put(":startTime", new AttributeValue().withS(converter.convert(fifteenMinutesBefore)));
         valueMap.put(":endTime", new AttributeValue().withS(converter.convert(fifteenMinutesAfter)));
 
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        expressionAttributeNames.put("#customerAttr", "customerId");
+        expressionAttributeNames.put("#timeAttr", "time");
+
         DynamoDBQueryExpression<Notification> queryExpression = new DynamoDBQueryExpression<Notification>()
                 .withIndexName("TimeIndex")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("customerId = :customerId and time between :startTime and :endTime")
+                .withKeyConditionExpression("#customerAttr = :customerId and #timeAttr between :startTime and :endTime")
                 .withExpressionAttributeValues(valueMap)
-                .withExpressionAttributeNames(Collections.singletonMap("#time", "time"));
+                .withExpressionAttributeNames(expressionAttributeNames);
+
 
         PaginatedQueryList<Notification> paginatedQueryList = dynamoDbMapper.query(Notification.class, queryExpression);
 
@@ -172,7 +177,7 @@ public class NotificationDao {
      * @return a Notification object that you added.
      */
     public Notification addNotification(Notification notification) {
-        if(notification == null) {
+        if (notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
         }
         try {
@@ -192,7 +197,7 @@ public class NotificationDao {
      * @return a Notification object that you deleted.
      */
     public Notification removeNotification(Notification notification) {
-        if(notification == null) {
+        if (notification == null) {
             throw new IllegalArgumentException("notification cannot be null");
         }
         try {

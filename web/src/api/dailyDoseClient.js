@@ -10,7 +10,7 @@ export default class DailyDoseClient extends BindingClass {
 
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo', 'addNotification', 'removeNotification'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'getMedications', 'addMedication', 'removeMedication', 'updateMedicationInfo', 'addNotification', 'removeNotification', 'getNotifications'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();
@@ -73,7 +73,7 @@ export default class DailyDoseClient extends BindingClass {
     */
     async getMedications(errorCallback) {
         try {
-            const token = await this.getTokenOrThrow("Only authenticated users can create vendors.");
+            const token = await this.getTokenOrThrow("Only authenticated users can get medications.");
 
             const response = await this.axiosClient.get('medications',
             {
@@ -94,6 +94,38 @@ export default class DailyDoseClient extends BindingClass {
             this.handleError(error, errorCallback);
         }
     }
+
+    /**
+    * Get notifications.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns The list of notifications.
+    */
+    async getNotifications(time, errorCallback) {
+        try {
+            const token = await this.getTokenOrThrow("Only authenticated users can get notifications.");
+
+            const response = await this.axiosClient.get('notification', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              params: {
+                time:time, // Pass the current time as a parameter
+              },
+            });
+
+            console.log("Server Response:", response.data);
+
+            const result = {
+                notification: response.data.notificationModelList
+            };
+            console.log("Result:", result);
+            return result;
+        }
+        catch (error) {
+            this.handleError(error, errorCallback);
+        }
+    }
+
 
     /**
     * add medications.

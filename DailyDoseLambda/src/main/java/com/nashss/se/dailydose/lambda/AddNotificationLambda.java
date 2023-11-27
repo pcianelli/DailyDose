@@ -1,9 +1,11 @@
 package com.nashss.se.dailydose.lambda;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.nashss.se.dailydose.activity.requests.AddNotificationRequest;
 import com.nashss.se.dailydose.activity.results.AddNotificationResult;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+
 
 public class AddNotificationLambda
         extends LambdaActivityRunner<AddNotificationRequest, AddNotificationResult>

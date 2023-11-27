@@ -4,10 +4,12 @@ import com.nashss.se.dailydose.activity.AddMedicationActivity;
 import com.nashss.se.dailydose.activity.AddNotificationActivity;
 import com.nashss.se.dailydose.activity.GetMedicationsActivity;
 
+import com.nashss.se.dailydose.activity.GetNotificationsActivity;
 import com.nashss.se.dailydose.activity.RemoveMedicationActivity;
 
 import com.nashss.se.dailydose.activity.RemoveNotificationActivity;
 import com.nashss.se.dailydose.activity.UpdateMedicationInfoActivity;
+
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -54,4 +56,10 @@ public interface ServiceComponent {
      * @return removeNotificationActivity
      */
     RemoveNotificationActivity provideRemoveNotificationActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return getNotificationsActivity
+     */
+    GetNotificationsActivity provideGetNotificationsActivity();
 }

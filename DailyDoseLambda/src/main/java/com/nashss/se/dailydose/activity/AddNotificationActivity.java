@@ -9,6 +9,7 @@ import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.NotificationModel;
 import com.nashss.se.dailydose.utils.IdUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -58,7 +59,7 @@ public class AddNotificationActivity {
         if (medName.equals("") || medName == null) {
             throw new IllegalArgumentException("MedName cannot be null or blank");
         }
-        if(time.equals("") || time == null) {
+        if (time.equals("") || time == null) {
             throw new IllegalArgumentException("time cannot be null or blank");
         }
 

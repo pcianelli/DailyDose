@@ -4,18 +4,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 /**
- * This class represents a request to add a notification.
- * It is used as a part of the AddNotificationActivity API.
+ * This class represents a request to get all notifications for a specific time window.
+ * It is used as a part of the GetNotificationsActivity API.
  */
-@JsonDeserialize(builder = AddNotificationRequest.Builder.class)
-public class AddNotificationRequest {
+@JsonDeserialize(builder = GetNotificationsRequest.Builder.class)
+public class GetNotificationsRequest {
     private final String customerId;
-    private final String medName;
     private final String time;
 
-    private AddNotificationRequest(String customerId, String medName, String time) {
+    private GetNotificationsRequest(String customerId, String time) {
         this.customerId = customerId;
-        this.medName = medName;
         this.time = time;
     }
 
@@ -23,19 +21,19 @@ public class AddNotificationRequest {
         return customerId;
     }
 
-    public String getMedName() {
-        return medName;
-    }
-
     public String getTime() {
         return time;
     }
 
+    /**
+     * This method returns a string representation of the GetNotificationsRequest object.
+     *
+     * @return a string representing the object.
+     */
     @Override
     public String toString() {
-        return "addNotificationRequest{" +
+        return "GetNotificationsRequest{" +
                 "customerId='" + customerId + '\'' +
-                ", medName='" + medName + '\'' +
                 ", time='" + time + '\'' +
                 '}';
     }
@@ -48,16 +46,10 @@ public class AddNotificationRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String customerId;
-        private String medName;
         private String time;
 
         public Builder withCustomerId(String customerId) {
             this.customerId = customerId;
-            return this;
-        }
-
-        public Builder withMedName(String medName) {
-            this.medName = medName;
             return this;
         }
 
@@ -66,9 +58,8 @@ public class AddNotificationRequest {
             return this;
         }
 
-        public AddNotificationRequest build() {
-            return new AddNotificationRequest(customerId, medName, time);
+        public GetNotificationsRequest build() {
+            return new GetNotificationsRequest(customerId, time);
         }
     }
-
 }

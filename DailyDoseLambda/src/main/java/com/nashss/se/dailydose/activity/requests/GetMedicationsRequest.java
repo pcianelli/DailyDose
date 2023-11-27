@@ -1,7 +1,5 @@
 package com.nashss.se.dailydose.activity.requests;
 
-import org.apache.commons.lang3.builder.Builder;
-
 /**
  * This class represents a request to get all medications.
  * It is used as a part of the GetMedicationsActivity API.

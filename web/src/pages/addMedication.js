@@ -69,10 +69,7 @@ class AddMedication extends BindingClass {
         messageElement.appendChild(messageText);
         document.body.appendChild(messageElement);
         setTimeout(() => {
-            const currentHostname = window.location.hostname;
-            const isLocal = currentHostname === 'localhost' || currentHostname === '127.0.0.1';
-            const baseUrl = isLocal ? 'http://localhost:8000/' : 'https://d3hqn9u6ae71hc.cloudfront.net/';
-            window.location.href = `${baseUrl}healthChart.html`;
+            window.location.href = `/healthChart.html`;
         }, 3000);  // redirect after 3 seconds
     }
 }

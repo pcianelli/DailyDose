@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Music Playlist Service
+  DailyDose
 
 Parameters:
 
@@ -357,7 +357,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /notification
+            Path: /notification/
             Method: get
 
   #-----------------------------------------------------

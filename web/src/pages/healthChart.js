@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleDropdownButtonClick', 'handleMenuListClick'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -169,27 +169,32 @@ class HealthChart extends BindingClass {
             displayDiv.appendChild(medicationCard);
         });
     }
+
+    handleDropdownButtonClick() {
+        const dropdownContent = document.querySelector('.menu__list');
+        dropdownContent.classList.toggle('menu__list--animate');
+
+        // Toggle the display property based on animation state
+        dropdownContent.style.display = dropdownContent.classList.contains('menu__list--animate') ? 'block' : 'none';
+    }
+
+    handleMenuListClick(event) {
+        event.stopPropagation();
+    }
 }
 
 const main = async () => {
     const healthCart = new HealthChart();
     healthCart.mount();
+
+    document.getElementById('dropdown-button').addEventListener('click', () => {
+        healthCart.handleDropdownButtonClick();
+    });
+
+    document.querySelector('.menu__list').addEventListener('click', (event) => {
+        healthCart.handleMenuListClick(event);
+    });
+
 };
 
 window.addEventListener('DOMContentLoaded', main);
-
-// Close the dropdown menu if the user clicks outside of it
-//document.getElementById('dropdown-button').addEventListener('click', function() {
-//    const dropdownContent = document.querySelector('.menu__list');
-//    dropdownContent.classList.toggle('menu__list--animate');
-//
-//    // Close the dropdown if it is open and the button is clicked again
-//    if (!dropdownContent.classList.contains('menu__list--animate')) {
-//        dropdownContent.style.display = 'none';
-//    }
-//});
-//
-//// Prevent the dropdown from closing when clicking inside it
-//document.querySelector('.menu__list').addEventListener('click', function(event) {
-//    event.stopPropagation();
-//});

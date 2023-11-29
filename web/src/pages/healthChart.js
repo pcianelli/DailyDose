@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleDropdownButtonClick', 'handleMenuListClick'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleModalButtonClick', 'handleCloseModalClick', 'handleMenuListClick'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -170,12 +170,26 @@ class HealthChart extends BindingClass {
         });
     }
 
-    handleDropdownButtonClick() {
-        const dropdownContent = document.querySelector('.menu__list');
-        dropdownContent.classList.toggle('menu__list--animate');
+    handleModalButtonClick() {
+        const modal = document.getElementById('myModal');
+        const button = document.querySelector('.button2');
 
-        // Toggle the display property based on animation state
-        dropdownContent.style.display = dropdownContent.classList.contains('menu__list--animate') ? 'block' : 'none';
+        // Toggle the modal visibility
+        modal.style.display = 'block';
+
+        // Add the class to hide the button
+        button.classList.add('button2--hidden');
+    }
+
+    handleCloseModalClick() {
+        const modal = document.getElementById('myModal');
+        const button = document.querySelector('.button2');
+
+        // Toggle the modal visibility
+        modal.style.display = 'none';
+
+        // Remove the class to show the button
+        button.classList.remove('button2--hidden');
     }
 
     handleMenuListClick(event) {
@@ -187,14 +201,25 @@ const main = async () => {
     const healthCart = new HealthChart();
     healthCart.mount();
 
-    document.getElementById('dropdown-button').addEventListener('click', () => {
-        healthCart.handleDropdownButtonClick();
+    // Open modal
+    const openModalButton = document.getElementById('openModalButton');
+    openModalButton.addEventListener('click', () => {
+        healthCart.handleModalButtonClick();
     });
 
-    document.querySelector('.menu__list').addEventListener('click', (event) => {
-        healthCart.handleMenuListClick(event);
+    // Close modal
+    const closeModalButton = document.getElementById('closeModal');
+    closeModalButton.addEventListener('click', () => {
+        healthCart.handleCloseModalClick();
     });
 
+    // Close modal when clicking outside the modal
+    window.onclick = function (event) {
+        const modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 };
 
 window.addEventListener('DOMContentLoaded', main);

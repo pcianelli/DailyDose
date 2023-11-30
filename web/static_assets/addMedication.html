@@ -1,39 +1,45 @@
 <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <script type="text/javascript" src="assets/addMedication.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="assets/addMedication.js" defer></script>
+    <title>Add Medication</title>
 </head>
 
-<body class = "background">
-    <header class="header" id="header"></header>
+<body class="background">
+<header class="header" id="header"></header>
 
+<div class="healthChart-card">
+    <div class="button-container">
+        <a href="healthChart.html" class="button-64" role="button"><span class="text">View Health Chart</span></a>
+    </div>
+</div>
 
-    <div class="card">
+<div class="card">
+    <h2>Add Medication</h2>
 
-        <a href="healthChart.html" class="button">View Health Chart</a>
+    <form id="add-medication-form">
 
-        <h2>Add Medication</h2>
-
-        <form id="add-medication-form">
-
-            <div>
+        <div class="form-field">
             <label for="medName">Medication Name:</label>
             <input type="text" id="medName" name="medName" required>
-            </div>
+        </div>
 
-            <div>
+        <div class="form-field">
             <label for="medInfo">Medication Info / Medication Instructions:</label>
             <textarea id="medInfo" name="medInfo"></textarea>
-            </div>
+        </div>
 
-            <div>
+        <div class="form-field">
             <input type="submit" value="Add Medication">
-            </div>
+        </div>
 
-        </form>
-
-    </div>
+    </form>
+</div>
 
 </body>
 

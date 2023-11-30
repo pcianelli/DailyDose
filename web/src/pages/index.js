@@ -77,6 +77,12 @@ import Authenticator from '../api/authenticator';
         const displayDiv = document.getElementById('notification-time-display');
         displayDiv.innerText = notifications.length > 0 ? "" : "No Medication To Take At This Time";
 
+        if (notifications.length === 0) {
+          displayDiv.classList.add('no-medications-text');
+        } else {
+          displayDiv.classList.remove('no-medications-text');
+        }
+
         for(let i = 0; i < notifications.length; i++) {
             const not = notifications[i];
 

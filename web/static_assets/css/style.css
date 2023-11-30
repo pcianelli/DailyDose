@@ -109,6 +109,8 @@ html {
 }
 
 body {
+  background-image: url("/images/IMG_9711.JPG");
+  background-size: cover;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
   line-height: 1.4;
   max-width: 800px;
@@ -125,6 +127,8 @@ body {
 @media (prefers-color-scheme: dark) {
 
   body {
+  background-image: url("/images/IMG_9712.JPG");
+  background-size: cover;
   background: #202b38;
   background: var(--background-body);
   }
@@ -133,6 +137,8 @@ body {
 @media (prefers-color-scheme: dark) {
 
   body {
+  background-image: url("/images/IMG_9712.JPG");
+  background-size: cover;
   color: #dbdbdb;
   color: var(--text-main);
   }
@@ -240,6 +246,8 @@ textarea {
 h1 {
   font-size: 2.2em;
   margin-top: 0;
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 h1,
@@ -255,6 +263,8 @@ h6 {
 h1 {
   color: #000;
   color: var(--text-bright);
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -262,6 +272,8 @@ h1 {
   h1 {
   color: #fff;
   color: var(--text-bright);
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
   }
 }
 
@@ -1758,7 +1770,7 @@ html {
 }
 
 .button-container {
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1863,6 +1875,10 @@ min-width: 196px;
     text-align: center;
     font-size: 1.5em;
     font-family: 'Open Sans', sans-serif;
+}
+
+.menu__list__item a:hover {
+    color: black;
 }
 
 /* Modal styles */
@@ -1982,24 +1998,47 @@ min-width: 196px;
 }
 
 .medication-card {
-    background-color: #fff; /* White background */
-    border: 1px solid #e0e0e0; /* Light gray border */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px; /* Rounded corners */
+    background-color: rgba(0, 0, 0, .6);
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     margin-bottom: 20px;
     padding: 20px;
-    transition: transform 0.2s ease-in-out; /* Add a subtle hover effect */
+    transition: transform 0.2s ease-in-out;
+    color: white; /* Set the default text color for the medication card */
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.medication-card h2.medication-name {
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: white; /* Set the text color for the medication name */
+}
+
+.medication-card h3.medication-info {
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: white; /* Set the text color for the medication info */
+}
+
+.medication-card:hover {
+    transform: scale(1.02);
 }
 
 .notification-card {
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent white background */
+    background-color: rgba(0, 0, 0, .8); /* Transparent white background */
     text-align: center;
-    border: 1px solid #e0e0e0; /* Light gray border */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 10px; /* Rounded corners */
+    max-width: 50%;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.0); /* Subtle shadow */
     margin-bottom: 20px;
     padding: 20px;
-    transition: transform 0.2s ease-in-out; /* Add a subtle hover effect */
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .notification-background-card {
@@ -2014,9 +2053,14 @@ min-width: 196px;
     padding: 20px;
     transition: transform 0.2s ease-in-out;
 
-    /* Set width and height based on the image dimensions */
-    width: 700px; /* Adjust this based on your image width */
-    height: 700px; /* Adjust this based on your image height */
+    /* Set max-width and min-height based on your preferences */
+    max-width: 100%; /* Card won't exceed the width of its container */
+    min-height: 500px; /* Set a minimum height */
+    width: 80%; /* Adjust this based on your design */
+    height: auto; /* Height will adjust based on the content and aspect ratio */
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 .medication-card:hover {

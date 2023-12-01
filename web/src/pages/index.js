@@ -91,7 +91,7 @@ import Authenticator from '../api/authenticator';
             notificationElement.classList.add('notification-card');
 
             const medNameElement = document.createElement('p');
-            medNameElement.textContent = `MEDINE: ${not.medName}`;
+            medNameElement.textContent = `MEDICINE: ${not.medName}`;
 
             const timeElement = document.createElement('p');
 

@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="assets/updateMedicationInfo.js" defer></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
+
 <body class="background">
 <header class="header" id="header"></header>
 
-<div class="card">
+
     <p class="button-container">
         <a href="healthChart.html" class="button-64" role="button"><span class="text">View Health Chart</span></a>
     </p>
-
+<div class="med-menu-card">
     <h2>Update Medication Info</h2>
 
     <form id="update-medication-info-form">
 
-        <div>
+        <div class="form-field">
             <label for="medName">Medication Name:</label>
             <input type="text" id="medName" name="medName" required>
         </div>
 
-        <div>
+        <div class="form-field">
             <label for="medInfo">Update Medication Info / Medication Instructions:</label>
             <textarea id="medInfo" name="medInfo"></textarea>
         </div>
 
-        <div>
+        <div class="form-field">
         <input type="submit" value="Update Medication Info">
         </div>
 

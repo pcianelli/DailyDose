@@ -8,6 +8,7 @@ import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.NotificationModel;
 
+import com.nashss.se.dailydose.utils.IdUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,15 +47,9 @@ public class RemoveNotificationActivity {
         String medName = removeNotificationRequest.getMedName();
         String time = removeNotificationRequest.getTime();
         // Check for invalid characters in the name
-        if (!medName.matches("[a-zA-Z0-9 ]*")) {
-            throw new InvalidAttributeValueException("Invalid characters in the medication name.");
-        }
-        if (medName.equals("")) {
-            throw new IllegalArgumentException("MedName cannot be null or blank");
-        }
-        if (time.equals("") || time == null) {
-            throw new IllegalArgumentException("time cannot be null or blank");
-        }
+        IdUtils.validateMedicationName(medName);
+        IdUtils.validMedNameNotBlank(medName);
+        IdUtils.validTime(time);
 
         Notification notification = notificationDao.getOneNotification(removeNotificationRequest.getCustomerId(),
                 removeNotificationRequest.getMedName(), removeNotificationRequest.getTime());

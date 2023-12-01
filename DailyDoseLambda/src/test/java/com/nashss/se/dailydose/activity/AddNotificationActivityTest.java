@@ -89,7 +89,6 @@ class AddNotificationActivityTest {
     @Test
     public void handleRequest_invalidName_throwsIllegalArgumentException() {
         //GIVEN
-        LocalTimeConverter timeConverter = new LocalTimeConverter();
         String customerId = "customerId";
         String medName = "medName??@@";
         String time = "08:30:00";
@@ -99,6 +98,7 @@ class AddNotificationActivityTest {
                 .withMedName(medName)
                 .withTime(time)
                 .build();
+
 
         //THEN AND WHEN
         assertThrows(InvalidAttributeValueException.class, () -> addNotificationActivity.handleRequest(request));
@@ -122,7 +122,5 @@ class AddNotificationActivityTest {
         assertThrows(IllegalArgumentException.class, () -> addNotificationActivity.handleRequest(request));
 
     }
-
-
 
 }

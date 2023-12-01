@@ -182,7 +182,7 @@ public class NotificationDao {
         }
         try {
             dynamoDbMapper.save(notification);
-            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
+            metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_SUCCESS_COUNT, 1);
         } catch (Exception e) {
             log.error("Error creating notification to add", e);
             metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_FAIL_COUNT, 1);

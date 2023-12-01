@@ -74,8 +74,9 @@ class AddNotification extends BindingClass {
         const messageElement = document.createElement('div');
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
-        messageText.innerText = "Notification has been added to your health chart successfully!";
-        messageText.style.color = "#2c3e50";
+        messageText.innerText = "Alarm has been added to your health chart successfully!";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
         messageElement.appendChild(messageText);

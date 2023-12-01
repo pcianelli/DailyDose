@@ -77,6 +77,12 @@ import Authenticator from '../api/authenticator';
         const displayDiv = document.getElementById('notification-time-display');
         displayDiv.innerText = notifications.length > 0 ? "" : "No Medication To Take At This Time";
 
+        if (notifications.length === 0) {
+          displayDiv.classList.add('no-medications-text');
+        } else {
+          displayDiv.classList.remove('no-medications-text');
+        }
+
         for(let i = 0; i < notifications.length; i++) {
             const not = notifications[i];
 
@@ -85,7 +91,7 @@ import Authenticator from '../api/authenticator';
             notificationElement.classList.add('notification-card');
 
             const medNameElement = document.createElement('p');
-            medNameElement.textContent = `Take Medicine Now: ${not.medName}`;
+            medNameElement.textContent = `MEDICINE: ${not.medName}`;
 
             const timeElement = document.createElement('p');
 
@@ -103,7 +109,7 @@ import Authenticator from '../api/authenticator';
             // Format the time as HH:mm AM/PM
             const formattedTime = `${displayHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${amPm}`;
 
-            timeElement.textContent = `Alarm Time: ${formattedTime}`;
+            timeElement.textContent = `TIME: ${formattedTime}`;
 
             // Append elements to the notification card
             notificationElement.appendChild(medNameElement);

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="assets/addNotification.js" defer></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
@@ -8,20 +10,21 @@
 <body class = "background">
     <header class="header" id="header"></header>
 
+    <p class="button-container">
+        <a href="healthChart.html" class="button-64" role="button"><span class="text">View Health Chart</span></a>
+    </p>
 
-    <div class="card">
-
-        <a href="healthChart.html" class="button">View Health Chart</a>
-
+    <div class="med-menu-card">
         <h2>Add Notification</h2>
 
         <form id="add-notification-form">
-            <div>
+
+            <div class="form-field">
             <label for="medName">Medication Name:</label>
             <input type="text" id="medName" name="medName" required>
             </div>
 
-            <div>
+            <div class="form-field">
             <label for="time">Set Alarm Time:</label>
             <input type="text" id="time" name="time" placeholder="HH:mm" required>
 
@@ -33,7 +36,7 @@
             </select>
             </div>
 
-            <div>
+            <div class="form-field">
             <input type="submit" value="Add Notification">
             </div>
 

@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleModalButtonClick', 'handleCloseModalClick', 'handleMenuListClick'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -73,7 +73,8 @@ class HealthChart extends BindingClass {
         messageElement.className = 'card';  // Add the card class
         const messageText = document.createElement('p');
         messageText.innerText = "Notification has been removed from your health chart successfully!";
-        messageText.style.color = "#2c3e50";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
         messageText.style.fontSize = "40px";
         messageText.style.margin = "20px 0";
         messageElement.appendChild(messageText);
@@ -169,27 +170,57 @@ class HealthChart extends BindingClass {
             displayDiv.appendChild(medicationCard);
         });
     }
+
+    handleModalButtonClick() {
+        const modal = document.getElementById('myModal');
+        const button = document.querySelector('.button2');
+
+        // Toggle the modal visibility
+        modal.style.display = 'block';
+
+        // Add the class to hide the button
+        button.classList.add('button2--hidden');
+    }
+
+    handleCloseModalClick() {
+        const modal = document.getElementById('myModal');
+        const button = document.querySelector('.button2');
+
+        // Toggle the modal visibility
+        modal.style.display = 'none';
+
+        // Remove the class to show the button
+        button.classList.remove('button2--hidden');
+    }
+
+    handleMenuListClick(event) {
+        event.stopPropagation();
+    }
 }
 
 const main = async () => {
     const healthCart = new HealthChart();
     healthCart.mount();
+
+    // Open modal
+    const openModalButton = document.getElementById('openModalButton');
+    openModalButton.addEventListener('click', () => {
+        healthCart.handleModalButtonClick();
+    });
+
+    // Close modal
+    const closeModalButton = document.getElementById('closeModal');
+    closeModalButton.addEventListener('click', () => {
+        healthCart.handleCloseModalClick();
+    });
+
+    // Close modal when clicking outside the modal
+    window.onclick = function (event) {
+        const modal = document.getElementById('myModal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 };
 
 window.addEventListener('DOMContentLoaded', main);
-
-// Close the dropdown menu if the user clicks outside of it
-//document.getElementById('dropdown-button').addEventListener('click', function() {
-//    const dropdownContent = document.querySelector('.menu__list');
-//    dropdownContent.classList.toggle('menu__list--animate');
-//
-//    // Close the dropdown if it is open and the button is clicked again
-//    if (!dropdownContent.classList.contains('menu__list--animate')) {
-//        dropdownContent.style.display = 'none';
-//    }
-//});
-//
-//// Prevent the dropdown from closing when clicking inside it
-//document.querySelector('.menu__list').addEventListener('click', function(event) {
-//    event.stopPropagation();
-//});

@@ -1988,6 +1988,18 @@ min-width: 196px;
     border-radius: 10px;
 }
 
+.med-menu-card {
+    color: var(--primary-color);
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    background-image: url("/images/image4.jpeg");
+    background-size: cover;
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
+
 .healthChart-card {
     background-color: rgba(0, 0, 0, .95);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -2043,7 +2055,7 @@ min-width: 196px;
     background-image: url("/images/medico.jpeg");
     background-size: cover;
     background-position: center center;
-    opacity: 0.4; /* Adjust the opacity as needed */
+    opacity: 0.4;
     border-radius: 10px;
     z-index: -1;
     transition: opacity 0.2s ease-in-out;

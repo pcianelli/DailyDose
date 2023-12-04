@@ -1,6 +1,5 @@
 package com.nashss.se.dailydose.activity;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.nashss.se.dailydose.activity.requests.AddNotificationRequest;
 import com.nashss.se.dailydose.activity.results.AddNotificationResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
@@ -20,8 +19,6 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class AddNotificationActivityTest {
     @Mock
     private NotificationDao notificationDao;
-    @Mock
-    private DynamoDBMapper dynamoDBMapper;
 
     private AddNotificationActivity addNotificationActivity;
 
@@ -70,7 +67,6 @@ class AddNotificationActivityTest {
     @Test
     public void handleRequest_MedNameIsBlank_throwsIllegalArgumentException() {
         //GIVEN
-        LocalTimeConverter timeConverter = new LocalTimeConverter();
         String customerId = "customerId";
         String medName = "";
         String time = "08:30:00";
@@ -107,7 +103,6 @@ class AddNotificationActivityTest {
     @Test
     public void handleRequest_timeIsBlank_throwsIllegalArgumentException() {
         //GIVEN
-        LocalTimeConverter timeConverter = new LocalTimeConverter();
         String customerId = "customerId";
         String medName = "medName";
         String time = "";

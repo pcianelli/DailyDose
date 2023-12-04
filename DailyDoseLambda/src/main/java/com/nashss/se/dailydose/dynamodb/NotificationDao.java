@@ -178,15 +178,13 @@ public class NotificationDao {
      */
     public Notification addNotification(Notification notification) {
         if (notification == null) {
+            metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_FAIL_COUNT, 1);
             throw new IllegalArgumentException("notification cannot be null");
         }
-        try {
-            dynamoDbMapper.save(notification);
-            metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_SUCCESS_COUNT, 1);
-        } catch (Exception e) {
-            log.error("Error creating notification to add", e);
-            metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_FAIL_COUNT, 1);
-        }
+
+        dynamoDbMapper.save(notification);
+        metricsPublisher.addCount(MetricsConstants.ADDNOTIFICATION_SUCCESS_COUNT, 1);
+
         return notification;
     }
 
@@ -198,15 +196,13 @@ public class NotificationDao {
      */
     public Notification removeNotification(Notification notification) {
         if (notification == null) {
+            metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_FAIL_COUNT, 1);
             throw new IllegalArgumentException("notification cannot be null");
         }
-        try {
-            dynamoDbMapper.delete(notification);
-            metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_SUCCESS_COUNT, 1);
-        } catch (Exception e) {
-            log.error("Error deleting notification", e);
-            metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_FAIL_COUNT, 1);
-        }
+
+        dynamoDbMapper.delete(notification);
+        metricsPublisher.addCount(MetricsConstants.REMOVENOTIFICATION_SUCCESS_COUNT, 1);
+
         return notification;
     }
 }

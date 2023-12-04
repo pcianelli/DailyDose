@@ -9,7 +9,7 @@ import DataStore from '../util/DataStore';
 class UpdateMedicationInfo extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
+        this.bindClassMethods(['mount', 'submit', 'populateMedicationDropdown', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
@@ -21,7 +21,35 @@ class UpdateMedicationInfo extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
+
+        await this.populateMedicationDropdown();
+
         document.getElementById('update-medication-info-form').addEventListener('submit', this.submit);
+    }
+
+    /**
+     * Helper method to populate the medication dropdown.
+     */
+    async populateMedicationDropdown() {
+        const medNameDropdown = document.getElementById('medName');
+        try {
+            const medicationsResponse = await this.client.getMedications();
+            console.log('Medications:', medicationsResponse);
+
+            const medicationsArray = Array.isArray(medicationsResponse.medications)
+                ? medicationsResponse.medications
+                : [];
+            console.log('Medications:', medicationsArray);
+
+            medicationsArray.forEach((medication) => {
+                const option = document.createElement('option');
+                option.value = medication.medName;
+                option.text = medication.medName;
+                medNameDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching medications:', error);
+        }
     }
 
     /**

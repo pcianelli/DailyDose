@@ -11,7 +11,7 @@ class AddNotification extends BindingClass {
     constructor() {
         super();
         console.log("constructor called before binding class")
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
+        this.bindClassMethods(['mount', 'populateMedicationDropdown', 'submit', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
         console.log("after binding class")
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
@@ -25,7 +25,35 @@ class AddNotification extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
+
+        await this.populateMedicationDropdown();
+
         document.getElementById('add-notification-form').addEventListener('submit', this.submit);
+    }
+
+    /**
+     * Helper method to populate the medication dropdown.
+     */
+    async populateMedicationDropdown() {
+        const medNameDropdown = document.getElementById('medName');
+        try {
+            const medicationsResponse = await this.client.getMedications();
+            console.log('Medications:', medicationsResponse);
+
+            const medicationsArray = Array.isArray(medicationsResponse.medications)
+                ? medicationsResponse.medications
+                : [];
+            console.log('Medications:', medicationsArray);
+
+            medicationsArray.forEach((medication) => {
+                const option = document.createElement('option');
+                option.value = medication.medName;
+                option.text = medication.medName;
+                medNameDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching medications:', error);
+        }
     }
 
     /**

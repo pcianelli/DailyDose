@@ -3,6 +3,7 @@ package com.nashss.se.dailydose.activity;
 import com.nashss.se.dailydose.activity.requests.AddNotificationRequest;
 import com.nashss.se.dailydose.activity.results.AddNotificationResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
+import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
@@ -19,13 +20,17 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class AddNotificationActivityTest {
     @Mock
     private NotificationDao notificationDao;
+    @Mock
+    private MedicationDao medicationDao;
 
     private AddNotificationActivity addNotificationActivity;
+
+
 
     @BeforeEach
     void setup() {
         openMocks(this);
-        addNotificationActivity = new AddNotificationActivity(notificationDao);
+        addNotificationActivity = new AddNotificationActivity(medicationDao, notificationDao);
     }
 
     @Test

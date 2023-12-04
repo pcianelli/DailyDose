@@ -52,7 +52,6 @@ class AddNotification extends BindingClass {
 
         try {
             console.log('Before trying to add notification');
-
             const addNotification = await this.client.addNotification(medName, time);
             console.log('Notification added successfully');
             this.showSuccessMessageAndRedirect();
@@ -60,6 +59,7 @@ class AddNotification extends BindingClass {
             console.log('catch block called');
             console.error('Error adding notification: ', error.message);
             this.showFailMessageRedirect();
+
         }
     }
 
@@ -85,37 +85,37 @@ class AddNotification extends BindingClass {
         messageText.style.margin = "20px 0";
         messageElement.appendChild(messageText);
         document.body.appendChild(messageElement);
-//        setTimeout(() => {
-//            window.location.href = `/healthChart.html`;
-//        }, 3000);  // redirect after 3 seconds
+        setTimeout(() => {
+            window.location.href = `/healthChart.html`;
+        }, 3000);  // redirect after 3 seconds
     }
 
     showFailMessageRedirect() {
     // Hide everything except the header and body background
-            const allChildren = document.body.children;
+        const allChildren = document.body.children;
 
-            for (let i = 0; i < allChildren.length; i++) {
-                const element = allChildren[i];
-                if (element.id !== 'header') {
-                    element.style.display = 'none';
-                }
+        for (let i = 0; i < allChildren.length; i++) {
+            const element = allChildren[i];
+            if (element.id !== 'header') {
+                element.style.display = 'none';
             }
-
-            // Create success message with card class
-            const messageElement = document.createElement('div');
-            messageElement.className = 'card';  // Add the card class
-            const messageText = document.createElement('p');
-            messageText.innerText = "Error occurred trying to add Alarm! Try Again";
-            messageText.style.textAlign = "center";
-            messageText.style.color = "#FFFFFF";
-            messageText.style.fontSize = "40px";
-            messageText.style.margin = "20px 0";
-            messageElement.appendChild(messageText);
-            document.body.appendChild(messageElement);
-//            setTimeout(() => {
-//                window.location.href = `/addNotification.html`;
-//            }, 3000);  // redirect after 3 seconds
         }
+
+        const messageElement = document.createElement('div');
+        messageElement.className = 'card';  // Add the card class
+        const messageText = document.createElement('p');
+        messageText.innerText = "Error occurred trying to add Alarm! Try Again";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
+        messageText.style.fontSize = "40px";
+        messageText.style.margin = "20px 0";
+        messageElement.appendChild(messageText);
+        document.body.appendChild(messageElement);
+
+        setTimeout(() => {
+            window.location.href = `/addNotification.html`;
+        }, 4000);  // redirect after 4 seconds
+    }
 
 }
 

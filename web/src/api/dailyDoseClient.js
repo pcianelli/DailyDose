@@ -147,6 +147,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -167,6 +168,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -190,6 +192,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -213,6 +216,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.notification;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 

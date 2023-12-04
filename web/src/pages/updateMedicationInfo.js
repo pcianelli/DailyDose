@@ -9,7 +9,7 @@ import DataStore from '../util/DataStore';
 class UpdateMedicationInfo extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
@@ -44,6 +44,7 @@ class UpdateMedicationInfo extends BindingClass {
             this.showSuccessMessageAndRedirect();
         } catch (error) {
             console.error("Error adding medication: ", error);
+            this.showFailMessageRedirect();
         }
     }
 
@@ -72,6 +73,34 @@ class UpdateMedicationInfo extends BindingClass {
         setTimeout(() => {
             window.location.href = `/healthChart.html`;
         }, 3000);  // redirect after 3 seconds
+    }
+
+    showFailMessageRedirect() {
+    // Hide everything except the header and body background
+        const allChildren = document.body.children;
+
+        for (let i = 0; i < allChildren.length; i++) {
+            const element = allChildren[i];
+            if (element.id !== 'header') {
+                element.style.display = 'none';
+            }
+        }
+
+            // Create success message with card class
+        const messageElement = document.createElement('div');
+        messageElement.className = 'card';  // Add the card class
+        const messageText = document.createElement('p');
+        messageText.innerText = "Error occurred trying to update your Medication info! Try Again";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
+        messageText.style.fontSize = "40px";
+        messageText.style.margin = "20px 0";
+        messageElement.appendChild(messageText);
+        document.body.appendChild(messageElement);
+
+        setTimeout(() => {
+            window.location.href = `/updateMedicationInfo.html`;
+        }, 4000);
     }
 }
 

@@ -4,7 +4,6 @@ import com.nashss.se.dailydose.activity.requests.AddNotificationRequest;
 import com.nashss.se.dailydose.activity.results.AddNotificationResult;
 import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.converters.ModelConverter;
-import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
 import com.nashss.se.dailydose.models.NotificationModel;
@@ -21,7 +20,6 @@ import javax.inject.Inject;
  */
 public class AddNotificationActivity {
     private final Logger log = LogManager.getLogger();
-    private final MedicationDao medicationDao;
     private final NotificationDao notificationDao;
     private final LocalTimeConverter timeConverter;
 
@@ -31,8 +29,7 @@ public class AddNotificationActivity {
      * @param notificationDao  to access the notification table.
      */
     @Inject
-    public AddNotificationActivity(MedicationDao medicationDao, NotificationDao notificationDao) {
-        this.medicationDao = medicationDao;
+    public AddNotificationActivity(NotificationDao notificationDao) {
         this.notificationDao = notificationDao;
         timeConverter = new LocalTimeConverter();
     }
@@ -58,9 +55,6 @@ public class AddNotificationActivity {
         IdUtils.validateMedicationName(medName);
         IdUtils.validMedNameNotBlank(medName);
         IdUtils.validTime(time);
-
-        //Check that the medication is on the table for front end error purposes
-        medicationDao.getOneMedication(addNotificationRequest.getCustomerId(), addNotificationRequest.getMedName());
 
         Notification notification = new Notification();
         notification.setCustomerId(addNotificationRequest.getCustomerId());

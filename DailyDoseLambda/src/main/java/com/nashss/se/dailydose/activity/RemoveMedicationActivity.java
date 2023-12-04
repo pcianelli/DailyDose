@@ -51,12 +51,13 @@ public class RemoveMedicationActivity {
         IdUtils.validateMedicationName(medName);
         IdUtils.validMedNameNotBlank(medName);
 
-        //Check that the medication is on the table for front end error purposes
-        Medication matchMedication = medicationDao.getOneMedication(removeMedicationRequest.getCustomerId(), removeMedicationRequest.getMedName());
+        Medication medication = new Medication();
+        medication.setCustomerId(removeMedicationRequest.getCustomerId());
+        medication.setMedName(removeMedicationRequest.getMedName());
 
-        medicationDao.removeMedication(matchMedication);
+        medicationDao.removeMedication(medication);
 
-        MedicationModel medicationModel = new ModelConverter().toMedicationModel(matchMedication, new HashSet<>());
+        MedicationModel medicationModel = new ModelConverter().toMedicationModel(medication, new HashSet<>());
 
         return RemoveMedicationResult.builder()
                 .withMedicationModel(medicationModel)

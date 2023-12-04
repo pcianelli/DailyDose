@@ -17,8 +17,6 @@ import static org.mockito.MockitoAnnotations.openMocks;
 class UpdateMedicationInfoActivityTest {
     @Mock
     private MedicationDao medicationDao;
-    @Mock
-    private MetricsPublisher metricsPublisher;
     private UpdateMedicationInfoActivity updateMedicationInfoActivity;
 
     @BeforeEach

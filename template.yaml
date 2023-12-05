@@ -260,7 +260,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medication/
+            Path: /medications/
             Method: post
 
   RemoveMedicationLambda:
@@ -280,7 +280,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medication/{medName}
+            Path: /medications/{medName}
             Method: delete
 
   UpdateMedicationInfoLambda:
@@ -300,7 +300,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medication/
+            Path: /medications/{medName}
             Method: put
 
   AddNotificationLambda:
@@ -320,7 +320,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /notification/
+            Path: /notifications/
             Method: post
 
   RemoveNotificationLambda:
@@ -340,7 +340,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /notification/{medName}/{time}
+            Path: /notifications/{medName}/{time}
             Method: delete
 
   GetNotificationsLambda:
@@ -360,7 +360,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /notification/
+            Path: /notifications/
             Method: get
 
   #-----------------------------------------------------

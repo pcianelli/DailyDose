@@ -24,7 +24,7 @@ _List the most important questions you have about your design, or things that yo
 
 U1. _As a user, I would like to be able to create an account._
 
-U2. _As a user, I would like to be able to login to my account._
+U2. _As a user, I would like to be able to login/logout of my account._
 
 U3. _As a user, a banner will display and notify me if I am supposed to take a medication, it will include dosage and other info, should only be posted for duration of 15 minutes before and after the alarm._
 
@@ -40,30 +40,27 @@ U8. _As a user, I would like to be able to set an alarm for when I need to take 
 
 U9. _As a user, I would like to be able to update my medication information section_
 
-U10. _As a user, I would like to be able to change the alarm time._
-
-U11. _As a user, I would like to remove the alarm/ have no alarm._
+U10. _As a user, I would like to remove the alarm/ have no alarm._
 
 
 ### Stretch Use Cases:
-U12. _The alarm set should send a push notification, text, and email._
+U11. _The alarm set should send a push notification, text, and email._
 
-U13. _The app should keep track of how many pills are left and notify the User one week out to refill the prescription._
+U12. _The app should keep track of how many pills are left and notify the User one week out to refill the prescription._
 
-U14. _The user can click on a medication in their health chart, and it will bring them to a medication page with information about the medication (ex. Risks, allergies, etc.)_
+U13. _The user can click on a medication in their health chart, and it will bring them to a medication page with information about the medication (ex. Risks, allergies, etc.)_
 
-U15. _As a user, I would like to view my medication history health chart._
+U14. _As a user, I would like to view my medication history health chart._
 
 ## 4. Project Scope
-
-_Clarify which parts of the problem you intend to solve. It helps reviewers know what questions to ask to make sure you are solving for what you say and stops discussions from getting sidetracked by aspects you do not intend to handle in your design._
 
 ### 4.1. In Scope
 
 _- View your health chart, create/login to account_
 _- Add and remove medications from your health chart_
 _- Set an alarm of when to take your medication_
-_- Update the medication information and alarms set_
+_- Remove an alarm_
+_- Update the medication information_
 
 ### 4.2. Out of Scope
 
@@ -71,7 +68,7 @@ _Providing information about how to get a medication refill, or doctor informati
 
 # 5. Proposed Architecture Overview
 
-_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
+_I will use API Gateway and Lambda to create seven endpoints (GetMedicationsLambda, AddMedicationLambda, RemoveMedicationLambda, UpdateMedicationInfoLambda, AddNotificationLambda, RemoveNotificationLambda, GetNotificationsLambda) that will handle the creation, update, and retrieval of medications on the client healthChart and Notifications to satisfy my
 requirements._
 
 _I will store Medications in a dynamoDbTable. I will store Notifications in a dynamoDbTable._
@@ -149,7 +146,7 @@ The notifications will be loaded from the gsi anytime you click on the home page
 ![Sequence Diagram Update Medication.png](images%2FdesignImages%2FSequence%20Diagram%20Update%20Medication.png)
 
 
-## 6.6 _Get Notification Endpoint_
+## 6.6 _Get Notifications Endpoint_
 * Accepts `GET` requests to `/notifications/:time` 
 * Query notification gsi if the parameter passed in is time, returns all Notifications for that customerId at that time window of 15 minutes before and 15 minutes after that time. This is used to populate the banner only, not the health chart. 
     * If there are no notifications on the table, return an empty Set.
@@ -184,14 +181,14 @@ The notifications will be loaded from the gsi anytime you click on the home page
 
 # 7. Tables
 
-### 7.1. `Medications`
+### 7.1. `medications`
 ```
 customer_id // partition key, string
 med_name // sort key, string 
 med_info // string 
 ```
 
-### 7.2. `Notifications`
+### 7.2. `notifications`
 ```
 customer_id // partition key, string
 notification_id // sort key, string 
@@ -199,7 +196,7 @@ med_name // string
 time // string 
 ```
 
-### 7.2. `GSI NotificationsTime`
+### 7.2. `GSI TimeIndex`
 ```
 customer_id // partition key, string
 time // sort key, string 
@@ -207,7 +204,7 @@ med_name // string
 notification_id // string 
 ```
 
-### 7.2. `GSI NotificationsMedName`
+### 7.2. `GSI MedNameIndex`
 ```
 customer_id // partition key, string
 med_name // sort key, string 

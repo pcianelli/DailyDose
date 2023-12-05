@@ -62,13 +62,8 @@ class UpdateMedicationInfo extends BindingClass {
         const medName = document.getElementById('medName').value;
         const medInfo = document.getElementById('medInfo').value;
 
-        const medicationDetails = {
-            medName: medName,
-            medInfo: medInfo
-        };
-
         try {
-            const updateMedicationInfo = await this.client.updateMedicationInfo(medicationDetails);
+            const updateMedicationInfo = await this.client.updateMedicationInfo(medName, medInfo);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
             console.error("Error adding medication: ", error);

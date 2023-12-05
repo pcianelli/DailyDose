@@ -40,7 +40,11 @@ public class Medication {
     }
 
     public void setMedInfo(String medInfo) {
-        this.medInfo = medInfo;
+        if(medInfo == null || medInfo.equals("")) {
+            this.medInfo = "";
+        } else {
+            this.medInfo = medInfo;
+        }
     }
 
     /**

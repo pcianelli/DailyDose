@@ -19,7 +19,6 @@ public class UpdateMedicationInfoActivity {
 
     /**
      * Implementation of the UpdateMedicationInfoActivity for the DailyDose's UpdateMedicationInfo API.
-     *
      * This API allows the customer to update their saved medication's information.
      */
 
@@ -66,11 +65,11 @@ public class UpdateMedicationInfoActivity {
             throw new MedicationNotFoundException("Medication must exist in your healthChart");
         }
 
-        if (updateMedicationInfoRequest.getMedInfo() == null || updateMedicationInfoRequest.getMedInfo().equals("")) {
-            medication.setMedInfo("");
-        } else {
+//        if (updateMedicationInfoRequest.getMedInfo() == null || updateMedicationInfoRequest.getMedInfo().equals("")) {
+//            medication.setMedInfo("");
+//        } else {
             medication.setMedInfo(updateMedicationInfoRequest.getMedInfo());
-        }
+//        }
 
         medication = medicationDao.addMedication(medication);
 

@@ -9,7 +9,7 @@ import DataStore from '../util/DataStore';
 class UpdateMedicationInfo extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        this.bindClassMethods(['mount', 'submit', 'populateMedicationDropdown', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
         this.header = new Header(this.dataStore);
@@ -21,7 +21,35 @@ class UpdateMedicationInfo extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
+
+        await this.populateMedicationDropdown();
+
         document.getElementById('update-medication-info-form').addEventListener('submit', this.submit);
+    }
+
+    /**
+     * Helper method to populate the medication dropdown.
+     */
+    async populateMedicationDropdown() {
+        const medNameDropdown = document.getElementById('medName');
+        try {
+            const medicationsResponse = await this.client.getMedications();
+            console.log('Medications:', medicationsResponse);
+
+            const medicationsArray = Array.isArray(medicationsResponse.medications)
+                ? medicationsResponse.medications
+                : [];
+            console.log('Medications:', medicationsArray);
+
+            medicationsArray.forEach((medication) => {
+                const option = document.createElement('option');
+                option.value = medication.medName;
+                option.text = medication.medName;
+                medNameDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching medications:', error);
+        }
     }
 
     /**
@@ -34,16 +62,12 @@ class UpdateMedicationInfo extends BindingClass {
         const medName = document.getElementById('medName').value;
         const medInfo = document.getElementById('medInfo').value;
 
-        const medicationDetails = {
-            medName: medName,
-            medInfo: medInfo
-        };
-
         try {
-            const updateMedicationInfo = await this.client.updateMedicationInfo(medicationDetails);
+            const updateMedicationInfo = await this.client.updateMedicationInfo(medName, medInfo);
             this.showSuccessMessageAndRedirect();
         } catch (error) {
             console.error("Error adding medication: ", error);
+            this.showFailMessageRedirect();
         }
     }
 
@@ -72,6 +96,34 @@ class UpdateMedicationInfo extends BindingClass {
         setTimeout(() => {
             window.location.href = `/healthChart.html`;
         }, 3000);  // redirect after 3 seconds
+    }
+
+    showFailMessageRedirect() {
+    // Hide everything except the header and body background
+        const allChildren = document.body.children;
+
+        for (let i = 0; i < allChildren.length; i++) {
+            const element = allChildren[i];
+            if (element.id !== 'header') {
+                element.style.display = 'none';
+            }
+        }
+
+            // Create success message with card class
+        const messageElement = document.createElement('div');
+        messageElement.className = 'card';  // Add the card class
+        const messageText = document.createElement('p');
+        messageText.innerText = "Error occurred trying to update your Medication info! Try Again";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
+        messageText.style.fontSize = "40px";
+        messageText.style.margin = "20px 0";
+        messageElement.appendChild(messageText);
+        document.body.appendChild(messageElement);
+
+        setTimeout(() => {
+            window.location.href = `/updateMedicationInfo.html`;
+        }, 4000);
     }
 }
 

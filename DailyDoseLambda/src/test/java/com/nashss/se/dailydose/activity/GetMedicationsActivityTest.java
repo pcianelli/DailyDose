@@ -55,7 +55,7 @@ class GetMedicationsActivityTest {
 
         Notification notification2 = new Notification();
         notification2.setCustomerId(customerId);
-        notification2.setCustomerId(medName2);
+        notification2.setMedName(medName2);
         notification2.setTime(futureTimeTen);
 
         Set<Notification> notificationSet = new HashSet<>();

@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 class RemoveMedicationActivityTest {
@@ -28,13 +29,19 @@ class RemoveMedicationActivityTest {
     @Test
     public void handleRequest_withValidCustomerIdAndMedName_removesAndReturnsMedication() {
         //GIVEN
+
         String customerId = "customerId";
         String medName = "medName";
+        Medication medication = new Medication();
+        medication.setCustomerId(customerId);
+        medication.setMedName(medName);
 
         RemoveMedicationRequest request = RemoveMedicationRequest.builder()
                 .withCustomerId(customerId)
                 .withMedName(medName)
                 .build();
+
+        when(medicationDao.getOneMedication(customerId, medName)).thenReturn(medication);
 
         //WHEN
         RemoveMedicationResult result = removeMedicationActivity.handleRequest(request);

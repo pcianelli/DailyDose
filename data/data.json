@@ -86,7 +86,6 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "p.cianelli@yahoo.com" },
-          "notificationId": { "S": "9111" },
           "medName": { "S": "Albuterol" },
           "time": { "S": "8:00:00" }
         }
@@ -96,7 +95,6 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "p.cianelli@yahoo.com" },
-          "notificationId": { "S": "9112" },
           "medName": { "S": "Albuterol" },
           "time": { "S": "6:30:00" }
         }
@@ -106,7 +104,6 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "p.cianelli@yahoo.com" },
-          "notificationId": { "S": "9113" },
           "medName": { "S": "Oxytocin" },
           "time": { "S": "19:00:00" }
         }
@@ -116,7 +113,6 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "2222" },
-          "notificationId": { "S": "9114" },
           "medName": { "S": "Lantus" },
           "time": { "S": "20:00:00" }
         }
@@ -126,7 +122,6 @@
       "PutRequest": {
         "Item": {
           "customerId": { "S": "2222" },
-          "notificationId": { "S": "9115" },
           "medName": { "S": "Lantus" },
           "time": { "S": "08:30:00" }
         }

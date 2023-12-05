@@ -6,7 +6,6 @@ import com.nashss.se.dailydose.converters.LocalTimeConverter;
 import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
-import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.NotificationModel;
 import com.nashss.se.dailydose.utils.IdUtils;
 
@@ -53,15 +52,9 @@ public class AddNotificationActivity {
         String time = addNotificationRequest.getTime();
 
         // Check for invalid characters in the name
-        if (!medName.matches("[a-zA-Z0-9 ]*")) {
-            throw new InvalidAttributeValueException("Invalid characters in the vendor name.");
-        }
-        if (medName.equals("") || medName == null) {
-            throw new IllegalArgumentException("MedName cannot be null or blank");
-        }
-        if (time.equals("") || time == null) {
-            throw new IllegalArgumentException("time cannot be null or blank");
-        }
+        IdUtils.validateMedicationName(medName);
+        IdUtils.validMedNameNotBlank(medName);
+        IdUtils.validTime(time);
 
         Notification notification = new Notification();
         notification.setCustomerId(addNotificationRequest.getCustomerId());

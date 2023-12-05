@@ -216,9 +216,11 @@ const main = async () => {
 
     // Close modal when clicking outside the modal
     window.onclick = function (event) {
+        console.log('Window clicked');
         const modal = document.getElementById('myModal');
         if (event.target === modal) {
             modal.style.display = 'none';
+            healthCart.handleCloseModalClick();
         }
     };
 };

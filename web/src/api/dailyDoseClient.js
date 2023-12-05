@@ -104,7 +104,7 @@ export default class DailyDoseClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can get notifications.");
 
-            const response = await this.axiosClient.get('notification', {
+            const response = await this.axiosClient.get('notifications', {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
@@ -136,7 +136,7 @@ export default class DailyDoseClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a medication.");
 
-            const response = await this.axiosClient.post(`medication`, {
+            const response = await this.axiosClient.post(`medications`, {
                 medName: medicationDetails.medName,
                 medInfo: medicationDetails.medInfo
             }, {
@@ -147,6 +147,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -159,7 +160,7 @@ export default class DailyDoseClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can remove a medication.");
 
-            const response = await this.axiosClient.delete(`medication/${medName}`, {
+            const response = await this.axiosClient.delete(`medications/${medName}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -167,6 +168,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -175,13 +177,13 @@ export default class DailyDoseClient extends BindingClass {
     * @param errorCallback (Optional) A function to execute if the call fails.
     * @returns a medications that it updated.
     */
-    async updateMedicationInfo(medicationDetails, errorCallback) {
+    async updateMedicationInfo(medName, medInfo, errorCallback) {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can update a medication.");
 
-            const response = await this.axiosClient.put(`medication`, {
-                medName: medicationDetails.medName,
-                medInfo: medicationDetails.medInfo
+            const response = await this.axiosClient.put(`medications/${medName}`, {
+                medName: medName,
+                medInfo: medInfo
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -190,6 +192,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.medication;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -202,7 +205,7 @@ export default class DailyDoseClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can add a notification.");
 
-            const response = await this.axiosClient.post(`notification`, {
+            const response = await this.axiosClient.post(`notifications`, {
                 medName: medName,
                 time: time
             }, {
@@ -213,6 +216,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.notification;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 
@@ -225,7 +229,7 @@ export default class DailyDoseClient extends BindingClass {
         try {
             const token = await this.getTokenOrThrow("Only authenticated users can remove a notification.");
 
-            const response = await this.axiosClient.delete(`notification/${medName}/${time}`, {
+            const response = await this.axiosClient.delete(`notifications/${medName}/${time}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -233,6 +237,7 @@ export default class DailyDoseClient extends BindingClass {
             return response.data.notification;
         } catch (error) {
             this.handleError(error, errorCallback)
+            throw error;
         }
     }
 

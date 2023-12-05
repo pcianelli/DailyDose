@@ -11,7 +11,7 @@ class AddNotification extends BindingClass {
     constructor() {
         super();
         console.log("constructor called before binding class")
-        this.bindClassMethods(['mount', 'submit', 'showSuccessMessageAndRedirect'], this);
+        this.bindClassMethods(['mount', 'populateMedicationDropdown', 'submit', 'showSuccessMessageAndRedirect', 'showFailMessageRedirect'], this);
         console.log("after binding class")
         this.dataStore = new DataStore();
         this.dataStore.addChangeListener(this.redirectToHealthChart);
@@ -25,7 +25,35 @@ class AddNotification extends BindingClass {
     async mount() {
         await this.header.addHeaderToPage();
         this.client = new DailyDoseClient();
+
+        await this.populateMedicationDropdown();
+
         document.getElementById('add-notification-form').addEventListener('submit', this.submit);
+    }
+
+    /**
+     * Helper method to populate the medication dropdown.
+     */
+    async populateMedicationDropdown() {
+        const medNameDropdown = document.getElementById('medName');
+        try {
+            const medicationsResponse = await this.client.getMedications();
+            console.log('Medications:', medicationsResponse);
+
+            const medicationsArray = Array.isArray(medicationsResponse.medications)
+                ? medicationsResponse.medications
+                : [];
+            console.log('Medications:', medicationsArray);
+
+            medicationsArray.forEach((medication) => {
+                const option = document.createElement('option');
+                option.value = medication.medName;
+                option.text = medication.medName;
+                medNameDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching medications:', error);
+        }
     }
 
     /**
@@ -51,11 +79,15 @@ class AddNotification extends BindingClass {
         const time = formatTime(timeInput.value, period);
 
         try {
-            // Pass medName and formattedTime as separate arguments
+            console.log('Before trying to add notification');
             const addNotification = await this.client.addNotification(medName, time);
+            console.log('Notification added successfully');
             this.showSuccessMessageAndRedirect();
         } catch (error) {
-            console.error('Error adding notification: ', error);
+            console.log('catch block called');
+            console.error('Error adding notification: ', error.message);
+            this.showFailMessageRedirect();
+
         }
     }
 
@@ -85,6 +117,34 @@ class AddNotification extends BindingClass {
             window.location.href = `/healthChart.html`;
         }, 3000);  // redirect after 3 seconds
     }
+
+    showFailMessageRedirect() {
+    // Hide everything except the header and body background
+        const allChildren = document.body.children;
+
+        for (let i = 0; i < allChildren.length; i++) {
+            const element = allChildren[i];
+            if (element.id !== 'header') {
+                element.style.display = 'none';
+            }
+        }
+
+        const messageElement = document.createElement('div');
+        messageElement.className = 'card';  // Add the card class
+        const messageText = document.createElement('p');
+        messageText.innerText = "Error occurred trying to add Alarm! Try Again";
+        messageText.style.textAlign = "center";
+        messageText.style.color = "#FFFFFF";
+        messageText.style.fontSize = "40px";
+        messageText.style.margin = "20px 0";
+        messageElement.appendChild(messageText);
+        document.body.appendChild(messageElement);
+
+        setTimeout(() => {
+            window.location.href = `/addNotification.html`;
+        }, 4000);  // redirect after 4 seconds
+    }
+
 }
 
 /**

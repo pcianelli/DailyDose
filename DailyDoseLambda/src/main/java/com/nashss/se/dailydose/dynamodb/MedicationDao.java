@@ -92,15 +92,13 @@ public class MedicationDao {
      */
     public Medication addMedication(Medication medication) {
         if (medication == null) {
+            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_FAIL_COUNT, 1);
             throw new IllegalArgumentException("medication cannot be null");
         }
-        try {
-            dynamoDbMapper.save(medication);
-            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
-        } catch (Exception e) {
-            log.error("Error creating medication to add", e);
-            metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_FAIL_COUNT, 1);
-        }
+
+        dynamoDbMapper.save(medication);
+        metricsPublisher.addCount(MetricsConstants.ADDMEDICATION_SUCCESS_COUNT, 1);
+
         return medication;
     }
 
@@ -111,15 +109,13 @@ public class MedicationDao {
      */
     public Medication removeMedication(Medication medication) {
         if (medication == null) {
+            metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_FAIL_COUNT, 1);
             throw new IllegalArgumentException("medication cannot be null");
         }
-        try {
-            dynamoDbMapper.delete(medication);
-            metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_SUCCESS_COUNT, 1);
-        } catch (Exception e) {
-            log.error("Error deleting medication", e);
-            metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_FAIL_COUNT, 1);
-        }
+
+        dynamoDbMapper.delete(medication);
+        metricsPublisher.addCount(MetricsConstants.REMOVEMEDICATION_SUCCESS_COUNT, 1);
+
         return medication;
     }
 }

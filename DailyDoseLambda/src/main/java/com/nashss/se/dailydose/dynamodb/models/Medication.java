@@ -39,8 +39,13 @@ public class Medication {
         return medInfo;
     }
 
+    /**
+     * Sets medication infot.
+     *
+     * @param medInfo The medication info to set
+     */
     public void setMedInfo(String medInfo) {
-        if(medInfo == null || medInfo.equals("")) {
+        if (medInfo == null || medInfo.equals("")) {
             this.medInfo = "";
         } else {
             this.medInfo = medInfo;

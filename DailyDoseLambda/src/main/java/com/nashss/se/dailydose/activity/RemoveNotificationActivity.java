@@ -5,10 +5,10 @@ import com.nashss.se.dailydose.activity.results.RemoveNotificationResult;
 import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.NotificationDao;
 import com.nashss.se.dailydose.dynamodb.models.Notification;
-import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.NotificationModel;
 
 import com.nashss.se.dailydose.utils.IdUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

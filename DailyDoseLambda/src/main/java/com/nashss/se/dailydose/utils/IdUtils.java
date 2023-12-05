@@ -1,6 +1,7 @@
 package com.nashss.se.dailydose.utils;
 
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,7 +32,7 @@ public class IdUtils {
      * @param medName The medication name to validate.
      * @throws IllegalArgumentException if the medication name is blank.
      */
-    public static void validMedNameNotBlank(String medName) throws IllegalArgumentException{
+    public static void validMedNameNotBlank(String medName) throws IllegalArgumentException {
         if (medName.equals("")) {
             throw new IllegalArgumentException("Invalid characters in the medication name or name is blank");
         }
@@ -44,7 +45,7 @@ public class IdUtils {
      * @throws IllegalArgumentException if the time is null or blank.
      */
     public static void validTime(String time) {
-        if(time == null || StringUtils.isBlank(time)) {
+        if (time == null || StringUtils.isBlank(time)) {
             throw new IllegalArgumentException("Time cannot be null or blank");
         }
     }

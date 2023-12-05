@@ -5,10 +5,10 @@ import com.nashss.se.dailydose.activity.results.AddMedicationResult;
 import com.nashss.se.dailydose.converters.ModelConverter;
 import com.nashss.se.dailydose.dynamodb.MedicationDao;
 import com.nashss.se.dailydose.dynamodb.models.Medication;
-import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
 import com.nashss.se.dailydose.models.MedicationModel;
 
 import com.nashss.se.dailydose.utils.IdUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

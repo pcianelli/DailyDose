@@ -55,11 +55,7 @@ public class AddMedicationActivity {
         Medication medication = new Medication();
         medication.setCustomerId(addMedicationRequest.getCustomerId());
         medication.setMedName(addMedicationRequest.getMedName());
-//        if (addMedicationRequest.getMedInfo() == null || addMedicationRequest.getMedInfo().equals("")) {
-//            medication.setMedInfo("");
-//        } else {
-            medication.setMedInfo(addMedicationRequest.getMedInfo());
-//        }
+        medication.setMedInfo(addMedicationRequest.getMedInfo());
 
         medicationDao.addMedication(medication);
 

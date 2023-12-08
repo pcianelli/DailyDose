@@ -5,6 +5,10 @@ import com.nashss.se.dailydose.models.MedicationThirdPartyModel;
 public class GetMedicationThirdPartyResult {
     private final MedicationThirdPartyModel medicationThirdPartyModel;
 
+    /**
+     * Instantiates a new GetMedicationThirdPartyResult object.
+     * @param medicationThirdPartyModel model passed in to create response
+     */
     public GetMedicationThirdPartyResult(MedicationThirdPartyModel medicationThirdPartyModel) {
         this.medicationThirdPartyModel = medicationThirdPartyModel;
     }

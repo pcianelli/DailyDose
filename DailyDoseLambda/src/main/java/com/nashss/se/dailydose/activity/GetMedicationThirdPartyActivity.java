@@ -1,20 +1,22 @@
 package com.nashss.se.dailydose.activity;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nashss.se.dailydose.activity.requests.GetMedicationThirdPartyRequest;
 import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
 import com.nashss.se.dailydose.models.MedicationThirdPartyModel;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the GetMedicationThirdPartyActivity for the openFDA API.
@@ -41,11 +43,16 @@ public class GetMedicationThirdPartyActivity {
      *
      * @param getMedicationThirdPartyRequest request object
      * @return getMedicationThirdPartyResult result object containing the medicationThirdPartyModel
+     * @throws IOException throws IOException if URI cant be built
+     * @throws InterruptedException throws InterruptedException if response cannot return from API
+     * @throws URISyntaxException throws URISyntaxException if response cannot parsed
      */
-    public GetMedicationThirdPartyResult handleRequest(final GetMedicationThirdPartyRequest getMedicationThirdPartyRequest) throws IOException, InterruptedException, URISyntaxException {
+    public GetMedicationThirdPartyResult handleRequest(
+            final GetMedicationThirdPartyRequest getMedicationThirdPartyRequest)
+            throws IOException, InterruptedException, URISyntaxException {
 
-        String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name="
-                + getMedicationThirdPartyRequest.getGenericName();
+        String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name=" +
+                getMedicationThirdPartyRequest.getGenericName();
 
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(new URI(apiUrl))

@@ -1,7 +1,5 @@
 package com.nashss.se.dailydose.activity.requests;
 
-import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
-
 /**
  * This class represents a request to get the medication information from the openFDA API.
  * It is used as a part of the GetMedicationThirdPartyActivity API.
@@ -9,6 +7,10 @@ import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
 public class GetMedicationThirdPartyRequest {
     private final String genericName;
 
+    /**
+     * Instantiates a new GetMedicationThirdPartyRequest object.
+     * @param genericName name passed in to be queried
+     */
     public GetMedicationThirdPartyRequest(String genericName) {
         this.genericName = genericName;
     }

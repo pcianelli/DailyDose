@@ -8,7 +8,8 @@ public class MedicationThirdPartyModel {
     private final String warnings;
     private final String doNotUse;
 
-    private MedicationThirdPartyModel(String activeIngredient, String indicationsAndUsage, String warnings, String doNotUse) {
+    private MedicationThirdPartyModel(String activeIngredient,
+                                      String indicationsAndUsage, String warnings, String doNotUse) {
         this.activeIngredient = activeIngredient;
         this.indicationsAndUsage = indicationsAndUsage;
         this.warnings = warnings;
@@ -34,10 +35,16 @@ public class MedicationThirdPartyModel {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MedicationThirdPartyModel that = (MedicationThirdPartyModel) o;
-        return Objects.equals(activeIngredient, that.activeIngredient) && Objects.equals(indicationsAndUsage, that.indicationsAndUsage) && Objects.equals(warnings, that.warnings) && Objects.equals(doNotUse, that.doNotUse);
+        return Objects.equals(activeIngredient, that.activeIngredient) &&
+                Objects.equals(indicationsAndUsage, that.indicationsAndUsage) &&
+                Objects.equals(warnings, that.warnings) && Objects.equals(doNotUse, that.doNotUse);
     }
 
     @Override

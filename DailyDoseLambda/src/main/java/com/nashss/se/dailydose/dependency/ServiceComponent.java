@@ -2,6 +2,7 @@ package com.nashss.se.dailydose.dependency;
 
 import com.nashss.se.dailydose.activity.AddMedicationActivity;
 import com.nashss.se.dailydose.activity.AddNotificationActivity;
+import com.nashss.se.dailydose.activity.GetMedicationThirdPartyActivity;
 import com.nashss.se.dailydose.activity.GetMedicationsActivity;
 
 import com.nashss.se.dailydose.activity.GetNotificationsActivity;
@@ -62,4 +63,10 @@ public interface ServiceComponent {
      * @return getNotificationsActivity
      */
     GetNotificationsActivity provideGetNotificationsActivity();
+
+    /**
+     * Provides the relevant activity.
+     * @return getMedicationThirdPartyActivity
+     */
+    GetMedicationThirdPartyActivity provideGetMedicationThirdPartyActivity();
 }

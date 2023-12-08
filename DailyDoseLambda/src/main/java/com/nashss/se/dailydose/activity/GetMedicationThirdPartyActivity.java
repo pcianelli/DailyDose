@@ -1,11 +1,20 @@
 package com.nashss.se.dailydose.activity;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nashss.se.dailydose.activity.requests.GetMedicationThirdPartyRequest;
 import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
+import com.nashss.se.dailydose.models.MedicationThirdPartyModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 /**
  * Implementation of the GetMedicationThirdPartyActivity for the openFDA API.
@@ -33,10 +42,35 @@ public class GetMedicationThirdPartyActivity {
      * @param getMedicationThirdPartyRequest request object
      * @return getMedicationThirdPartyResult result object containing the medicationThirdPartyModel
      */
-    public GetMedicationThirdPartyResult handleRequest(final GetMedicationThirdPartyRequest getMedicationThirdPartyRequest) {
+    public GetMedicationThirdPartyResult handleRequest(final GetMedicationThirdPartyRequest getMedicationThirdPartyRequest) throws IOException, InterruptedException, URISyntaxException {
 
+        String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name="
+                + getMedicationThirdPartyRequest.getGenericName();
+
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(new URI(apiUrl))
+                .build();
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(getResponse.body());
+
+        String activeIngredient = rootNode.path("results").path(0).path("active_ingredient").asText();
+        String indicationsAndUsage = rootNode.path("results").path(0).path("indications_and_usage").asText();
+        String warnings = rootNode.path("results").path(0).path("warnings").asText();
+        String doNotUse = rootNode.path("results").path(0).path("do_not_use").asText();
+
+        MedicationThirdPartyModel medicationThirdPartyModel = MedicationThirdPartyModel.builder()
+                .withActiveIngredient(activeIngredient)
+                .withIndicationsAndUsage(indicationsAndUsage)
+                .withWarnings(warnings)
+                .withDoNotUse(doNotUse)
+                .build();
 
         return GetMedicationThirdPartyResult.builder()
+                .withMedicationThirdPartyModel(medicationThirdPartyModel)
                 .build();
     }
 }

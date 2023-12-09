@@ -6,6 +6,7 @@ import com.nashss.se.dailydose.models.MedicationThirdPartyModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.nashss.se.dailydose.utils.IdUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,6 +55,9 @@ public class GetMedicationThirdPartyActivity {
         String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name=" +
                 getMedicationThirdPartyRequest.getGenericName();
 
+        IdUtils.validateMedicationName(getMedicationThirdPartyRequest.getGenericName());
+        IdUtils.validMedNameNotBlank(getMedicationThirdPartyRequest.getGenericName());
+
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(new URI(apiUrl))
                 .build();
@@ -63,6 +67,10 @@ public class GetMedicationThirdPartyActivity {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(getResponse.body());
+
+        if(rootNode.path("error").path("code").asText().equals("NOT_FOUND")) {
+            throw new IllegalArgumentException("Not found");
+        }
 
         String activeIngredient = rootNode.path("results").path(0).path("active_ingredient").asText();
         String indicationsAndUsage = rootNode.path("results").path(0).path("indications_and_usage").asText();

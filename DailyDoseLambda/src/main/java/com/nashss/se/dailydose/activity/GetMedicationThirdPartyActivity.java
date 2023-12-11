@@ -27,6 +27,7 @@ import javax.inject.Inject;
  */
 public class GetMedicationThirdPartyActivity {
     private final Logger log = LogManager.getLogger();
+    static final String API_BASE_URL = "https://api.fda.gov/drug/label.json?search=openfda.generic_name=";
 
     /**
      * Instantiates a new GetMedicationThirdPartyActivity object.
@@ -52,8 +53,7 @@ public class GetMedicationThirdPartyActivity {
             final GetMedicationThirdPartyRequest getMedicationThirdPartyRequest)
             throws IOException, InterruptedException, URISyntaxException {
 
-        String apiUrl = "https://api.fda.gov/drug/label.json?search=openfda.generic_name=" +
-                getMedicationThirdPartyRequest.getGenericName();
+        String apiUrl = API_BASE_URL + getMedicationThirdPartyRequest.getGenericName();
 
         IdUtils.validateMedicationName(getMedicationThirdPartyRequest.getGenericName());
         IdUtils.validMedNameNotBlank(getMedicationThirdPartyRequest.getGenericName());
@@ -61,14 +61,18 @@ public class GetMedicationThirdPartyActivity {
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(new URI(apiUrl))
                 .build();
+        log.info(getRequest.toString());
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        log.info(getResponse.toString());
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(getResponse.body());
+        log.info(rootNode.toString());
 
         if(rootNode.path("error").path("code").asText().equals("NOT_FOUND")) {
+            log.error("API response indicates NOT_FOUND. Actual response: {}", getResponse.body());
             throw new IllegalArgumentException("Not found");
         }
 

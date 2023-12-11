@@ -4,6 +4,8 @@ package com.nashss.se.dailydose.activity;
 import com.nashss.se.dailydose.activity.requests.GetMedicationThirdPartyRequest;
 import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
 import com.nashss.se.dailydose.exceptions.InvalidAttributeValueException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,6 +34,8 @@ class GetMedicationThirdPartyActivityTest {
     @Mock
     HttpResponse<String> httpResponse;
 
+    private final Logger log = LogManager.getLogger();
+
     @BeforeEach
     void setup() {
         openMocks(this);
@@ -39,19 +43,22 @@ class GetMedicationThirdPartyActivityTest {
 
     @Test
     void handleRequest_withValidMedNameAndRequest_ReturnsValidResponse() throws IOException, InterruptedException, URISyntaxException {
-        //GIVEN
-        GetMedicationThirdPartyRequest request = GetMedicationThirdPartyRequest.builder().withGenericName("medName").build();
+        // GIVEN
+        GetMedicationThirdPartyRequest request = GetMedicationThirdPartyRequest.builder().withGenericName("Aspirin").build();
         String medName = request.getGenericName();
 
-        when(httpRequest.uri()).thenReturn(new URI("https://api.fda.gov/drug/label.json?search=openfda.generic_name=" + medName));
-        when(httpResponse.body()).thenReturn("mockedJsonResponse");
+        String expectedUrl = GetMedicationThirdPartyActivity.API_BASE_URL + medName;
+        String mockedJsonResponse = "{\"results\":[{\"active_ingredient\":\"MockedIngredient\",\"indications_and_usage\":\"MockedUsage\",\"warnings\":\"MockedWarnings\",\"do_not_use\":\"MockedDoNotUse\"}]}";
 
+
+        when(httpRequest.uri()).thenReturn(new URI(expectedUrl));
+        when(httpResponse.body()).thenReturn(mockedJsonResponse);
         when(httpClient.send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class))).thenReturn(httpResponse);
 
-        //WHEN
+        // WHEN
         GetMedicationThirdPartyResult result = activity.handleRequest(request);
 
-        //THEN
+        // THEN
         assertNotNull(result);
     }
 

@@ -380,7 +380,7 @@ Resources:
         MusicPlaylistService:
           Type: Api
           Properties:
-            Path: /medications/
+            Path: /medications/{medName}
             Method: get
 
   #-----------------------------------------------------

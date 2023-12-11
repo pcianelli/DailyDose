@@ -16,10 +16,13 @@ public class GetMedicationThirdPartyLambda
     @Override
     public LambdaResponse handleRequest(LambdaRequest<GetMedicationThirdPartyRequest> input, Context context) {
         return super.runActivity(
-            () -> input.fromPath(path ->
-                GetMedicationThirdPartyRequest.builder()
-                    .withGenericName(path.get("medName"))
-                    .build()),
+            () -> {
+                String medName = input.getPathParameters().get("medName");
+
+                return GetMedicationThirdPartyRequest.builder()
+                    .withGenericName(medName)
+                    .build();
+            },
             (request, serviceComponent) -> {
                 try {
                     return serviceComponent.provideGetMedicationThirdPartyActivity().handleRequest(request);

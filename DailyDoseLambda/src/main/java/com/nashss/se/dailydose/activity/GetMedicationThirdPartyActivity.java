@@ -71,25 +71,33 @@ public class GetMedicationThirdPartyActivity {
         JsonNode rootNode = objectMapper.readTree(getResponse.body());
         log.info(rootNode.toString());
 
-        if(rootNode.path("error").path("code").asText().equals("NOT_FOUND")) {
+        if (rootNode.path("error").path("code").asText().equals("NOT_FOUND")) {
             log.error("API response indicates NOT_FOUND. Actual response: {}", getResponse.body());
             throw new IllegalArgumentException("Not found");
         }
 
-        String activeIngredient = rootNode.path("results").path(0).path("active_ingredient").asText();
-        String indicationsAndUsage = rootNode.path("results").path(0).path("indications_and_usage").asText();
-        String warnings = rootNode.path("results").path(0).path("warnings").asText();
-        String doNotUse = rootNode.path("results").path(0).path("do_not_use").asText();
+        JsonNode resultsNode = rootNode.path("results");
+        if (resultsNode.isArray() && resultsNode.size() > 0) {
+            JsonNode firstResultNode = resultsNode.get(0);
 
-        MedicationThirdPartyModel medicationThirdPartyModel = MedicationThirdPartyModel.builder()
-                .withActiveIngredient(activeIngredient)
-                .withIndicationsAndUsage(indicationsAndUsage)
-                .withWarnings(warnings)
-                .withDoNotUse(doNotUse)
-                .build();
+            String activeIngredient = firstResultNode.path("active_ingredient").asText();
+            String indicationsAndUsage = firstResultNode.path("indications_and_usage").asText();
+            String warnings = firstResultNode.path("warnings").asText();
+            String doNotUse = firstResultNode.path("do_not_use").asText();
 
-        return GetMedicationThirdPartyResult.builder()
-                .withMedicationThirdPartyModel(medicationThirdPartyModel)
-                .build();
+            MedicationThirdPartyModel medicationThirdPartyModel = MedicationThirdPartyModel.builder()
+                    .withActiveIngredient(activeIngredient)
+                    .withIndicationsAndUsage(indicationsAndUsage)
+                    .withWarnings(warnings)
+                    .withDoNotUse(doNotUse)
+                    .build();
+
+            return GetMedicationThirdPartyResult.builder()
+                    .withMedicationThirdPartyModel(medicationThirdPartyModel)
+                    .build();
+        } else {
+            log.error("No results found in the API response.");
+            throw new IllegalArgumentException("No results found");
+        }
     }
 }

@@ -44,7 +44,7 @@ class GetMedicationThirdPartyActivityTest {
     @Test
     void handleRequest_withValidMedNameAndRequest_ReturnsValidResponse() throws IOException, InterruptedException, URISyntaxException {
         // GIVEN
-        GetMedicationThirdPartyRequest request = GetMedicationThirdPartyRequest.builder().withGenericName("Aspirin").build();
+        GetMedicationThirdPartyRequest request = GetMedicationThirdPartyRequest.builder().withGenericName("Advil").build();
         String medName = request.getGenericName();
 
         String expectedUrl = GetMedicationThirdPartyActivity.API_BASE_URL + medName;

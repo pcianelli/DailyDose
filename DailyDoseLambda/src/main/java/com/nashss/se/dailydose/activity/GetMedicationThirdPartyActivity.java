@@ -16,6 +16,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -71,20 +73,38 @@ public class GetMedicationThirdPartyActivity {
         JsonNode rootNode = objectMapper.readTree(getResponse.body());
         log.info(rootNode.toString());
 
-        if (rootNode.path("error").path("code").asText().equals("NOT_FOUND")) {
-            log.error("API response indicates NOT_FOUND. Actual response: {}", getResponse.body());
-            throw new IllegalArgumentException("Not found");
-        }
-
         JsonNode resultsNode = rootNode.path("results");
         if (resultsNode.isArray() && resultsNode.size() > 0) {
             JsonNode firstResultNode = resultsNode.get(0);
 
-            String activeIngredient = firstResultNode.path("active_ingredient").asText();
-            String indicationsAndUsage = firstResultNode.path("indications_and_usage").asText();
-            String warnings = firstResultNode.path("warnings").asText();
-            String doNotUse = firstResultNode.path("do_not_use").asText();
+            // Initialize variables for fields
+            String activeIngredient = null;
+            String indicationsAndUsage = null;
+            String warnings = null;
+            String doNotUse = null;
 
+            // Loop through the children nodes of firstResultNode
+            Iterator<Map.Entry<String, JsonNode>> fieldsIterator = firstResultNode.fields();
+            while (fieldsIterator.hasNext()) {
+                Map.Entry<String, JsonNode> field = fieldsIterator.next();
+                String fieldName = field.getKey();
+                JsonNode fieldValue = field.getValue();
+
+                // Check for the desired field names and extract their values
+                if ("active_ingredient".equals(fieldName)) {
+                    if (fieldValue.isArray() && fieldValue.size() > 0) {
+                        activeIngredient = fieldValue.get(0).asText();
+                    }
+                } else if ("indications_and_usage".equals(fieldName)) {
+                    indicationsAndUsage = fieldValue.asText();
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = fieldValue.asText();
+                } else if ("do_not_use".equals(fieldName)) {
+                    doNotUse = fieldValue.asText();
+                }
+            }
+
+            // Create the MedicationThirdPartyModel
             MedicationThirdPartyModel medicationThirdPartyModel = MedicationThirdPartyModel.builder()
                     .withActiveIngredient(activeIngredient)
                     .withIndicationsAndUsage(indicationsAndUsage)
@@ -95,9 +115,9 @@ public class GetMedicationThirdPartyActivity {
             return GetMedicationThirdPartyResult.builder()
                     .withMedicationThirdPartyModel(medicationThirdPartyModel)
                     .build();
-        } else {
-            log.error("No results found in the API response.");
-            throw new IllegalArgumentException("No results found");
         }
+
+        log.error("No results found in the API response.");
+        throw new IllegalArgumentException("No results found");
     }
 }

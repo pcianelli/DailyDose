@@ -2311,6 +2311,10 @@ min-width: 196px;
     border-color: #2980b9; /* Border color on hover */
 }
 
+.menu-button-hidden {
+    display: none;
+}
+
 #period {
     width: 10%; /* Adjust the width as needed */
     margin: 0 auto;

@@ -241,6 +241,22 @@ export default class DailyDoseClient extends BindingClass {
         }
     }
 
+    /**
+    * get medication details.
+    * @param errorCallback (Optional) A function to execute if the call fails.
+    * @returns a medicationThirdPartyModel to be added to backend.
+    */
+    async getMedicationDetails(medName, errorCallback) {
+        try {
+            const response = await this.axiosClient.get(`medications/${medName}`);
+            const medicationDetails = response.data.medicationThirdPartyModel;
+            return medicationDetails;
+        } catch (error) {
+            this.handleError(error, errorCallback);
+            throw error;
+        }
+    }
+
 
     /**
      * Helper method to log the error and run any error functions.

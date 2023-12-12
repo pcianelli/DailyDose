@@ -96,11 +96,11 @@ public class GetMedicationThirdPartyActivity {
                         activeIngredient = fieldValue.get(0).asText();
                     }
                 } else if ("indications_and_usage".equals(fieldName)) {
-                    indicationsAndUsage = fieldValue.asText();
+                    indicationsAndUsage = fieldValue.get(0).asText();
                 } else if ("warnings".equals(fieldName)) {
-                    warnings = fieldValue.asText();
+                    warnings = fieldValue.get(0).asText();
                 } else if ("do_not_use".equals(fieldName)) {
-                    doNotUse = fieldValue.asText();
+                    doNotUse = fieldValue.get(0).asText();
                 }
             }
 

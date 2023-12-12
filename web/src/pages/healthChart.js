@@ -192,7 +192,7 @@ class HealthChart extends BindingClass {
         modal.style.display = 'block';
 
         // Add the class to hide the button
-        button.classList.add('menu-button-hidden');
+        button.classList.add('button2--hidden');
     }
 
     handleCloseModalClick() {
@@ -203,7 +203,7 @@ class HealthChart extends BindingClass {
         modal.style.display = 'none';
 
         // Remove the class to show the button
-        button.classList.remove('menu-button-hidden');
+        button.classList.remove('button2--hidden');
     }
 
     handleCloseModalButtonClick() {

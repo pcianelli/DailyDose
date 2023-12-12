@@ -97,7 +97,7 @@ public class GetMedicationThirdPartyActivity {
                     }
                 } else if ("indications_and_usage".equals(fieldName)) {
                     indicationsAndUsage = fieldValue.get(0).asText();
-                } else if ("warnings".equals(fieldName)) {
+                } else if ("warnings".equals(fieldName) || "warnings_and_cautions".equals(fieldName)) {
                     warnings = fieldValue.get(0).asText();
                 } else if ("do_not_use".equals(fieldName)) {
                     doNotUse = fieldValue.get(0).asText();

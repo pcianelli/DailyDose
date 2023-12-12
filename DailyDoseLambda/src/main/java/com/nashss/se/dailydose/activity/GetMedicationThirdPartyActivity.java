@@ -3,10 +3,11 @@ import com.nashss.se.dailydose.activity.requests.GetMedicationThirdPartyRequest;
 import com.nashss.se.dailydose.activity.results.GetMedicationThirdPartyResult;
 import com.nashss.se.dailydose.models.MedicationThirdPartyModel;
 
+import com.nashss.se.dailydose.utils.IdUtils;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.nashss.se.dailydose.utils.IdUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +29,8 @@ import javax.inject.Inject;
  * warnings and other info with the medication they are tracking.
  */
 public class GetMedicationThirdPartyActivity {
-    private final Logger log = LogManager.getLogger();
     static final String API_BASE_URL = "https://api.fda.gov/drug/label.json?search=openfda.generic_name=";
+    private final Logger log = LogManager.getLogger();
 
     /**
      * Instantiates a new GetMedicationThirdPartyActivity object.

@@ -38,7 +38,7 @@ Lastly, within the users health chart, they can click on a medication and view i
 ## Documentation
 view more details about the design at https://github.com/pcianelli/DailyDose/blob/main/resources/design-document.md
 
-Third-Party api used for medication information: 
+Third-Party api used for medication information: openFDA API
 
 ## Acknowledgments
 I would like to acknowledge my mother who inspired me to develop the app due to a medical condition, she needs to take many medications and was looking for a place to help her organize her medications and alarms. 

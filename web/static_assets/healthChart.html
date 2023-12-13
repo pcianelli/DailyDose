@@ -29,6 +29,8 @@
     </div>
     <div id="medications-loading"></div>
     <div id="medication-list-display"></div>
+    <!-- Error Message Container -->
+    <div id="error-message" class="error-message"></div>
 </div>
 
 <!-- Modal -->
@@ -41,6 +43,28 @@
             <li class="menu__list__item"><a href="updateMedicationInfo.html">Update Medication Info</a></li>
             <li class="menu__list__item"><a href="addNotification.html">Add Alarm</a></li>
         </ul>
+    </div>
+</div>
+
+<!-- New Medication Details Modal -->
+<div id="medicationDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeMedicationDetailsModal">&times;</span>
+        <h2>Medication Details</h2>
+        <p><strong>Medication Name:</strong> <span id="medicationName"></span></p>
+        <p><strong>Active Ingredient:</strong> <span id="activeIngredient"></span></p>
+        <p><strong>Indications and Usage:</strong> <span id="indicationsAndUsage"></span></p>
+        <p><strong>Warnings:</strong> <span id="medicationWarnings"></span></p>
+        <p><strong>Do Not Use:</strong> <span id="doNotUse"></span></p>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeErrorModal">&times;</span>
+        <h2>Error</h2>
+        <p id="errorMessage"></p>
     </div>
 </div>
 

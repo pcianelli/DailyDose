@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 class HealthChart extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleModalButtonClick', 'handleCloseModalClick', 'handleMenuListClick'], this);
+        this.bindClassMethods(['mount', 'clientLoaded', 'displayMedications', 'showLoading', 'hideLoading', 'removeNotificationClicked', 'showSuccessMessageAndRedirect', 'handleModalButtonClick', 'handleCloseModalClick', 'handleMenuListClick', 'fetchMedicationDetails', 'displayMedicationDetails', 'handleCloseModalButtonClick'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
         this.client = new DailyDoseClient();
@@ -106,6 +106,7 @@ class HealthChart extends BindingClass {
 
             const medicationCard = document.createElement('section');
             medicationCard.className = 'medication-card';
+            medicationCard.setAttribute('data-medname', medication.medName); // Add data-medname attribute
 
             const medicationName = document.createElement('h2');
             medicationName.className = 'medication-name';
@@ -169,6 +170,18 @@ class HealthChart extends BindingClass {
 
             displayDiv.appendChild(medicationCard);
         });
+
+            // Click event listener for medication cards
+            const medicationCards = document.querySelectorAll('.medication-card');
+            medicationCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Get the medication name from the data attribute
+                    const medName = card.getAttribute('data-medname');
+
+                    // Fetch medication details and display them in the modal
+                    this.fetchMedicationDetails(medName);
+                });
+            });
     }
 
     handleModalButtonClick() {
@@ -193,36 +206,105 @@ class HealthChart extends BindingClass {
         button.classList.remove('button2--hidden');
     }
 
+    handleCloseModalButtonClick() {
+        const modal = document.getElementById('medicationDetailsModal');
+        const button = document.querySelector('.button2');
+
+        // Toggle the modal visibility
+        modal.style.display = 'none';
+
+        // Remove the class to show the button
+        button.classList.remove('button2--hidden');
+    }
+
     handleMenuListClick(event) {
         event.stopPropagation();
+    }
+
+    async fetchMedicationDetails(medName) {
+        try {
+            console.log('fetchingMedication');
+            const medicationDetails = await this.client.getMedicationDetails(medName);
+            console.log('medicationDetails: ', medicationDetails);
+            this.displayMedicationDetails(medicationDetails, medName); // Pass medName as an argument
+          } catch (error) {
+            console.error('Error fetching medication details:', error);
+                // Display the error message in the error modal
+                const errorMessageElement = document.getElementById('errorMessage');
+                errorMessageElement.textContent = 'Medication details not found. Error: ' + error.message;
+
+                // Show the error modal
+                const errorModal = document.getElementById('errorModal');
+                errorModal.style.display = 'block';
+          }
+    }
+
+    // *** New method to display medication details in the medicationDetailsModal ***
+    displayMedicationDetails(medicationDetails, medName) {
+        const errorModal = document.getElementById('errorModal');
+          errorModal.style.display = 'none'; // Close the error modal if it's open
+
+          if (medicationDetails) {
+            const modal = document.getElementById('medicationDetailsModal'); // Use the new modal
+
+            // Update the content of the placeholder elements
+            document.getElementById('medicationName').textContent = medName;
+            document.getElementById('activeIngredient').textContent = medicationDetails.activeIngredient;
+            document.getElementById('indicationsAndUsage').textContent = medicationDetails.indicationsAndUsage;
+            document.getElementById('medicationWarnings').textContent = medicationDetails.warnings;
+            document.getElementById('doNotUse').textContent = medicationDetails.doNotUse;
+
+            modal.style.display = 'block';
+          }
     }
 }
 
 const main = async () => {
-    const healthCart = new HealthChart();
-    healthCart.mount();
+    const healthChart = new HealthChart();
+    healthChart.mount();
 
     // Open modal
-    const openModalButton = document.getElementById('openModalButton');
-    openModalButton.addEventListener('click', () => {
-        healthCart.handleModalButtonClick();
-    });
+        const openModalButton = document.getElementById('openModalButton');
+        openModalButton.addEventListener('click', () => {
+            healthChart.handleModalButtonClick();
+        });
 
-    // Close modal
-    const closeModalButton = document.getElementById('closeModal');
-    closeModalButton.addEventListener('click', () => {
-        healthCart.handleCloseModalClick();
-    });
+        // Close modal
+        const closeModalButton = document.getElementById('closeModal');
+        closeModalButton.addEventListener('click', () => {
+            healthChart.handleCloseModalClick();
+        });
 
-    // Close modal when clicking outside the modal
-    window.onclick = function (event) {
-        console.log('Window clicked');
-        const modal = document.getElementById('myModal');
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            healthCart.handleCloseModalClick();
-        }
+        const closeModalButtonDetails = document.getElementById('closeMedicationDetailsModal');
+        closeModalButtonDetails.addEventListener('click', () => {
+            healthChart.handleCloseModalButtonClick(); // Use the new method
+        });
+
+        // Close error modal
+        const closeErrorModalButton = document.getElementById('closeErrorModal');
+        closeErrorModalButton.addEventListener('click', () => {
+            const errorModal = document.getElementById('errorModal');
+            errorModal.style.display = 'none';
+        });
+
+        // Close error modal when clicking outside the modal
+        window.addEventListener('click', (event) => {
+            const errorModal = document.getElementById('errorModal');
+            if (event.target === errorModal) {
+                errorModal.style.display = 'none';
+            }
+
+            const modal = document.getElementById('myModal');
+            const medicationDetailsModal = document.getElementById('medicationDetailsModal');
+
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                healthChart.handleCloseModalClick();
+            } else if (event.target === medicationDetailsModal) {
+                medicationDetailsModal.style.display = 'none';
+                healthChart.handleCloseModalButtonClick(); // Use the new method
+            }
+        });
     };
-};
 
 window.addEventListener('DOMContentLoaded', main);

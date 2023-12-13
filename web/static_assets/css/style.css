@@ -825,9 +825,9 @@ body > footer {
     text-align: center;
 }
 
-// vars and keyframes
-$delay: .5s;
-$menu-items: 3;
+/* vars and keyframes */
+delay: .5s;
+menu-items: 3;
 
 @keyframes drop {
   from {
@@ -1132,6 +1132,7 @@ min-width: 196px;
 
     background-size: cover;
     background-position: center;
+    cursor: pointer;
 
 }
 

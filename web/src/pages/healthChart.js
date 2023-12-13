@@ -214,7 +214,7 @@ class HealthChart extends BindingClass {
         modal.style.display = 'none';
 
         // Remove the class to show the button
-        button.classList.remove('menu-button-hidden');
+        button.classList.remove('button2--hidden');
     }
 
     handleMenuListClick(event) {
@@ -223,16 +223,28 @@ class HealthChart extends BindingClass {
 
     async fetchMedicationDetails(medName) {
         try {
+            console.log('fetchingMedication');
             const medicationDetails = await this.client.getMedicationDetails(medName);
+            console.log('medicationDetails: ', medicationDetails);
             this.displayMedicationDetails(medicationDetails, medName); // Pass medName as an argument
-        } catch (error) {
+          } catch (error) {
             console.error('Error fetching medication details:', error);
-        }
+                // Display the error message in the error modal
+                const errorMessageElement = document.getElementById('errorMessage');
+                errorMessageElement.textContent = 'Medication details not found. Error: ' + error.message;
+
+                // Show the error modal
+                const errorModal = document.getElementById('errorModal');
+                errorModal.style.display = 'block';
+          }
     }
 
     // *** New method to display medication details in the medicationDetailsModal ***
     displayMedicationDetails(medicationDetails, medName) {
-        if (medicationDetails) {
+        const errorModal = document.getElementById('errorModal');
+          errorModal.style.display = 'none'; // Close the error modal if it's open
+
+          if (medicationDetails) {
             const modal = document.getElementById('medicationDetailsModal'); // Use the new modal
 
             // Update the content of the placeholder elements
@@ -243,7 +255,7 @@ class HealthChart extends BindingClass {
             document.getElementById('doNotUse').textContent = medicationDetails.doNotUse;
 
             modal.style.display = 'block';
-        }
+          }
     }
 }
 
@@ -252,36 +264,47 @@ const main = async () => {
     healthChart.mount();
 
     // Open modal
-    const openModalButton = document.getElementById('openModalButton');
-    openModalButton.addEventListener('click', () => {
-        healthChart.handleModalButtonClick();
-    });
+        const openModalButton = document.getElementById('openModalButton');
+        openModalButton.addEventListener('click', () => {
+            healthChart.handleModalButtonClick();
+        });
 
-    // Close modal
-    const closeModalButton = document.getElementById('closeModal');
-    closeModalButton.addEventListener('click', () => {
-        healthChart.handleCloseModalClick();
-    });
-
-    const closeModalButtonDetails = document.getElementById('closeMedicationDetailsModal');
-    closeModalButtonDetails.addEventListener('click', () => {
-        healthChart.handleCloseModalButtonClick(); // Use the new method
-    });
-
-    // Close modal when clicking outside the modal
-    window.addEventListener('click', (event) => {
-        console.log('Window clicked');
-        const modal = document.getElementById('myModal');
-        const medicationDetailsModal = document.getElementById('medicationDetailsModal');
-
-        if (event.target === modal) {
-            modal.style.display = 'none';
+        // Close modal
+        const closeModalButton = document.getElementById('closeModal');
+        closeModalButton.addEventListener('click', () => {
             healthChart.handleCloseModalClick();
-        } else if (event.target === medicationDetailsModal) {
-            medicationDetailsModal.style.display = 'none';
+        });
+
+        const closeModalButtonDetails = document.getElementById('closeMedicationDetailsModal');
+        closeModalButtonDetails.addEventListener('click', () => {
             healthChart.handleCloseModalButtonClick(); // Use the new method
-        }
-    });
-};
+        });
+
+        // Close error modal
+        const closeErrorModalButton = document.getElementById('closeErrorModal');
+        closeErrorModalButton.addEventListener('click', () => {
+            const errorModal = document.getElementById('errorModal');
+            errorModal.style.display = 'none';
+        });
+
+        // Close error modal when clicking outside the modal
+        window.addEventListener('click', (event) => {
+            const errorModal = document.getElementById('errorModal');
+            if (event.target === errorModal) {
+                errorModal.style.display = 'none';
+            }
+
+            const modal = document.getElementById('myModal');
+            const medicationDetailsModal = document.getElementById('medicationDetailsModal');
+
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                healthChart.handleCloseModalClick();
+            } else if (event.target === medicationDetailsModal) {
+                medicationDetailsModal.style.display = 'none';
+                healthChart.handleCloseModalButtonClick(); // Use the new method
+            }
+        });
+    };
 
 window.addEventListener('DOMContentLoaded', main);

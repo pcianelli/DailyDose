@@ -382,6 +382,8 @@ Resources:
           Properties:
             Path: /medications/{medName}
             Method: get
+            Auth:
+              Authorizer: 'NONE'
 
   #-----------------------------------------------------
   # DynamoDB Configuration

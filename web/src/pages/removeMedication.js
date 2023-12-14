@@ -59,6 +59,17 @@ class RemoveMedication extends BindingClass {
      async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to remove this Medication?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
+        // Show the loading message while processing
+        const loadingMessage = document.getElementById('loading-message');
+        loadingMessage.style.display = 'block';
+
         const medName = document.getElementById('medName').value;
 
         try {
@@ -68,7 +79,10 @@ class RemoveMedication extends BindingClass {
         catch (error) {
             console.error("Error removing medication: ", error);
             this.showFailMessageRedirect();
-        }
+        } finally {
+            // Hide the loading message after processing
+            loadingMessage.style.display = 'none';
+            }
      }
 
     showSuccessMessageAndRedirect() {

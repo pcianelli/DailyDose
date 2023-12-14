@@ -31,6 +31,17 @@ class AddMedication extends BindingClass {
     async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to add this Medication?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
+        // Show the loading message while processing
+        const loadingMessage = document.getElementById('loading-message');
+        loadingMessage.style.display = 'block';
+
         const medName = document.getElementById('medName').value;
         const medInfo = document.getElementById('medInfo').value;
 
@@ -45,7 +56,10 @@ class AddMedication extends BindingClass {
         } catch (error) {
             console.error("Error adding medication: ", error);
             this.showFailMessageRedirect();
-        }
+        } finally {
+            // Hide the loading message after processing
+            loadingMessage.style.display = 'none';
+            }
     }
 
     showSuccessMessageAndRedirect() {

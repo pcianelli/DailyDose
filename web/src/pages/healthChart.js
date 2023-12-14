@@ -42,9 +42,13 @@ class HealthChart extends BindingClass {
     }
 
     removeNotificationClicked(medName, time) {
-        // Handle the "Remove Notification" button click
         console.log(`Remove Notification Clicked for ${medName} at ${time}`);
-        // Add your logic to call the removeNotification method in your DailyDoseClient
+        const userConfirmed = window.confirm('Are you sure you want to remove this alarm?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
         try {
             // Call the removeNotification method in your DailyDoseClient
             this.client.removeNotification(medName, time);
@@ -154,6 +158,7 @@ class HealthChart extends BindingClass {
 
                 // Attach a click event listener to the button
                 removeButton.addEventListener('click', () => {
+                    event.stopPropagation();
                     this.removeNotificationClicked(medication.medName, time); // Add your logic to handle the button click
                 });
                 const removeButtonContainer = document.createElement('div');
@@ -208,13 +213,11 @@ class HealthChart extends BindingClass {
 
     handleCloseModalButtonClick() {
         const modal = document.getElementById('medicationDetailsModal');
-        const button = document.querySelector('.button2');
-
-        // Toggle the modal visibility
         modal.style.display = 'none';
 
         // Remove the class to show the button
-        button.classList.remove('button2--hidden');
+        const buttonContainer = document.querySelector('.button-container');
+        buttonContainer.classList.remove('button-container--hidden');
     }
 
     handleMenuListClick(event) {
@@ -255,6 +258,10 @@ class HealthChart extends BindingClass {
             document.getElementById('doNotUse').textContent = medicationDetails.doNotUse;
 
             modal.style.display = 'block';
+
+            // Hide the button-container
+            const buttonContainer = document.querySelector('.button-container');
+            buttonContainer.classList.add('button-container--hidden');
           }
     }
 }

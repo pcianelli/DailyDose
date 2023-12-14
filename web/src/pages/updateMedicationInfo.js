@@ -59,6 +59,13 @@ class UpdateMedicationInfo extends BindingClass {
     async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to update this Medication Info?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
         const medName = document.getElementById('medName').value;
         const medInfo = document.getElementById('medInfo').value;
 

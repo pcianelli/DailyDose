@@ -59,6 +59,13 @@ class RemoveMedication extends BindingClass {
      async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to remove this Medication?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
         const medName = document.getElementById('medName').value;
 
         try {

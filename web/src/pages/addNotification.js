@@ -62,6 +62,13 @@ class AddNotification extends BindingClass {
     async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to add this alarm?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
         const medName = document.getElementById('medName').value;
         const timeInput = document.getElementById('time');
         // Find the 'period' element using querySelector

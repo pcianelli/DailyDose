@@ -31,6 +31,13 @@ class AddMedication extends BindingClass {
     async submit(event) {
         event.preventDefault();
 
+        const userConfirmed = window.confirm('Are you sure you want to add this Medication?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
+
         const medName = document.getElementById('medName').value;
         const medInfo = document.getElementById('medInfo').value;
 

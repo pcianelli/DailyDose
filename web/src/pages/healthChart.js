@@ -42,9 +42,13 @@ class HealthChart extends BindingClass {
     }
 
     removeNotificationClicked(medName, time) {
-        // Handle the "Remove Notification" button click
         console.log(`Remove Notification Clicked for ${medName} at ${time}`);
-        // Add your logic to call the removeNotification method in your DailyDoseClient
+        const userConfirmed = window.confirm('Are you sure you want to remove this alarm?');
+
+        if (!userConfirmed) {
+            // User canceled the operation, do nothing
+            return;
+        }
         try {
             // Call the removeNotification method in your DailyDoseClient
             this.client.removeNotification(medName, time);

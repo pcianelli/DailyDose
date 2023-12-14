@@ -158,6 +158,7 @@ class HealthChart extends BindingClass {
 
                 // Attach a click event listener to the button
                 removeButton.addEventListener('click', () => {
+                    event.stopPropagation();
                     this.removeNotificationClicked(medication.medName, time); // Add your logic to handle the button click
                 });
                 const removeButtonContainer = document.createElement('div');
